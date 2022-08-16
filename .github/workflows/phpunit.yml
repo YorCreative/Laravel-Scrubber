@@ -1,7 +1,7 @@
-name: run-tests
+name: phpunit
 
 on:
-  push: 
+  push:
   pull_request:
 
 jobs:
