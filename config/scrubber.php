@@ -1,0 +1,5 @@
+<?php
+
+return [
+    'redaction' => '**redacted**',
+];

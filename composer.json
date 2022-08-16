@@ -1,0 +1,48 @@
+{
+  "name": "yorcreative/laravel-scrubber",
+  "description": "A laravel package that scrubs sensitive information for you.",
+  "type": "library",
+  "keywords": [
+    "laravel",
+    "framework",
+    "scrubber",
+    "log scrub",
+    "senstive information scrubber",
+    "secret scrubber",
+    "scrub logs",
+    "laravel log scrubber",
+    "scrub sensitive information"
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": "^8.0",
+    "ext-pdo_sqlite": "*",
+    "illuminate/contracts": "^8.0|^9.0"
+  },
+  "require-dev": {
+    "laravel/pint": "^1.0",
+    "orchestra/testbench": "^7.0",
+    "phpunit/phpunit": "^9.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "YorCreative\\Scrubber\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "YorCreative\\Scrubber\\Tests\\": "tests"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit",
+    "lint": "vendor/bin/pint"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "YorCreative\\Scrubber\\ScrubberServiceProvider"
+      ]
+    }
+  }
+}
