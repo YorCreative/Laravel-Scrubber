@@ -32,6 +32,30 @@ Publish the packages assets.
 ```bash
 php artisan vendor:publish --provider="YorCreative\Scrubber\ScrubberServiceProvider"
 ```
+## Configuration
+
+Adjust the configuration file to suite your application.
+
+```php
+return [
+    'redaction' => '**redacted**', // Define what you want to overwrite detected information with??
+    'secret_manager' => [
+        'key' => '44mfXzhGl4IiILZ844mfXzhGl4IiILZ8', // key for cipher to use
+        'cipher' => 'AES-256-CBC', 
+        'enabled' => false, // Do you want this enabled??
+        'providers' => [
+            'gitlab' => [
+                'enabled' => false,
+                'project_id' => env('GITLAB_PROJECT_ID', 'change_me'),
+                'token' => env('GITLAB_TOKEN', 'change_me'),
+                'host' => 'https://gitlab.com',
+                'keys' => ['*'], // * will grab all the secrets, if you want specific variables
+                                 //  define the keys in an array
+            ],
+        ],
+    ],
+];
+```
 
 ## Usage
 
@@ -71,6 +95,19 @@ Scrubber::processMessage([
 Scrubber::processMessage('<insert jwt token here>');
 // **redacted**
 ```
+
+## Secret Manager
+
+This package provides the ability to pull in secrets from external sources. This provides the package the ability to detect leakage and sanitize secrets without needing an exact regex pattern to detect it. 
+
+### Encryption
+
+For enhanced application security, all secrets that are pulled from any provider are encrypted and only decrypted to run the detection. You can see this in action [here](https://github.com/YorCreative/Laravel-Scrubber/blob/main/src/Services/ScrubberService.php#L45).
+### Gitlab Integration
+
+To utilize the Gitlab Integration, you will need to enable the `secret_manager` and the `gitlab` provider in the Configuration file. If you are looking for information on how to add secrets in Gitlab. There is an article on [adding project variables](https://docs.gitlab.com/ee/ci/variables/#add-a-cicd-variable-to-a-project).
+
+## Extending the Scrubber
 
 Creating new Scrubber Detection Classes
 
