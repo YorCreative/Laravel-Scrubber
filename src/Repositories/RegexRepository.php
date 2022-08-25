@@ -19,14 +19,6 @@ class RegexRepository
         $this->loadRegexClasses();
     }
 
-    /**
-     * @return Collection
-     */
-    public function getRegexCollection(): Collection
-    {
-        return $this->regexCollection;
-    }
-
     protected function loadRegexClasses(): void
     {
         /**
@@ -69,17 +61,6 @@ class RegexRepository
         }
     }
 
-    /**
-     * @param  string  $regex
-     * @param  string  $content
-     * @param  int  $hits
-     * @return string
-     */
-    public static function checkAndSanitize(string $regex, string $content, int &$hits = 0): string
-    {
-        return preg_replace("~$regex~i", config('scrubber.redaction'), $content, -1, $hits);
-    }
-
     protected static function generateRegexClassForSecret(Secret $secret)
     {
         $class = new class implements RegexCollectionInterface
@@ -110,5 +91,24 @@ class RegexRepository
         $class->setPattern($secret->getVariable());
 
         return $class;
+    }
+
+    /**
+     * @param  string  $regex
+     * @param  string  $content
+     * @param  int  $hits
+     * @return string
+     */
+    public static function checkAndSanitize(string $regex, string $content, int &$hits = 0): string
+    {
+        return preg_replace("~$regex~i", config('scrubber.redaction'), $content, -1, $hits);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getRegexCollection(): Collection
+    {
+        return $this->regexCollection;
     }
 }
