@@ -2,7 +2,7 @@
 
 namespace YorCreative\Scrubber\RegexCollection;
 
-use YorCreative\Scrubber\RegexCollectionInterface;
+use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
 
 class AmericanExpressCreditCard implements RegexCollectionInterface
 {
@@ -14,5 +14,10 @@ class AmericanExpressCreditCard implements RegexCollectionInterface
     public function getTestableString(): string
     {
         return '378282246310005';
+    }
+
+    public function isSecret(): bool
+    {
+        return false;
     }
 }

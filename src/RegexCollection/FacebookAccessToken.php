@@ -2,7 +2,7 @@
 
 namespace YorCreative\Scrubber\RegexCollection;
 
-use YorCreative\Scrubber\RegexCollectionInterface;
+use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
 
 class FacebookAccessToken implements RegexCollectionInterface
 {
@@ -14,5 +14,10 @@ class FacebookAccessToken implements RegexCollectionInterface
     public function getTestableString(): string
     {
         return 'EAACEdEose0cBAdSAIzs2npcdqDa3vThXNiQx5JVD15rGwW';
+    }
+
+    public function isSecret(): bool
+    {
+        return false;
     }
 }

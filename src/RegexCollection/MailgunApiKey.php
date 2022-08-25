@@ -2,7 +2,7 @@
 
 namespace YorCreative\Scrubber\RegexCollection;
 
-use YorCreative\Scrubber\RegexCollectionInterface;
+use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
 
 class MailgunApiKey implements RegexCollectionInterface
 {
@@ -14,5 +14,10 @@ class MailgunApiKey implements RegexCollectionInterface
     public function getTestableString(): string
     {
         return 'key-XIvJaxdKlIynScWweyN5f2bqhwkixHQR';
+    }
+
+    public function isSecret(): bool
+    {
+        return false;
     }
 }

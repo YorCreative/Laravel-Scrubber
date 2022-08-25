@@ -2,7 +2,7 @@
 
 namespace YorCreative\Scrubber\RegexCollection;
 
-use YorCreative\Scrubber\RegexCollectionInterface;
+use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
 
 class MasterCardCreditCard implements RegexCollectionInterface
 {
@@ -14,5 +14,10 @@ class MasterCardCreditCard implements RegexCollectionInterface
     public function getTestableString(): string
     {
         return '5555555555554444';
+    }
+
+    public function isSecret(): bool
+    {
+        return false;
     }
 }

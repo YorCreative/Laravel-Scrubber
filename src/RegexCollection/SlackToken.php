@@ -2,7 +2,7 @@
 
 namespace YorCreative\Scrubber\RegexCollection;
 
-use YorCreative\Scrubber\RegexCollectionInterface;
+use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
 
 class SlackToken implements RegexCollectionInterface
 {
@@ -14,5 +14,10 @@ class SlackToken implements RegexCollectionInterface
     public function getTestableString(): string
     {
         return 'xoxs-EO1ri9VFw3a0Ok4Bf769hR92zyVSef0JEZ5PDoEbCs7';
+    }
+
+    public function isSecret(): bool
+    {
+        return false;
     }
 }
