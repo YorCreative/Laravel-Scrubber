@@ -49,7 +49,7 @@ class ScrubLogTest extends TestCase
                 'randomly' => 'nested',
                 'for' => [
                     'testing' => 'test',
-                    'google_api' => RegexRepository::getRegexCollection()->get('google_api')->getTestableString(),
+                    'google_api' => app(RegexRepository::class)->getRegexCollection()->get('google_api')->getTestableString(),
                 ],
             ],
         ]);
@@ -87,12 +87,12 @@ class ScrubLogTest extends TestCase
                 'another' => [
                     'nested' => [
                         'array' => [
-                            'slack_token' => RegexRepository::getRegexCollection()->get('slack_token')
+                            'slack_token' => app(RegexRepository::class)->getRegexCollection()->get('slack_token')
                                 ->getTestableString(),
                         ],
                     ],
                 ],
-                'mailgun_api_key' => RegexRepository::getRegexCollection()->get('mailgun_api_key')
+                'mailgun_api_key' => app(RegexRepository::class)->getRegexCollection()->get('mailgun_api_key')
                     ->getTestableString(),
             ],
         ]);

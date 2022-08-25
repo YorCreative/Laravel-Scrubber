@@ -2,7 +2,7 @@
 
 namespace YorCreative\Scrubber\RegexCollection;
 
-use YorCreative\Scrubber\RegexCollectionInterface;
+use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
 
 class PgpPrivateBlock implements RegexCollectionInterface
 {
@@ -30,5 +30,10 @@ hzGs1O0RkWNQWbUzQ8nUOeD9wNbjE3zR+yfRAQDbYqvtWQKN4AQLTxVJN5X5AWyb
 Pnn+We1aTBhaGa86AQ==
 =n8OM
 -----END PGP PRIVATE KEY BLOCK-----";
+    }
+
+    public function isSecret(): bool
+    {
+        return false;
     }
 }

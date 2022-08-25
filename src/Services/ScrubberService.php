@@ -2,8 +2,9 @@
 
 namespace YorCreative\Scrubber\Services;
 
-use YorCreative\Scrubber\RegexCollectionInterface;
+use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
 use YorCreative\Scrubber\Repositories\RegexRepository;
+use YorCreative\Scrubber\SecretManager\Secret;
 
 class ScrubberService
 {
@@ -39,8 +40,12 @@ class ScrubberService
      */
     public static function autoSanitize(string &$jsonContent): void
     {
-        RegexRepository::getRegexCollection()->each(function (RegexCollectionInterface $regexClass) use (&$jsonContent) {
-            self::patternChecker($regexClass->getPattern(), $jsonContent);
+        app(RegexRepository::class)->getRegexCollection()->each(function (RegexCollectionInterface $regexClass) use (&$jsonContent) {
+            $pattern = $regexClass->isSecret()
+                ? Secret::decrypt($regexClass->getPattern())
+                : $regexClass->getPattern();
+
+            self::patternChecker($pattern, $jsonContent);
         });
     }
 

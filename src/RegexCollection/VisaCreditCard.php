@@ -2,7 +2,7 @@
 
 namespace YorCreative\Scrubber\RegexCollection;
 
-use YorCreative\Scrubber\RegexCollectionInterface;
+use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
 
 class VisaCreditCard implements RegexCollectionInterface
 {
@@ -14,5 +14,10 @@ class VisaCreditCard implements RegexCollectionInterface
     public function getTestableString(): string
     {
         return '4242424242424242';
+    }
+
+    public function isSecret(): bool
+    {
+        return false;
     }
 }

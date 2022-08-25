@@ -2,7 +2,7 @@
 
 namespace YorCreative\Scrubber\RegexCollection;
 
-use YorCreative\Scrubber\RegexCollectionInterface;
+use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
 
 class RsaPrivateKey implements RegexCollectionInterface
 {
@@ -28,5 +28,10 @@ R/MAJAkJG1EMUKY0CymYfhy+P4S4DeKxg6ETKaGeGQto80SeV7H9fuJfAkBJ0vSM
 L1Qku7cvCJnwKguBAkA9oUUEMC2CaFrKskFRWQPjkzy82oOWdYP8pwDsHLy+33tk
 6EgPsdWHTOuCih7cpgpn4EvtJPbV5k1OzNv5WAs7
 -----END RSA PRIVATE KEY-----';
+    }
+
+    public function isSecret(): bool
+    {
+        return false;
     }
 }
