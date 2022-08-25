@@ -2,7 +2,7 @@
 
 namespace YorCreative\Scrubber\RegexCollection;
 
-use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
+use YorCreative\Scrubber\RegexCollectionInterface;
 
 class TwilioAppSid implements RegexCollectionInterface
 {
@@ -14,10 +14,5 @@ class TwilioAppSid implements RegexCollectionInterface
     public function getTestableString(): string
     {
         return 'APrNR8EQ0O8QYoWu2RuIS0X1S1ngjNI7s9';
-    }
-
-    public function isSecret(): bool
-    {
-        return false;
     }
 }

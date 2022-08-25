@@ -1,11 +1,9 @@
 <?php
 
-namespace YorCreative\Scrubber\Interfaces;
+namespace YorCreative\Scrubber;
 
 interface RegexCollectionInterface
 {
-    public function isSecret(): bool;
-
     public function getPattern(): string;
 
     public function getTestableString(): string;

@@ -2,7 +2,7 @@
 
 namespace YorCreative\Scrubber\RegexCollection;
 
-use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
+use YorCreative\Scrubber\RegexCollectionInterface;
 
 class GoogleOauth implements RegexCollectionInterface
 {
@@ -14,10 +14,5 @@ class GoogleOauth implements RegexCollectionInterface
     public function getTestableString(): string
     {
         return 'ya29.EZfHX1INB-Z1gYMig_e7jG5n1p3a8aodX';
-    }
-
-    public function isSecret(): bool
-    {
-        return false;
     }
 }

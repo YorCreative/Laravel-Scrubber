@@ -2,7 +2,7 @@
 
 namespace YorCreative\Scrubber\RegexCollection;
 
-use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
+use YorCreative\Scrubber\RegexCollectionInterface;
 
 class SshDcPrivateKey implements RegexCollectionInterface
 {
@@ -18,10 +18,5 @@ MHcCAQEEIKEubpBiHkZQYlORbCy8gGTz8tzrWsjBJA6GfFCrQ98coAoGCCqGSM49
 AwEHoUQDQgAEOr6rMmRRNKuZuwws/hWwFTM6ECEEaJGGARCJUO4UfoURl8b4JThG
 t8VDFKeR2i+ZxE+xh/wTBaJ/zvtSqZiNnQ==
 -----END EC PRIVATE KEY-----';
-    }
-
-    public function isSecret(): bool
-    {
-        return false;
     }
 }

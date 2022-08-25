@@ -2,7 +2,7 @@
 
 namespace YorCreative\Scrubber\RegexCollection;
 
-use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
+use YorCreative\Scrubber\RegexCollectionInterface;
 
 class HerokuApiKey implements RegexCollectionInterface
 {
@@ -14,10 +14,5 @@ class HerokuApiKey implements RegexCollectionInterface
     public function getTestableString(): string
     {
         return '82D1FB27-CB69-BB42-daDf-B6EbFf0f7Bef';
-    }
-
-    public function isSecret(): bool
-    {
-        return false;
     }
 }

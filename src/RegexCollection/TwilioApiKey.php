@@ -2,7 +2,7 @@
 
 namespace YorCreative\Scrubber\RegexCollection;
 
-use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
+use YorCreative\Scrubber\RegexCollectionInterface;
 
 class TwilioApiKey implements RegexCollectionInterface
 {
@@ -14,10 +14,5 @@ class TwilioApiKey implements RegexCollectionInterface
     public function getTestableString(): string
     {
         return 'SKd7fFD6A5CBdde85eCf76B69EE9de6cCa';
-    }
-
-    public function isSecret(): bool
-    {
-        return false;
     }
 }

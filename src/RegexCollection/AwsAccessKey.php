@@ -2,7 +2,7 @@
 
 namespace YorCreative\Scrubber\RegexCollection;
 
-use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
+use YorCreative\Scrubber\RegexCollectionInterface;
 
 class AwsAccessKey implements RegexCollectionInterface
 {
@@ -14,10 +14,5 @@ class AwsAccessKey implements RegexCollectionInterface
     public function getTestableString(): string
     {
         return 'AKIAB1VCNS1Q2EDZD6QZ';
-    }
-
-    public function isSecret(): bool
-    {
-        return false;
     }
 }

@@ -15,12 +15,12 @@ class RegexRepositoryTest extends TestCase
      */
     public function it_can_verify_that_all_regex_patterns_have_testable_counter_parts()
     {
-        app(RegexRepository::class)->getRegexCollection()->each(function ($regexClass) {
+        RegexRepository::getRegexCollection()->each(function ($regexClass) {
             $hits = 0;
 
             $this->assertStringContainsString(
                 config('scrubber.redaction'),
-                app(RegexRepository::class)->checkAndSanitize($regexClass->getPattern(), $regexClass->getTestableString(), $hits)
+                RegexRepository::checkAndSanitize($regexClass->getPattern(), $regexClass->getTestableString(), $hits)
             );
 
             $this->assertEquals(1, $hits);
@@ -36,14 +36,14 @@ class RegexRepositoryTest extends TestCase
     {
         $hits = 0;
 
-        $content = app(RegexRepository::class)->getRegexCollection()->get('google_api')->getTestableString()
+        $content = RegexRepository::getRegexCollection()->get('google_api')->getTestableString()
             .' something something something '
-            .app(RegexRepository::class)->getRegexCollection()->get('google_api')->getTestableString();
+            .RegexRepository::getRegexCollection()->get('google_api')->getTestableString();
 
         $this->assertStringContainsString(
             config('scrubber.redaction'),
-            app(RegexRepository::class)->checkAndSanitize(
-                app(RegexRepository::class)->getRegexCollection()->get('google_api')->getPattern(),
+            RegexRepository::checkAndSanitize(
+                RegexRepository::getRegexCollection()->get('google_api')->getPattern(),
                 $content,
                 $hits
             )
@@ -59,6 +59,6 @@ class RegexRepositoryTest extends TestCase
      */
     public function it_can_receive_a_collection()
     {
-        $this->assertInstanceOf(Collection::class, app(RegexRepository::class)->getRegexCollection());
+        $this->assertInstanceOf(Collection::class, RegexRepository::getRegexCollection());
     }
 }

@@ -2,7 +2,7 @@
 
 namespace DummyNamespace;
 
-use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
+use YorCreative\Scrubber\RegexCollectionInterface;
 
 class DummyClass implements RegexCollectionInterface
 {
