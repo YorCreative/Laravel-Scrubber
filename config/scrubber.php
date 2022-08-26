@@ -16,4 +16,5 @@ return [
             ],
         ],
     ],
+    'regex_loader' => ['*'],
 ];
