@@ -14,16 +14,16 @@ class SpecificCore implements LoaderInterface
      */
     public function canLoad(): bool
     {
-        return !in_array('*', Config::get('scrubber.regex_loader'));
+        return ! in_array('*', Config::get('scrubber.regex_loader'));
     }
 
     /**
-     * @param Collection $regexCollection
+     * @param  Collection  $regexCollection
      */
     public function load(Collection &$regexCollection): void
     {
         foreach (Config::get('scrubber.regex_loader') as $regexClass) {
-            $regex = (new ('YorCreative\Scrubber\RegexCollection\\' . $regexClass)());
+            $regex = (new ('YorCreative\Scrubber\RegexCollection\\'.$regexClass)());
 
             $regexCollection = $regexCollection->merge([
                 Str::snake($regexClass) => $regex,
