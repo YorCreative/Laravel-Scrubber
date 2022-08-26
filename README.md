@@ -54,12 +54,18 @@ return [
             ],
         ],
     ],
+    'regex_loader' => ['*'] // Opt-in to specific regex classes or include all with * wildcard.
 ];
 ```
 
 ## Usage
 
-Logging Detection & Sanitization
+The scrubber can be utilized in two ways, the first one being a Log scrubber. A tap is added to detect and sanitize any
+sensitive information from hitting the log file. The second way is to integrate into your application and utilize the
+Scrubber directly. This way is particular useful if you, for example, would like to detect and sanitize any messages on
+a messaging platform.
+
+### Logging Detection & Sanitization
 
 ```php
 Log::info('some message', [
@@ -76,7 +82,7 @@ Log::info('<insert jwt token here>')
 // testing.INFO: **redacted**  
 ```
 
-Direct Usage for Detection & Sanitization
+### Direct Usage for Detection & Sanitization
 
 ```php
 Scrubber::processMessage([
@@ -96,16 +102,42 @@ Scrubber::processMessage('<insert jwt token here>');
 // **redacted**
 ```
 
+## Regex Class Opt-in
+
+You have the ability through the configuration file to define what regex classes you want loaded into the application
+when it is bootstrapped. By default, this package ships with a wildcard value.
+
+### Regex Collection & Defining Opt-in
+
+To opt in, utilize the static properties on the [RegexCollection](https://github.com/YorCreative/Laravel-Scrubber/blob/7bd2402316850c1ffce0057e9df409cf285d3ae2/src/Repositories/RegexCollection.php) class.
+
+```php
+ 'regex_loader' => [
+        RegexCollection::$GOOGLE_API,
+        RegexCollection::$AUTHORIZATION_BEARER,
+        RegexCollection::$CREDIT_CARD_AMERICAN_EXPRESS,
+        RegexCollection::$CREDIT_CARD_DISCOVER,
+        RegexCollection::$CREDIT_CARD_VISA,
+        RegexCollection::$JSON_WEB_TOKEN
+    ],
+```
+
 ## Secret Manager
 
-This package provides the ability to pull in secrets from external sources. This provides the package the ability to detect leakage and sanitize secrets without needing an exact regex pattern to detect it. 
+This package provides the ability to pull in secrets from external sources. This provides the package the ability to
+detect leakage and sanitize secrets without needing an exact regex pattern to detect it.
 
 ### Encryption
 
-For enhanced application security, all secrets that are pulled from any provider are encrypted and only decrypted to run the detection. You can see this in action [here](https://github.com/YorCreative/Laravel-Scrubber/blob/main/src/Services/ScrubberService.php#L45).
+For enhanced application security, all secrets that are pulled from any provider are encrypted and only decrypted to run
+the detection. You can see this in
+action [here](https://github.com/YorCreative/Laravel-Scrubber/blob/main/src/Services/ScrubberService.php#L45).
+
 ### Gitlab Integration
 
-To utilize the Gitlab Integration, you will need to enable the `secret_manager` and the `gitlab` provider in the Configuration file. If you are looking for information on how to add secrets in Gitlab. There is an article on [adding project variables](https://docs.gitlab.com/ee/ci/variables/#add-a-cicd-variable-to-a-project).
+To utilize the Gitlab Integration, you will need to enable the `secret_manager` and the `gitlab` provider in the
+Configuration file. If you are looking for information on how to add secrets in Gitlab. There is an article
+on [adding project variables](https://docs.gitlab.com/ee/ci/variables/#add-a-cicd-variable-to-a-project).
 
 ## Extending the Scrubber
 
