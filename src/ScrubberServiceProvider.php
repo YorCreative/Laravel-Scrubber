@@ -8,6 +8,11 @@ use Illuminate\Support\ServiceProvider;
 use YorCreative\Scrubber\Clients\GitLabClient;
 use YorCreative\Scrubber\Handlers\ScrubberTap;
 use YorCreative\Scrubber\Repositories\RegexRepository;
+use YorCreative\Scrubber\Strategies\RegexLoader\Loaders\DefaultCore;
+use YorCreative\Scrubber\Strategies\RegexLoader\Loaders\ExtendedRegex;
+use YorCreative\Scrubber\Strategies\RegexLoader\Loaders\SecretLoader;
+use YorCreative\Scrubber\Strategies\RegexLoader\Loaders\SpecificCore;
+use YorCreative\Scrubber\Strategies\RegexLoader\RegexLoaderStrategy;
 
 class ScrubberServiceProvider extends ServiceProvider
 {
@@ -43,6 +48,15 @@ class ScrubberServiceProvider extends ServiceProvider
                 ]));
             });
         }
+        $this->app->singleton(RegexLoaderStrategy::class, function () {
+            $regexLoaderStrategy = new RegexLoaderStrategy();
+            $regexLoaderStrategy->setLoader(new DefaultCore());
+            $regexLoaderStrategy->setLoader(new SpecificCore());
+            $regexLoaderStrategy->setLoader(new ExtendedRegex());
+            $regexLoaderStrategy->setLoader(new SecretLoader());
+
+            return $regexLoaderStrategy;
+        });
 
         $this->app->singleton(RegexRepository::class, function () {
             $regexRepository = new RegexRepository();
