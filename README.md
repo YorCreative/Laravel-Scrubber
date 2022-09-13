@@ -34,20 +34,20 @@ php artisan vendor:publish --provider="YorCreative\Scrubber\ScrubberServiceProvi
 ```
 ## Configuration
 
-Adjust the configuration file to suite your application.
+Adjust the configuration file to suite your application, located in `/config/scubber.php`.
 
 ```php
 return [
-    'redaction' => '**redacted**', // Define what you want to overwrite detected information with??
+    'redaction' => '**redacted**', // Define what you want to overwrite detected information with?
     'secret_manager' => [
         'key' => '44mfXzhGl4IiILZ844mfXzhGl4IiILZ8', // key for cipher to use
         'cipher' => 'AES-256-CBC', 
-        'enabled' => false, // Do you want this enabled??
+        'enabled' => false, // Do you want this enabled?
         'providers' => [
             'gitlab' => [
                 'enabled' => false,
-                'project_id' => env('GITLAB_PROJECT_ID', 'change_me'),
-                'token' => env('GITLAB_TOKEN', 'change_me'),
+                'project_id' => env('GITLAB_PROJECT_ID', ''),
+                'token' => env('GITLAB_TOKEN', ''),
                 'host' => 'https://gitlab.com',
                 'keys' => ['*'], // * will grab all the secrets, if you want specific variables
                                  //  define the keys in an array
@@ -61,7 +61,7 @@ return [
 ## Usage
 
 The scrubber can be utilized in two ways, the first one being a Log scrubber. A tap is added to detect and sanitize any
-sensitive information from hitting the log file. The second way is to integrate into your application and utilize the
+sensitive information from hitting a log file. The second way is to integrate into your application and utilize the
 Scrubber directly. This way is particular useful if you, for example, would like to detect and sanitize any messages on
 a messaging platform.
 
@@ -109,7 +109,7 @@ when it is bootstrapped. By default, this package ships with a wildcard value.
 
 ### Regex Collection & Defining Opt-in
 
-To opt in, utilize the static properties on the [RegexCollection](https://github.com/YorCreative/Laravel-Scrubber/blob/7bd2402316850c1ffce0057e9df409cf285d3ae2/src/Repositories/RegexCollection.php) class.
+To opt in, utilize the static properties on the [RegexCollection](https://github.com/YorCreative/Laravel-Scrubber/blob/main/src/Repositories/RegexCollection.php) class.
 
 ```php
  'regex_loader' => [
@@ -122,14 +122,14 @@ To opt in, utilize the static properties on the [RegexCollection](https://github
     ],
 ```
 
-## Secret Manager
+## About the Scrubber
 
-This package provides the ability to pull in secrets from external sources. This provides the package the ability to
-detect leakage and sanitize secrets without needing an exact regex pattern to detect it.
+This package provides the ability to pull in secrets from external sources. Providing the ability to
+detect information leakage, and sanitize secrets without needing an exact regex pattern to detect it.
 
 ### Encryption
 
-For enhanced application security, all secrets that are pulled from any provider are encrypted and only decrypted to run
+For enhanced application security, all secrets pulled, from any provider, are encrypted and only decrypted to run
 the detection. You can see this in
 action [here](https://github.com/YorCreative/Laravel-Scrubber/blob/main/src/Services/ScrubberService.php#L45).
 
