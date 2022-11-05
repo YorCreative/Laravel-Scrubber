@@ -21,4 +21,9 @@ class DummyClass implements RegexCollectionInterface
          * @note return a string that can be used to verify the regex pattern provided.
          */
     }
+
+    public function isSecret(): bool
+    {
+        return false;
+    }
 }
