@@ -15,19 +15,21 @@ class WildCardChannel implements TapLoaderInterface
     public function canLoad(): bool
     {
         $channels = Config::get('scrubber.tap_channels');
-        if(!$channels) return false;
+        if (! $channels) {
+            return false;
+        }
 
         return in_array('*', Config::get('scrubber.tap_channels'));
     }
 
     /**
-     * @param Repository $config
+     * @param  Repository  $config
      */
     public function load(Repository &$config): void
     {
         $channels = $config->get('logging.channels');
 
-        foreach($channels as $key => $channel) {
+        foreach ($channels as $key => $channel) {
             $config->set("logging.channels.$key.tap", [
                 ScrubberTap::class,
             ]);

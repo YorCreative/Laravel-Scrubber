@@ -33,7 +33,7 @@ class ScrubberService
         }
 
         // set datetime back to  DateTimeInterface for papertrail specifically.
-        if(isset($scrubbedContent['datetime'])) {
+        if (isset($scrubbedContent['datetime'])) {
             $scrubbedContent['datetime'] = Carbon::parse($scrubbedContent['datetime']);
         }
 

@@ -21,7 +21,7 @@ class TapLoaderStrategyTest extends TestCase
 
         app(TapLoaderStrategy::class)->load($config);
 
-        foreach($config->get('logging.channels') as $channel) {
+        foreach ($config->get('logging.channels') as $channel) {
             $this->assertArrayHasKey('tap', $channel);
         }
     }
@@ -70,10 +70,9 @@ class TapLoaderStrategyTest extends TestCase
 
         Config::set('scrubber.tap_channels', null);
 
-
         app(TapLoaderStrategy::class)->load($config);
 
-        foreach($config->get('logging.channels') as $channel) {
+        foreach ($config->get('logging.channels') as $channel) {
             $this->assertArrayHasKey('tap', $channel);
         }
     }

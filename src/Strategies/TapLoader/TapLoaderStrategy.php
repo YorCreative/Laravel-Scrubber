@@ -26,7 +26,7 @@ class TapLoaderStrategy
     }
 
     /**
-     * @param Repository $config
+     * @param  Repository  $config
      */
     public function load(Repository &$config): void
     {
