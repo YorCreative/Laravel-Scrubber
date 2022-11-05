@@ -9,6 +9,9 @@ use YorCreative\Scrubber\Strategies\RegexLoader\LoaderInterface;
 
 class ExtendedRegex implements LoaderInterface
 {
+    /**
+     * @var string
+     */
     private string $path;
 
     public function __construct()
@@ -30,7 +33,7 @@ class ExtendedRegex implements LoaderInterface
     public function load(Collection &$regexCollection): void
     {
         foreach (File::files($this->path) as $regexClass) {
-            $regex = (new ('YorCreative\Scrubber\RegexCollection\\'.$regexClass)());
+            $regex = (new ('App\\Scrubber\\RegexCollection\\'.$regexClass->getFilenameWithoutExtension())());
 
             $regexCollection = $regexCollection->merge([
                 Str::snake($regexClass->getFilenameWithoutExtension()) => $regex,
