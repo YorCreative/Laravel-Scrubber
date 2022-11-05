@@ -2,6 +2,7 @@
 
 namespace YorCreative\Scrubber\Services;
 
+use Carbon\Carbon;
 use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
 use YorCreative\Scrubber\Repositories\RegexRepository;
 use YorCreative\Scrubber\SecretManager\Secret;
@@ -28,10 +29,15 @@ class ScrubberService
     public static function decodeRecord($scrubbedContent): mixed
     {
         if (! is_array($scrubbedContent)) {
-            return json_decode($scrubbedContent, true);
-        } else {
-            return $scrubbedContent;
+            $scrubbedContent = json_decode($scrubbedContent, true);
         }
+
+        // set datetime back to  DateTimeInterface for papertrail specifically.
+        if(isset($scrubbedContent['datetime'])) {
+            $scrubbedContent['datetime'] = Carbon::parse($scrubbedContent['datetime']);
+        }
+
+        return $scrubbedContent;
     }
 
     /**

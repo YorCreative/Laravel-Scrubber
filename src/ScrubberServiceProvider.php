@@ -6,13 +6,17 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use YorCreative\Scrubber\Clients\GitLabClient;
-use YorCreative\Scrubber\Handlers\ScrubberTap;
 use YorCreative\Scrubber\Repositories\RegexRepository;
 use YorCreative\Scrubber\Strategies\RegexLoader\Loaders\DefaultCore;
 use YorCreative\Scrubber\Strategies\RegexLoader\Loaders\ExtendedRegex;
 use YorCreative\Scrubber\Strategies\RegexLoader\Loaders\SecretLoader;
 use YorCreative\Scrubber\Strategies\RegexLoader\Loaders\SpecificCore;
 use YorCreative\Scrubber\Strategies\RegexLoader\RegexLoaderStrategy;
+use YorCreative\Scrubber\Strategies\TapLoader\Loaders\DefaultChannels;
+use YorCreative\Scrubber\Strategies\TapLoader\Loaders\MultipleChannel;
+use YorCreative\Scrubber\Strategies\TapLoader\Loaders\SpecificChannel;
+use YorCreative\Scrubber\Strategies\TapLoader\Loaders\WildCardChannel;
+use YorCreative\Scrubber\Strategies\TapLoader\TapLoaderStrategy;
 
 class ScrubberServiceProvider extends ServiceProvider
 {
@@ -30,10 +34,6 @@ class ScrubberServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        $this->app->make('config')->set('logging.channels.single.tap', [
-            ScrubberTap::class,
-        ]);
-
         if (Config::get('scrubber.secret_manager.enabled')
             && Config::get('scrubber.secret_manager.providers.gitlab.enabled')
         ) {
@@ -56,6 +56,16 @@ class ScrubberServiceProvider extends ServiceProvider
             $regexLoaderStrategy->setLoader(new SecretLoader());
 
             return $regexLoaderStrategy;
+        });
+
+        $this->app->singleton(TapLoaderStrategy::class, function () {
+            $tapLoaderStrategy = new TapLoaderStrategy();
+            $tapLoaderStrategy->setLoader(new WildCardChannel());
+            $tapLoaderStrategy->setLoader(new SpecificChannel());
+            $tapLoaderStrategy->setLoader(new MultipleChannel());
+            $tapLoaderStrategy->setLoader(new DefaultChannels());
+
+            return $tapLoaderStrategy;
         });
 
         $this->app->singleton(RegexRepository::class, function () {

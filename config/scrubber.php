@@ -17,4 +17,5 @@ return [
         ],
     ],
     'regex_loader' => ['*'],
+    'tap_channels' => ['*']
 ];

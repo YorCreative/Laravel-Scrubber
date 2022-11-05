@@ -1,6 +1,6 @@
 <?php
 
-namespace YorCreative\Scrubber\Test\Unit\Services;
+namespace YorCreative\Scrubber\Test\Unit\Strategies;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
