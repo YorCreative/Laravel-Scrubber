@@ -15,18 +15,20 @@ class MultipleChannel implements TapLoaderInterface
     public function canLoad(): bool
     {
         $channels = Config::get('scrubber.tap_channels');
-        if(!$channels) return false;
+        if (! $channels) {
+            return false;
+        }
 
-        return !in_array('*', Config::get('scrubber.tap_channels'))
+        return ! in_array('*', Config::get('scrubber.tap_channels'))
             && count(Config::get('scrubber.tap_channels')) > 1;
     }
 
     /**
-     * @param Repository $config
+     * @param  Repository  $config
      */
     public function load(Repository &$config): void
     {
-        foreach(Config::get('scrubber.tap_channels') as $channel) {
+        foreach (Config::get('scrubber.tap_channels') as $channel) {
             $config->set("logging.channels.$channel.tap", [
                 ScrubberTap::class,
             ]);

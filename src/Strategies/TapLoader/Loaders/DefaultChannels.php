@@ -10,19 +10,19 @@ class DefaultChannels extends WildCardChannel
     /**
      * @return bool
      */
-    public final function canLoad(): bool
+    final public function canLoad(): bool
     {
         return true;
     }
 
     /**
-     * @param Repository $config
+     * @param  Repository  $config
      */
     public function load(Repository &$config): void
     {
         $channels = $config->get('logging.channels');
 
-        foreach($channels as $key => $channel) {
+        foreach ($channels as $key => $channel) {
             $config->set("logging.channels.$key.tap", [
                 ScrubberTap::class,
             ]);
