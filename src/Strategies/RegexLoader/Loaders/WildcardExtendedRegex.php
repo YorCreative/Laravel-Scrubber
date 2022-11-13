@@ -3,11 +3,12 @@
 namespace YorCreative\Scrubber\Strategies\RegexLoader\Loaders;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use YorCreative\Scrubber\Strategies\RegexLoader\LoaderInterface;
 
-class ExtendedRegex implements LoaderInterface
+class WildcardExtendedRegex implements LoaderInterface
 {
     /**
      * @var string
@@ -24,7 +25,7 @@ class ExtendedRegex implements LoaderInterface
      */
     public function canLoad(): bool
     {
-        return File::exists($this->path);
+        return File::exists($this->path) && in_array('*', Config::get('scrubber.regex_loader'));
     }
 
     /**
