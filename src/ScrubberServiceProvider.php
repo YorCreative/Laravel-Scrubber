@@ -8,7 +8,6 @@ use Illuminate\Support\ServiceProvider;
 use YorCreative\Scrubber\Clients\GitLabClient;
 use YorCreative\Scrubber\Repositories\RegexRepository;
 use YorCreative\Scrubber\Strategies\RegexLoader\Loaders\DefaultCore;
-use YorCreative\Scrubber\Strategies\RegexLoader\Loaders\ExtendedRegex;
 use YorCreative\Scrubber\Strategies\RegexLoader\Loaders\SecretLoader;
 use YorCreative\Scrubber\Strategies\RegexLoader\Loaders\SpecificCore;
 use YorCreative\Scrubber\Strategies\RegexLoader\Loaders\SpecificExtendedRegex;

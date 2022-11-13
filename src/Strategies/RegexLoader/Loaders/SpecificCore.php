@@ -23,7 +23,7 @@ class SpecificCore implements LoaderInterface
     public function load(Collection &$regexCollection): void
     {
         foreach (Config::get('scrubber.regex_loader') as $regexClass) {
-            if(class_exists(('YorCreative\Scrubber\RegexCollection\\'.$regexClass))) {
+            if (class_exists(('YorCreative\Scrubber\RegexCollection\\'.$regexClass))) {
                 $regex = (new ('YorCreative\Scrubber\RegexCollection\\'.$regexClass)());
 
                 $regexCollection = $regexCollection->merge([
