@@ -103,6 +103,21 @@ Scrubber::processMessage([
 Scrubber::processMessage('<insert jwt token here>');
 // **redacted**
 ```
+## Log Channel Opt-in
+
+This package provides you the ability to define through the configuration file what channels you want to scrub
+specifically. By default, this package ships with a wildcard value and opts in to scrub all the log channels
+in your application. 
+
+### Defining Log Channel Opt-in
+To opt in to one or more channels, list the channel(s) name into the `tap_channels` array in the config.
+
+```php
+'tap_channels' => [
+    'single',
+    'papertrail'
+]
+```
 
 ## Log Channel Opt-in
 
