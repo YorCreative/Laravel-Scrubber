@@ -29,12 +29,12 @@ class WildcardExtendedRegex implements LoaderInterface
     }
 
     /**
-     * @param Collection $regexCollection
+     * @param  Collection  $regexCollection
      */
     public function load(Collection &$regexCollection): void
     {
         foreach (File::files($this->path) as $regexClass) {
-            $regex = (new ('App\\Scrubber\\RegexCollection\\' . $regexClass->getFilenameWithoutExtension())());
+            $regex = (new ('App\\Scrubber\\RegexCollection\\'.$regexClass->getFilenameWithoutExtension())());
 
             $regexCollection = $regexCollection->merge([
                 Str::snake($regexClass->getFilenameWithoutExtension()) => $regex,

@@ -25,17 +25,17 @@ class SpecificExtendedRegex implements LoaderInterface
      */
     public function canLoad(): bool
     {
-        return File::exists($this->path) && !in_array('*', Config::get('scrubber.regex_loader'));
+        return File::exists($this->path) && ! in_array('*', Config::get('scrubber.regex_loader'));
     }
 
     /**
-     * @param Collection $regexCollection
+     * @param  Collection  $regexCollection
      */
     public function load(Collection &$regexCollection): void
     {
         foreach (File::files($this->path) as $regexClass) {
             if (in_array($regexClass->getFilenameWithoutExtension(), Config::get('scrubber.regex_loader'))) {
-                $regex = (new ('App\\Scrubber\\RegexCollection\\' . $regexClass->getFilenameWithoutExtension())());
+                $regex = (new ('App\\Scrubber\\RegexCollection\\'.$regexClass->getFilenameWithoutExtension())());
 
                 $regexCollection = $regexCollection->merge([
                     Str::snake($regexClass->getFilenameWithoutExtension()) => $regex,
