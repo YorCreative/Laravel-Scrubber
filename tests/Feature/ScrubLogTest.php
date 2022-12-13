@@ -101,4 +101,51 @@ class ScrubLogTest extends TestCase
 
         $this->assertEquals($this->expectedRecord, $sanitizedRecord);
     }
+
+    /**
+     * @test
+     * @group Feature
+     */
+    public function it_can_binary_detect_multiple_sensitive_information_and_scrub_the_log()
+    {
+        $binary = hex2bin('eb13cd61f3e640d1b913eefbb93bd838');
+
+        $this->expectedRecord = array_merge($this->expectedRecord['context'], [
+            'some' => 'context',
+            'nested' => [
+                'randomly' => 'nested',
+                'another' => [
+                    'nested' => [
+                        'message' => config('scrubber.redaction') . $binary,
+                        'array' => [
+                            'slack_token' => config('scrubber.redaction'),
+                        ],
+                    ],
+                ],
+                'mailgun_api_key' => config('scrubber.redaction'),
+            ],
+        ]);
+
+        $this->record = array_merge($this->record['context'], [
+            'some' => 'context',
+            'nested' => [
+                'randomly' => 'nested',
+                'another' => [
+                    'nested' => [
+                        'message' => 'xoxA-BCDE' . $binary,
+                        'array' => [
+                            'slack_token' => app(RegexRepository::class)->getRegexCollection()->get('slack_token')
+                                ->getTestableString(),
+                        ],
+                    ],
+                ],
+                'mailgun_api_key' => app(RegexRepository::class)->getRegexCollection()->get('mailgun_api_key')
+                    ->getTestableString(),
+            ],
+        ]);
+
+        $sanitizedRecord = Scrubber::processMessage($this->record);
+
+        $this->assertEquals($this->expectedRecord, $sanitizedRecord);
+    }
 }

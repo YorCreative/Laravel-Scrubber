@@ -37,8 +37,9 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit",
-        "lint": "vendor/bin/pint"
+		"coverage": "vendor/bin/phpunit --coverage-html=coverage",
+        "lint": "vendor/bin/pint",
+        "test": "vendor/bin/phpunit"
     },
     "extra": {
         "laravel": {
