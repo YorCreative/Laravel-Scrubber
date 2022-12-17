@@ -49,6 +49,7 @@ class Scrubber
                 }
             }
         }
+
         return $content;
     }
 

@@ -116,7 +116,7 @@ class ScrubLogTest extends TestCase
                 'randomly' => 'nested',
                 'another' => [
                     'nested' => [
-                        'message' => config('scrubber.redaction') . $binary,
+                        'message' => config('scrubber.redaction').$binary,
                         'array' => [
                             'slack_token' => config('scrubber.redaction'),
                         ],
@@ -132,7 +132,7 @@ class ScrubLogTest extends TestCase
                 'randomly' => 'nested',
                 'another' => [
                     'nested' => [
-                        'message' => 'xoxA-BCDE' . $binary,
+                        'message' => 'xoxA-BCDE'.$binary,
                         'array' => [
                             'slack_token' => app(RegexRepository::class)->getRegexCollection()->get('slack_token')
                                 ->getTestableString(),
