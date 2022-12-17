@@ -37,7 +37,7 @@
         }
     },
     "scripts": {
-		"coverage": "vendor/bin/phpunit --coverage-html=coverage",
+        "coverage": "vendor/bin/phpunit --coverage-html=coverage",
         "lint": "vendor/bin/pint",
         "test": "vendor/bin/phpunit"
     },
