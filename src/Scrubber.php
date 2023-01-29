@@ -43,9 +43,11 @@ class Scrubber
         foreach ($content as $key => $value) {
             if (null !== $value) {
                 if (is_array($value)) {
-                    $content[$key] = self::processArrayRecursively($value);
+                    $content[$key] = self::processArray($value);
+                } elseif (is_object($value) && !method_exists($value, '__toString')) {
+                    $content[$key] = self::processArray((array)$value);
                 } else {
-                    $content[$key] = self::processString($value);
+                    $content[$key] = self::processString((string)$value);
                 }
             }
         }

@@ -148,4 +148,48 @@ class ScrubLogTest extends TestCase
 
         $this->assertEquals($this->expectedRecord, $sanitizedRecord);
     }
+
+    /**
+     * @test
+     * @group Feature
+     */
+    public function it_can_handle_binary_objects()
+    {
+        $object         = new \stdClass;
+        $object->a      = 1;
+        $object->binary = hex2bin('eb13cd61f3e640d1b913eefbb93bd838');
+
+        $this->expectedRecord = array_merge($this->expectedRecord['context'], [
+            (array)$object,
+        ]);
+
+        $this->record = array_merge($this->record['context'], [
+            $object,
+        ]);
+
+        $sanitizedRecord = Scrubber::processMessage($this->record);
+
+        $this->assertEquals($this->expectedRecord, $sanitizedRecord);
+    }
+
+    /**
+     * @test
+     * @group Feature
+     */
+    public function it_can_handle_resources()
+    {
+        $resource = fopen('/dev/null', 'r');
+
+        $this->expectedRecord = array_merge($this->expectedRecord['context'], [
+            (string)$resource,
+        ]);
+
+        $this->record = array_merge($this->record['context'], [
+            $resource,
+        ]);
+
+        $sanitizedRecord = Scrubber::processMessage($this->record);
+
+        $this->assertEquals($this->expectedRecord, $sanitizedRecord);
+    }
 }
