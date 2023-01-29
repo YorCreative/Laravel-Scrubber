@@ -12,6 +12,7 @@ class RegexLoaderStrategyTest extends TestCase
 {
     /**
      * @test
+     *
      * @group Strategy
      * @group Unit
      */
@@ -25,6 +26,7 @@ class RegexLoaderStrategyTest extends TestCase
 
     /**
      * @test
+     *
      * @group Strategy
      * @group Unit
      */

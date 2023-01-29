@@ -28,6 +28,7 @@ class ScrubLogTest extends TestCase
 
     /**
      * @test
+     *
      * @group Feature
      */
     public function it_can_detect_a_single_piece_of_sensitive_information_and_scrub_the_log()
@@ -61,6 +62,7 @@ class ScrubLogTest extends TestCase
 
     /**
      * @test
+     *
      * @group Feature
      */
     public function it_can_detect_multiple_sensitive_information_and_scrub_the_log()
@@ -104,6 +106,7 @@ class ScrubLogTest extends TestCase
 
     /**
      * @test
+     *
      * @group Feature
      */
     public function it_can_binary_detect_multiple_sensitive_information_and_scrub_the_log()
@@ -151,16 +154,17 @@ class ScrubLogTest extends TestCase
 
     /**
      * @test
+     *
      * @group Feature
      */
     public function it_can_handle_binary_objects()
     {
-        $object         = new \stdClass;
-        $object->a      = 1;
+        $object = new \stdClass;
+        $object->a = 1;
         $object->binary = hex2bin('eb13cd61f3e640d1b913eefbb93bd838');
 
         $this->expectedRecord = array_merge($this->expectedRecord['context'], [
-            (array)$object,
+            (array) $object,
         ]);
 
         $this->record = array_merge($this->record['context'], [
@@ -174,6 +178,7 @@ class ScrubLogTest extends TestCase
 
     /**
      * @test
+     *
      * @group Feature
      */
     public function it_can_handle_resources()
@@ -181,7 +186,7 @@ class ScrubLogTest extends TestCase
         $resource = fopen('/dev/null', 'r');
 
         $this->expectedRecord = array_merge($this->expectedRecord['context'], [
-            (string)$resource,
+            (string) $resource,
         ]);
 
         $this->record = array_merge($this->record['context'], [

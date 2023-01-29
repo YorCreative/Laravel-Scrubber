@@ -15,6 +15,7 @@ class ScrubMessageTest extends TestCase
 
     /**
      * @test
+     *
      * @group Feature
      */
     public function it_can_detect_a_single_piece_of_sensitive_data_and_sanitize_it()
@@ -36,6 +37,7 @@ class ScrubMessageTest extends TestCase
 
     /**
      * @test
+     *
      * @group Feature
      */
     public function it_can_detect_a_multiple_pieces_of_sensitive_data_and_sanitize_them()

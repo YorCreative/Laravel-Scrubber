@@ -11,6 +11,7 @@ class ScrubberServiceTest extends TestCase
 {
     /**
      * @test
+     *
      * @group ScrubberService
      * @group Unit
      */
@@ -21,6 +22,7 @@ class ScrubberServiceTest extends TestCase
 
     /**
      * @test
+     *
      * @group ScrubberService
      * @group Unit
      */
@@ -31,6 +33,7 @@ class ScrubberServiceTest extends TestCase
 
     /**
      * @test
+     *
      * @group ScrubberService
      * @group Unit
      */

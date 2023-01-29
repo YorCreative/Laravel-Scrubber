@@ -10,6 +10,7 @@ class TapLoaderStrategyTest extends TestCase
 {
     /**
      * @test
+     *
      * @group Strategy
      * @group Unit
      */
@@ -28,6 +29,7 @@ class TapLoaderStrategyTest extends TestCase
 
     /**
      * @test
+     *
      * @group Strategy
      * @group Unit
      */
@@ -44,6 +46,7 @@ class TapLoaderStrategyTest extends TestCase
 
     /**
      * @test
+     *
      * @group Strategy
      * @group Unit
      */
@@ -61,6 +64,7 @@ class TapLoaderStrategyTest extends TestCase
 
     /**
      * @test
+     *
      * @group Strategy
      * @group Unit
      */

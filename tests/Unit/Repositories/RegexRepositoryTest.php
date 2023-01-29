@@ -10,6 +10,7 @@ class RegexRepositoryTest extends TestCase
 {
     /**
      * @test
+     *
      * @group RegexRepository
      * @group Unit
      */
@@ -29,6 +30,7 @@ class RegexRepositoryTest extends TestCase
 
     /**
      * @test
+     *
      * @group RegexRepository
      * @group Unit
      */
@@ -54,6 +56,7 @@ class RegexRepositoryTest extends TestCase
 
     /**
      * @test
+     *
      * @group RegexRepository
      * @group Unit
      */

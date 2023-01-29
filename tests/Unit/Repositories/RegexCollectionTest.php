@@ -12,6 +12,7 @@ class RegexCollectionTest extends TestCase
 {
     /**
      * @test
+     *
      * @group RegexRepository
      * @group Unit
      */

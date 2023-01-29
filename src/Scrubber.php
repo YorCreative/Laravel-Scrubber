@@ -44,10 +44,10 @@ class Scrubber
             if (null !== $value) {
                 if (is_array($value)) {
                     $content[$key] = self::processArray($value);
-                } elseif (is_object($value) && !method_exists($value, '__toString')) {
-                    $content[$key] = self::processArray((array)$value);
+                } elseif (is_object($value) && ! method_exists($value, '__toString')) {
+                    $content[$key] = self::processArray((array) $value);
                 } else {
-                    $content[$key] = self::processString((string)$value);
+                    $content[$key] = self::processString((string) $value);
                 }
             }
         }
