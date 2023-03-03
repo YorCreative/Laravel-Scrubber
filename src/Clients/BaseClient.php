@@ -15,7 +15,6 @@ abstract class BaseClient
     }
 
     /**
-     * @param  string  $path
      * @return mixed
      *
      * @throws GuzzleException

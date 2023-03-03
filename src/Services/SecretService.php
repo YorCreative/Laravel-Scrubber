@@ -9,24 +9,15 @@ use YorCreative\Scrubber\SecretManager\SecretManager;
 
 class SecretService
 {
-    /**
-     * @var array
-     */
     public static array $providers = [
         'gitlab' => Gitlab::class,
     ];
 
-    /**
-     * @return bool
-     */
     public static function isEnabled(): bool
     {
         return Config::get('scrubber.secret_manager.enabled') ?? false;
     }
 
-    /**
-     * @return Collection
-     */
     public static function getEnabledProviders(): Collection
     {
         $enabledProviders = new Collection();
@@ -39,10 +30,6 @@ class SecretService
         return $enabledProviders;
     }
 
-    /**
-     * @param  Collection  $providers
-     * @return Collection
-     */
     public static function loadSecrets(Collection $providers): Collection
     {
         $secrets = new Collection();

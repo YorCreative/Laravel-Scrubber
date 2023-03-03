@@ -10,9 +10,6 @@ use YorCreative\Scrubber\Strategies\RegexLoader\LoaderInterface;
 
 class SpecificExtendedRegex implements LoaderInterface
 {
-    /**
-     * @var string
-     */
     private string $path;
 
     public function __construct()
@@ -20,21 +17,21 @@ class SpecificExtendedRegex implements LoaderInterface
         $this->path = base_path('App/Scrubber/RegexCollection');
     }
 
-    /**
-     * @return bool
-     */
     public function canLoad(): bool
     {
-        return File::exists($this->path) && ! in_array('*', Config::get('scrubber.regex_loader'));
+        return File::exists($this->path)
+            && ! in_array('*', Config::get('scrubber.regex_loader'));
     }
 
-    /**
-     * @param  Collection  $regexCollection
-     */
     public function load(Collection &$regexCollection): void
     {
         foreach (File::files($this->path) as $regexClass) {
-            if (in_array($regexClass->getFilenameWithoutExtension(), Config::get('scrubber.regex_loader'))) {
+            $regexClassPath = 'App\\Scrubber\\RegexCollection\\'.$regexClass->getFilenameWithoutExtension();
+            $regexClassName = $regexClass->getFilenameWithoutExtension();
+            $configRegexLoader = Config::get('scrubber.regex_loader');
+
+            if (in_array($regexClassPath, $configRegexLoader)
+                || in_array($regexClassName, $configRegexLoader)) {
                 $regex = (new ('App\\Scrubber\\RegexCollection\\'.$regexClass->getFilenameWithoutExtension())());
 
                 $regexCollection = $regexCollection->merge([

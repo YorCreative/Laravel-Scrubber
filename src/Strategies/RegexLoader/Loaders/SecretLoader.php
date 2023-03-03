@@ -10,17 +10,11 @@ use YorCreative\Scrubber\Strategies\RegexLoader\LoaderInterface;
 
 class SecretLoader implements LoaderInterface
 {
-    /**
-     * @return bool
-     */
     public function canLoad(): bool
     {
         return SecretService::isEnabled();
     }
 
-    /**
-     * @param  Collection  $regexCollection
-     */
     public function load(Collection &$regexCollection): void
     {
         $providers = SecretService::getEnabledProviders();
@@ -32,10 +26,6 @@ class SecretLoader implements LoaderInterface
         });
     }
 
-    /**
-     * @param  Secret  $secret
-     * @return RegexCollectionInterface
-     */
     protected static function generateRegexClassForSecret(Secret $secret): RegexCollectionInterface
     {
         $class = new class implements RegexCollectionInterface

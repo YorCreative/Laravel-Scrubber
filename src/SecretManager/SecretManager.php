@@ -7,10 +7,6 @@ use Illuminate\Support\Facades\Config;
 
 class SecretManager
 {
-    /**
-     * @param $provider
-     * @return Collection
-     */
     public static function getSecrets($provider): Collection
     {
         // check if configuration wants all secrets or specific secrets
