@@ -8,5 +8,5 @@ interface TapLoaderInterface
 {
     public function canLoad(): bool;
 
-    public function load(Repository &$config): void;
+    public function load(Repository $config): void;
 }

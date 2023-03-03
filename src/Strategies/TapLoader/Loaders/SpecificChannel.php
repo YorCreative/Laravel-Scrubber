@@ -9,9 +9,6 @@ use YorCreative\Scrubber\Strategies\TapLoader\TapLoaderInterface;
 
 class SpecificChannel implements TapLoaderInterface
 {
-    /**
-     * @return bool
-     */
     public function canLoad(): bool
     {
         $channels = Config::get('scrubber.tap_channels');
@@ -23,10 +20,7 @@ class SpecificChannel implements TapLoaderInterface
             && count(Config::get('scrubber.tap_channels')) < 2;
     }
 
-    /**
-     * @param  Repository  $config
-     */
-    public function load(Repository &$config): void
+    public function load(Repository $config): void
     {
         $key = Config::get('scrubber.tap_channels')[0];
 

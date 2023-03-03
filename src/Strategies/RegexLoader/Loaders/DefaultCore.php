@@ -10,17 +10,11 @@ use YorCreative\Scrubber\Strategies\RegexLoader\LoaderInterface;
 
 class DefaultCore implements LoaderInterface
 {
-    /**
-     * @return bool
-     */
     public function canLoad(): bool
     {
         return in_array('*', Config::get('scrubber.regex_loader'));
     }
 
-    /**
-     * @param  Collection  $collection
-     */
     public function load(Collection &$regexCollection): void
     {
         foreach (File::files(dirname(__DIR__, 3).'/RegexCollection') as $regexClass) {

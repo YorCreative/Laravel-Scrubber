@@ -24,6 +24,7 @@ class ScrubberServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(dirname(__DIR__, 1).'/config/scrubber.php', 'scrubber');
+
         $this->commands(
             'YorCreative\\Scrubber\\Commands\\MakeRegexClass'
         );
@@ -70,10 +71,10 @@ class ScrubberServiceProvider extends ServiceProvider
             return $tapLoaderStrategy;
         });
 
-        $this->app->singleton(RegexRepository::class, function () {
-            $regexRepository = new RegexRepository();
+        $this->app->make(TapLoaderStrategy::class)->load($this->app->make('config'));
 
-            return $regexRepository;
+        $this->app->singleton(RegexRepository::class, function ($app) {
+            return new RegexRepository($app->make(RegexLoaderStrategy::class)->load());
         });
     }
 }

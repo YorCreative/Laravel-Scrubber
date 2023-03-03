@@ -9,9 +9,6 @@ use YorCreative\Scrubber\Strategies\TapLoader\TapLoaderInterface;
 
 class MultipleChannel implements TapLoaderInterface
 {
-    /**
-     * @return bool
-     */
     public function canLoad(): bool
     {
         $channels = Config::get('scrubber.tap_channels');
@@ -23,10 +20,7 @@ class MultipleChannel implements TapLoaderInterface
             && count(Config::get('scrubber.tap_channels')) > 1;
     }
 
-    /**
-     * @param  Repository  $config
-     */
-    public function load(Repository &$config): void
+    public function load(Repository $config): void
     {
         foreach (Config::get('scrubber.tap_channels') as $channel) {
             $config->set("logging.channels.$channel.tap", [

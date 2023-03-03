@@ -17,9 +17,6 @@ class Secret
         $this->variable = self::getEncrypter()->encryptString($variable);
     }
 
-    /**
-     * @return Encrypter
-     */
     private static function getEncrypter(): Encrypter
     {
         return new Encrypter(
@@ -28,26 +25,16 @@ class Secret
         );
     }
 
-    /**
-     * @param  string  $encryptedSecret
-     * @return string
-     */
     public static function decrypt(string $encryptedSecret): string
     {
         return self::getEncrypter()->decryptString($encryptedSecret);
     }
 
-    /**
-     * @return string
-     */
     public function getVariable(): string
     {
         return $this->variable;
     }
 
-    /**
-     * @return string
-     */
     public function getKey(): string
     {
         return $this->key;

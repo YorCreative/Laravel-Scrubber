@@ -7,18 +7,12 @@ use YorCreative\Scrubber\Handlers\ScrubberTap;
 
 class DefaultChannels extends WildCardChannel
 {
-    /**
-     * @return bool
-     */
     final public function canLoad(): bool
     {
         return true;
     }
 
-    /**
-     * @param  Repository  $config
-     */
-    public function load(Repository &$config): void
+    public function load(Repository $config): void
     {
         $channels = $config->get('logging.channels');
 

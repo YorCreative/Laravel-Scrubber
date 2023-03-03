@@ -9,9 +9,6 @@ use YorCreative\Scrubber\Strategies\TapLoader\TapLoaderInterface;
 
 class WildCardChannel implements TapLoaderInterface
 {
-    /**
-     * @return bool
-     */
     public function canLoad(): bool
     {
         $channels = Config::get('scrubber.tap_channels');
@@ -22,10 +19,7 @@ class WildCardChannel implements TapLoaderInterface
         return in_array('*', Config::get('scrubber.tap_channels'));
     }
 
-    /**
-     * @param  Repository  $config
-     */
-    public function load(Repository &$config): void
+    public function load(Repository $config): void
     {
         $channels = $config->get('logging.channels');
 

@@ -19,9 +19,6 @@ class Gitlab implements SecretProviderInterface
     public static string $VARIABLE = '/api/v4/projects/{id}/variables/{key}';
 
     /**
-     * @param  string  $key
-     * @return Secret
-     *
      * @throws GuzzleException
      */
     public static function getSpecificSecret(string $key): Secret
@@ -42,9 +39,6 @@ class Gitlab implements SecretProviderInterface
     }
 
     /**
-     * @param  string  $path
-     * @return array
-     *
      * @throws SecretProviderException
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -59,8 +53,6 @@ class Gitlab implements SecretProviderInterface
     }
 
     /**
-     * @return Collection
-     *
      * @throws GuzzleException
      */
     public static function getAllSecrets(): Collection
