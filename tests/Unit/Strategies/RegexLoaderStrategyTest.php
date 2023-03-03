@@ -3,9 +3,9 @@
 namespace YorCreative\Scrubber\Test\Unit\Strategies;
 
 use Illuminate\Support\Facades\Config;
-use YorCreative\Scrubber\Tests\TestCase;
 use YorCreative\Scrubber\Repositories\RegexCollection;
 use YorCreative\Scrubber\Strategies\RegexLoader\RegexLoaderStrategy;
+use YorCreative\Scrubber\Tests\TestCase;
 
 class RegexLoaderStrategyTest extends TestCase
 {
