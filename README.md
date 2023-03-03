@@ -251,5 +251,6 @@ composer test
 ## Credits
 
 - [Yorda](https://github.com/yordadev)
+- [Whizboy-Arnold](https://github.com/Whizboy-Arnold)
 - [All Contributors](../../contributors)
 
