@@ -73,7 +73,7 @@ class ScrubberServiceProvider extends ServiceProvider
 
         $this->app->make(TapLoaderStrategy::class)->load($this->app->make('config'));
 
-        $this->app->singleton(RegexRepository::class, function ($app) {
+        $this->app->scoped(RegexRepository::class, function ($app) {
             return new RegexRepository($app->make(RegexLoaderStrategy::class)->load());
         });
     }
