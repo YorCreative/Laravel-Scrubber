@@ -14,7 +14,7 @@ class SpecificExtendedRegex implements LoaderInterface
 
     public function __construct()
     {
-        $this->path = base_path('App/Scrubber/RegexCollection');
+        $this->path = base_path('app/Scrubber/RegexCollection');
     }
 
     public function canLoad(): bool
