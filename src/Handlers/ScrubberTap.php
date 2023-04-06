@@ -9,9 +9,11 @@ class ScrubberTap
     public function __invoke($logger)
     {
         foreach ($logger->getHandlers() as $handler) {
-            $handler->pushProcessor(function ($record) {
-                return Scrubber::processMessage($record);
-            });
+            if (! ($handler instanceof \Monolog\Handler\NullHandler)) {
+                $handler->pushProcessor(function ($record) {
+                    return Scrubber::processMessage($record);
+                });
+            }
         }
     }
 }
