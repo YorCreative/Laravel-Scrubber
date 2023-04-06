@@ -4,7 +4,7 @@ namespace YorCreative\Scrubber\RegexCollection;
 
 use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
 
-class Email implements RegexCollectionInterfaces
+class EmailAddress implements RegexCollectionInterfaces
 {
     public function getPattern(): string
     {
