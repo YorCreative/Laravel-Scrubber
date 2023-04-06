@@ -53,4 +53,6 @@ class RegexCollection
     public static string $TWILIO_ACCOUNT_SID = 'TwilioAccountSid';
 
     public static string $TWILIO_APP_SID = 'TwilioAppSid';
+
+    public static string $EMAIL = 'Email';
 }
