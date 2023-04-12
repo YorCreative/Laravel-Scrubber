@@ -17,7 +17,7 @@ class RegexLoaderStrategyTest extends TestCase
      */
     public function it_can_load_default_core()
     {
-        $this->assertCount(25, app(RegexLoaderStrategy::class)->load());
+        $this->assertCount(26, app(RegexLoaderStrategy::class)->load());
     }
 
     /**
