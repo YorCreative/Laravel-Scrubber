@@ -3,6 +3,7 @@
 namespace YorCreative\Scrubber\Services;
 
 use Carbon\Carbon;
+use Monolog\LogRecord;
 use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
 use YorCreative\Scrubber\Repositories\RegexRepository;
 use YorCreative\Scrubber\SecretManager\Secret;
@@ -20,13 +21,19 @@ class ScrubberService
 
     public static function decodeRecord($scrubbedContent): mixed
     {
-        if (! is_array($scrubbedContent)) {
+        if (!is_array($scrubbedContent)) {
             $scrubbedContent = json_decode($scrubbedContent, true);
         }
 
         // set datetime back to  DateTimeInterface for papertrail specifically.
         if (isset($scrubbedContent['datetime'])) {
-            $scrubbedContent['datetime'] = Carbon::parse($scrubbedContent['datetime']);
+            $datetime = match (true) {
+                is_array($scrubbedContent['datetime']) => $scrubbedContent['datetime']['date'],
+                $scrubbedContent instanceof LogRecord => Carbon::instance($scrubbedContent['datetime']),
+                default => Carbon::parse($scrubbedContent['datetime'])
+            };
+
+            $scrubbedContent['datetime'] = $datetime;
         }
 
         return $scrubbedContent;
