@@ -1,4 +1,4 @@
-FROM php:8-fpm
+FROM php:8.1-fpm
 
 RUN apt-get update \
     && apt-get -y install libzip-dev zlib1g-dev git zip unzip libicu-dev g++ libbz2-dev libmemcached-dev \
