@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use YorCreative\Scrubber\Clients\GitLabClient;
 use YorCreative\Scrubber\Repositories\RegexRepository;
+use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\ContentProcessingStrategy;
+use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\Handlers\ArrayContentHandler;
+use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\Handlers\LogRecordContentHandler;
+use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\Handlers\StringContentHandler;
 use YorCreative\Scrubber\Strategies\RegexLoader\Loaders\DefaultCore;
 use YorCreative\Scrubber\Strategies\RegexLoader\Loaders\SecretLoader;
 use YorCreative\Scrubber\Strategies\RegexLoader\Loaders\SpecificCore;
@@ -50,6 +54,7 @@ class ScrubberServiceProvider extends ServiceProvider
                 ]));
             });
         }
+
         $this->app->singleton(RegexLoaderStrategy::class, function () {
             $regexLoaderStrategy = new RegexLoaderStrategy();
             $regexLoaderStrategy->setLoader(new DefaultCore());
@@ -75,6 +80,16 @@ class ScrubberServiceProvider extends ServiceProvider
 
         $this->app->scoped(RegexRepository::class, function ($app) {
             return new RegexRepository($app->make(RegexLoaderStrategy::class)->load());
+        });
+
+        $this->app->singleton(ContentProcessingStrategy::class, function(){
+            $contentProcessingStrategy = new ContentProcessingStrategy();
+
+            $contentProcessingStrategy->setHandler(new StringContentHandler());
+            $contentProcessingStrategy->setHandler(new ArrayContentHandler());
+            $contentProcessingStrategy->setHandler(new LogRecordContentHandler());
+
+            return $contentProcessingStrategy;
         });
     }
 }

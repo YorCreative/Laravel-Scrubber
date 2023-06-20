@@ -2,10 +2,13 @@
 
 namespace YorCreative\Scrubber\Tests;
 
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Str;
+use Monolog\Logger;
+use Monolog\LogRecord;
 use YorCreative\Scrubber\Clients\GitLabClient;
 use YorCreative\Scrubber\ScrubberServiceProvider;
 
@@ -58,4 +61,14 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
         return file_get_contents(__DIR__.'/Mocks/'.$filename);
     }
+
+    protected function getTestLogRecord(\DateTimeImmutable $datetime, string $message, array $context): LogRecord
+    {
+        $channel = 'test_channel';
+        $level = 200;
+        $extra = [];
+
+        return new LogRecord($datetime, $channel, Logger::toMonologLevel($level), $message, $context, $extra);
+    }
+
 }
