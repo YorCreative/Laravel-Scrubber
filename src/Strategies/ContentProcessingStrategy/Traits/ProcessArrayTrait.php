@@ -19,7 +19,7 @@ trait ProcessArrayTrait
 
                     ScrubberService::autoSanitize($value);
 
-                    $content[$key] =  $value;
+                    $content[$key] = $value;
                 }
             }
         }

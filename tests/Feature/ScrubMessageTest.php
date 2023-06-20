@@ -81,21 +81,21 @@ class ScrubMessageTest extends TestCase
             'one' => $rawMessage,
             'two' => $rawMessage,
             'three' => [
-                'four' => $rawMessage
-            ]
+                'four' => $rawMessage,
+            ],
         ];
 
         $expectedContext = [
             'one' => $expectedMessage,
             'two' => $expectedMessage,
             'three' => [
-                'four' => $expectedMessage
-            ]
+                'four' => $expectedMessage,
+            ],
         ];
 
         $dateTimeImmutable = Carbon::now()->toDateTimeImmutable();
 
-        $logRecord         = $this->getTestLogRecord($dateTimeImmutable, $rawMessage, $rawContext);
+        $logRecord = $this->getTestLogRecord($dateTimeImmutable, $rawMessage, $rawContext);
         $expectedLogRecord = $this->getTestLogRecord($dateTimeImmutable, $expectedMessage, $expectedContext);
 
         $sanitizedMessage = Scrubber::processMessage($logRecord);

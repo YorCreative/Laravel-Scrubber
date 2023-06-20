@@ -2,9 +2,9 @@
 
 namespace YorCreative\Scrubber\Test\Unit\Strategies;
 
+use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\ContentProcessingStrategy;
 use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\Handlers\StringContentHandler;
 use YorCreative\Scrubber\Tests\TestCase;
-use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\ContentProcessingStrategy;
 
 class ContentProcessingStrategyTest extends TestCase
 {
@@ -29,7 +29,7 @@ class ContentProcessingStrategyTest extends TestCase
         $reflectedStrategy->setAccessible(true);
 
         $index = $reflectedStrategy->invokeArgs($this->strategy, [
-            'string content'
+            'string content',
         ]);
 
         $this->assertEquals(0, $index);

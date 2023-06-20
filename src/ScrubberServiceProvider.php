@@ -82,7 +82,7 @@ class ScrubberServiceProvider extends ServiceProvider
             return new RegexRepository($app->make(RegexLoaderStrategy::class)->load());
         });
 
-        $this->app->singleton(ContentProcessingStrategy::class, function(){
+        $this->app->singleton(ContentProcessingStrategy::class, function () {
             $contentProcessingStrategy = new ContentProcessingStrategy();
 
             $contentProcessingStrategy->setHandler(new StringContentHandler());

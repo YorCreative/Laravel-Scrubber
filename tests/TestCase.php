@@ -2,7 +2,6 @@
 
 namespace YorCreative\Scrubber\Tests;
 
-use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Response;
@@ -70,5 +69,4 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
         return new LogRecord($datetime, $channel, Logger::toMonologLevel($level), $message, $context, $extra);
     }
-
 }
