@@ -25,7 +25,7 @@
         "ext-pdo_sqlite": "*",
         "laravel/pint": "^1.0",
         "orchestra/testbench": "^7.0|^8.4",
-        "phpunit/phpunit": "^9"
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {
