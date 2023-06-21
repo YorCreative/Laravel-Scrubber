@@ -6,8 +6,10 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Str;
+use Monolog\LogRecord;
 use YorCreative\Scrubber\Clients\GitLabClient;
 use YorCreative\Scrubber\ScrubberServiceProvider;
+use YorCreative\Scrubber\Support\LogRecordFactory;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -57,5 +59,14 @@ class TestCase extends \Orchestra\Testbench\TestCase
         }
 
         return file_get_contents(__DIR__.'/Mocks/'.$filename);
+    }
+
+    protected function getTestLogRecord(\DateTimeImmutable $datetime, string $message, array $context): LogRecord
+    {
+        $channel = 'test_channel';
+        $level = 200;
+        $extra = [];
+
+        return LogRecordFactory::buildRecord($datetime, $channel, $level, $message, $context, $extra);
     }
 }

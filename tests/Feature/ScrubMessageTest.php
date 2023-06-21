@@ -2,6 +2,7 @@
 
 namespace YorCreative\Scrubber\Tests\Feature;
 
+use Carbon\Carbon;
 use YorCreative\Scrubber\Repositories\RegexRepository;
 use YorCreative\Scrubber\Scrubber;
 use YorCreative\Scrubber\Tests\TestCase;
@@ -62,5 +63,43 @@ class ScrubMessageTest extends TestCase
         $sanitizedMessage = Scrubber::processMessage($message);
 
         $this->assertEquals($expected, $sanitizedMessage);
+    }
+
+    public function test_it_can_process_log_record()
+    {
+        $message = 'Something something, here is the slack token {slack_token}';
+
+        $expectedMessage = str_replace('{slack_token}', config('scrubber.redaction'), $message);
+
+        $rawMessage = str_replace(
+            '{slack_token}',
+            app(RegexRepository::class)->getRegexCollection()->get('slack_token')->getTestableString(),
+            $message
+        );
+
+        $rawContext = [
+            'one' => $rawMessage,
+            'two' => $rawMessage,
+            'three' => [
+                'four' => $rawMessage,
+            ],
+        ];
+
+        $expectedContext = [
+            'one' => $expectedMessage,
+            'two' => $expectedMessage,
+            'three' => [
+                'four' => $expectedMessage,
+            ],
+        ];
+
+        $dateTimeImmutable = Carbon::now()->toDateTimeImmutable();
+
+        $logRecord = $this->getTestLogRecord($dateTimeImmutable, $rawMessage, $rawContext);
+        $expectedLogRecord = $this->getTestLogRecord($dateTimeImmutable, $expectedMessage, $expectedContext);
+
+        $sanitizedMessage = Scrubber::processMessage($logRecord);
+
+        $this->assertEquals($expectedLogRecord, $sanitizedMessage);
     }
 }

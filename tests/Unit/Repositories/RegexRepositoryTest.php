@@ -64,4 +64,24 @@ class RegexRepositoryTest extends TestCase
     {
         $this->assertInstanceOf(Collection::class, app(RegexRepository::class)->getRegexCollection());
     }
+
+    /**
+     * @test
+     *
+     * @group RegexRepository
+     * @group Unit
+     */
+    public function it_can_check_hits()
+    {
+        $content = app(RegexRepository::class)->getRegexCollection()->get('google_api')->getTestableString()
+            .' something something something '
+            .app(RegexRepository::class)->getRegexCollection()->get('google_api')->getTestableString();
+
+        $hits = app(RegexRepository::class)->check(
+            app(RegexRepository::class)->getRegexCollection()->get('google_api')->getPattern(),
+            $content
+        );
+
+        $this->assertEquals(2, $hits);
+    }
 }
