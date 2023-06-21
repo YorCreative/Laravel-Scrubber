@@ -2,7 +2,6 @@
 
 namespace YorCreative\Scrubber\Strategies\ContentProcessingStrategy\Handlers;
 
-use Monolog\Logger;
 use Monolog\LogRecord;
 use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\ContentProcessingStrategy;
 use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\ProcessHandlerContract;

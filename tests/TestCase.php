@@ -6,7 +6,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Str;
-use Monolog\Logger;
 use Monolog\LogRecord;
 use YorCreative\Scrubber\Clients\GitLabClient;
 use YorCreative\Scrubber\ScrubberServiceProvider;

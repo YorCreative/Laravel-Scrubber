@@ -12,12 +12,6 @@ use RuntimeException;
 class LogRecordFactory
 {
     /**
-     * @param DateTimeImmutable $datetime
-     * @param string $channel
-     * @param int $level
-     * @param string $message
-     * @param array $context
-     * @param array $extra
      * @return LogRecord
      */
     public static function buildRecord(DateTimeImmutable $datetime, string $channel, int $level, string $message, array $context, array $extra)
@@ -31,18 +25,10 @@ class LogRecordFactory
         }
     }
 
-    /**
-     * @param DateTimeImmutable $datetime
-     * @param string $channel
-     * @param int $level
-     * @param string $message
-     * @param array $context
-     * @param array $extra
-     * @return LogRecord
-     */
     private static function buildFromAnonymousLogRecord(DateTimeImmutable $datetime, string $channel, int $level, string $message, array $context, array $extra): LogRecord
     {
-        return new class($datetime, $channel, $level, $message, $context, $extra) implements LogRecord {
+        return new class($datetime, $channel, $level, $message, $context, $extra) implements LogRecord
+        {
             private const MODIFIABLE_FIELDS = [
                 'extra' => true,
                 'formatted' => true,
@@ -50,33 +36,34 @@ class LogRecordFactory
 
             public function __construct(
                 private DateTimeImmutable $datetime,
-                private string            $channel,
-                private int               $level,
-                private string            $message,
-                private array             $context,
-                private array             $extra
-            )
-            {
+                private string $channel,
+                private int $level,
+                private string $message,
+                private array $context,
+                private array $extra
+            ) {
                 //
             }
 
             public function offsetSet(mixed $offset, mixed $value): void
             {
                 if ($offset === 'extra') {
-                    if (!is_array($value)) {
+                    if (! is_array($value)) {
                         throw new InvalidArgumentException('extra must be an array');
                     }
 
                     $this->extra = $value;
+
                     return;
                 }
 
                 if ($offset === 'formatted') {
                     $this->formatted = $value;
+
                     return;
                 }
 
-                throw new LogicException('Unsupported operation: setting ' . $offset);
+                throw new LogicException('Unsupported operation: setting '.$offset);
             }
 
             public function offsetExists(mixed $offset): bool
@@ -133,15 +120,6 @@ class LogRecordFactory
         };
     }
 
-    /**
-     * @param DateTimeImmutable $datetime
-     * @param string $channel
-     * @param int $level
-     * @param string $message
-     * @param array $context
-     * @param array $extra
-     * @return LogRecord
-     */
     private static function buildFromLogRecordClass(DateTimeImmutable $datetime, string $channel, int $level, string $message, array $context, array $extra): LogRecord
     {
         return new LogRecord(
