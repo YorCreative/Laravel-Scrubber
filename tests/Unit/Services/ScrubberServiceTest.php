@@ -60,4 +60,9 @@ class ScrubberServiceTest extends TestCase
 
         $this->assertStringContainsString(config('scrubber.redaction'), $content);
     }
+
+    public function test_it_can_get_regex_repository()
+    {
+        $this->assertInstanceOf(RegexRepository::class, ScrubberService::getRegexRepository());
+    }
 }

@@ -61,4 +61,9 @@ class ScrubberService
          *
          **/
     }
+
+    public static function getRegexRepository(): RegexRepository
+    {
+        return app()->get(RegexRepository::class);
+    }
 }

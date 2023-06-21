@@ -16,6 +16,11 @@ class RegexRepository
         return preg_replace("~$regex~i", config('scrubber.redaction'), $content, -1, $hits);
     }
 
+    public static function check(string $regex, string $content, int &$hits = 0): bool
+    {
+        return preg_match("~$regex~i", $content,$hits);
+    }
+
     public function getRegexCollection(): Collection
     {
         return $this->regexCollection;
