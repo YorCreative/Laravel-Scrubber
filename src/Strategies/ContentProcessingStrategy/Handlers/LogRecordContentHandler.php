@@ -7,6 +7,7 @@ use Monolog\LogRecord;
 use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\ContentProcessingStrategy;
 use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\ProcessHandlerContract;
 use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\Traits\ProcessArrayTrait;
+use YorCreative\Scrubber\Support\LogRecordFactory;
 
 class LogRecordContentHandler implements ProcessHandlerContract
 {
@@ -29,15 +30,13 @@ class LogRecordContentHandler implements ProcessHandlerContract
             ? []
             : app(ContentProcessingStrategy::class)->processContent($context);
 
-        $logRecord = new LogRecord(
+        return LogRecordFactory::buildRecord(
             $logRecordArr['datetime'],
             $logRecordArr['channel'],
-            Logger::toMonologLevel($logRecordArr['level']),
+            $logRecordArr['level'],
             $logRecordArr['message'],
             $logRecordArr['context'],
             $logRecordArr['extra']
         );
-
-        return $logRecord;
     }
 }

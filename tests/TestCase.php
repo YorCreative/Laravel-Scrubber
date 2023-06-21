@@ -10,6 +10,7 @@ use Monolog\Logger;
 use Monolog\LogRecord;
 use YorCreative\Scrubber\Clients\GitLabClient;
 use YorCreative\Scrubber\ScrubberServiceProvider;
+use YorCreative\Scrubber\Support\LogRecordFactory;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -67,6 +68,6 @@ class TestCase extends \Orchestra\Testbench\TestCase
         $level = 200;
         $extra = [];
 
-        return new LogRecord($datetime, $channel, Logger::toMonologLevel($level), $message, $context, $extra);
+        return LogRecordFactory::buildRecord($datetime, $channel, $level, $message, $context, $extra);
     }
 }
