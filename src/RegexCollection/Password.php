@@ -8,7 +8,7 @@ class Password implements RegexCollectionInterface
 {
     public function getPattern(): string
     {
-        return '/(?:"password": "([^"]*)")|\b[\w!@#$%^&*()\-+=]{8,}?\b/m';
+        return 'password';
     }
 
     public function getTestableString(): string
