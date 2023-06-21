@@ -252,5 +252,7 @@ composer test
 
 - [Yorda](https://github.com/yordadev)
 - [Whizboy-Arnold](https://github.com/Whizboy-Arnold)
+- [majchrosoft](https://github.com/majchrosoft)
+- [Lucaxue](https://github.com/lucaxue)
 - [All Contributors](../../contributors)
 
