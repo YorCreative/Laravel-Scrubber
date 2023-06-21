@@ -3,7 +3,6 @@
 namespace YorCreative\Scrubber\Test\Unit\Strategies;
 
 use Carbon\Carbon;
-use Monolog\Logger;
 use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\ContentProcessingStrategy;
 use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\Handlers\ArrayContentHandler;
 use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\Handlers\LogRecordContentHandler;
@@ -56,7 +55,6 @@ class ContentProcessingStrategyTest extends TestCase
 
         $this->assertInstanceOf(ArrayContentHandler::class, $this->strategy->getHandlers()->get($index));
     }
-
 
     public function test_it_can_process_log_record()
     {
