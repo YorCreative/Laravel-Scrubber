@@ -39,8 +39,8 @@ class RegexRepositoryTest extends TestCase
         $hits = 0;
 
         $content = app(RegexRepository::class)->getRegexCollection()->get('google_api')->getTestableString()
-            .' something something something '
-            .app(RegexRepository::class)->getRegexCollection()->get('google_api')->getTestableString();
+            . ' something something something '
+            . app(RegexRepository::class)->getRegexCollection()->get('google_api')->getTestableString();
 
         $this->assertStringContainsString(
             config('scrubber.redaction'),
@@ -63,5 +63,25 @@ class RegexRepositoryTest extends TestCase
     public function it_can_receive_a_collection()
     {
         $this->assertInstanceOf(Collection::class, app(RegexRepository::class)->getRegexCollection());
+    }
+
+    /**
+     * @test
+     *
+     * @group RegexRepository
+     * @group Unit
+     */
+    public function it_can_check_hits()
+    {
+        $content = app(RegexRepository::class)->getRegexCollection()->get('google_api')->getTestableString()
+            . ' something something something '
+            . app(RegexRepository::class)->getRegexCollection()->get('google_api')->getTestableString();
+
+        $hits = app(RegexRepository::class)->check(
+            app(RegexRepository::class)->getRegexCollection()->get('google_api')->getPattern(),
+            $content
+        );
+
+        $this->assertEquals(2, $hits);
     }
 }
