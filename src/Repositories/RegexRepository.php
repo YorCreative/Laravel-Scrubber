@@ -18,7 +18,7 @@ class RegexRepository
 
     public static function check(string $regex, string $content, int &$hits = 0): bool
     {
-        return preg_match("~$regex~i", $content,$hits);
+        return preg_match("~$regex~i", $content, $hits);
     }
 
     public function getRegexCollection(): Collection
