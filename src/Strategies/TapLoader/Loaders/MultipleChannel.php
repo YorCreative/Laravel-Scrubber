@@ -12,7 +12,8 @@ class MultipleChannel implements TapLoaderInterface
     public function canLoad(): bool
     {
         $channels = Config::get('scrubber.tap_channels');
-        if (! $channels) {
+
+        if (! $channels || ! is_array($channels)) {
             return false;
         }
 

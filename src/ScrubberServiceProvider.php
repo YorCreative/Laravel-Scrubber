@@ -17,7 +17,6 @@ use YorCreative\Scrubber\Strategies\RegexLoader\Loaders\SpecificCore;
 use YorCreative\Scrubber\Strategies\RegexLoader\Loaders\SpecificExtendedRegex;
 use YorCreative\Scrubber\Strategies\RegexLoader\Loaders\WildcardExtendedRegex;
 use YorCreative\Scrubber\Strategies\RegexLoader\RegexLoaderStrategy;
-use YorCreative\Scrubber\Strategies\TapLoader\Loaders\DefaultChannels;
 use YorCreative\Scrubber\Strategies\TapLoader\Loaders\MultipleChannel;
 use YorCreative\Scrubber\Strategies\TapLoader\Loaders\SpecificChannel;
 use YorCreative\Scrubber\Strategies\TapLoader\Loaders\WildCardChannel;
@@ -71,7 +70,6 @@ class ScrubberServiceProvider extends ServiceProvider
             $tapLoaderStrategy->setLoader(new WildCardChannel());
             $tapLoaderStrategy->setLoader(new SpecificChannel());
             $tapLoaderStrategy->setLoader(new MultipleChannel());
-            $tapLoaderStrategy->setLoader(new DefaultChannels());
 
             return $tapLoaderStrategy;
         });
