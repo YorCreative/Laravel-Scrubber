@@ -8,7 +8,7 @@ class EmailAddress implements RegexCollectionInterface
 {
     public function getPattern(): string
     {
-        return '[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,63}';
+        return '/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,63}/';
     }
 
     public function getTestableString(): string

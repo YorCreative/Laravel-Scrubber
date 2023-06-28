@@ -8,7 +8,7 @@ class ClientSecret implements RegexCollectionInterface
 {
     public function getPattern(): string
     {
-        return "clientSecret";
+        return '/(?<="client_secret":")[A-Za-z0-9_~]{4}\K[A-Za-z0-9_~]{0,}/';
     }
 
     public function getTestableString(): string
@@ -20,5 +20,4 @@ class ClientSecret implements RegexCollectionInterface
     {
         return false;
     }
-
 }

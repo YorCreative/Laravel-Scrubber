@@ -8,7 +8,7 @@ class Password implements RegexCollectionInterface
 {
     public function getPattern(): string
     {
-        return 'password';
+        return '/password/';
     }
 
     public function getTestableString(): string

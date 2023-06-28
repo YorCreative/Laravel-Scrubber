@@ -8,7 +8,7 @@ class JsonWebToken implements RegexCollectionInterface
 {
     public function getPattern(): string
     {
-        return 'ey[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+';
+        return '/ey[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+/';
     }
 
     public function getTestableString(): string
