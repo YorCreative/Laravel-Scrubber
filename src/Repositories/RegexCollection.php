@@ -57,4 +57,8 @@ class RegexCollection
     public static string $EMAIL_ADDRESS = 'EmailAddress';
 
     public static string $PASSWORD = 'Password';
+
+    public static string $CLIENT_SECRET = 'ClientSecret';
+
+    public static string $SUBSCRIPTION_KEY = 'SubscriptionKey';
 }
