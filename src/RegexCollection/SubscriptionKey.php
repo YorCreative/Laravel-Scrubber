@@ -8,7 +8,7 @@ class SubscriptionKey implements RegexCollectionInterface
 {
     public function getPattern(): string
     {
-        return '^.{32}$';
+        return '/(?<="GDP-Subscription-Key":")?(?:GDP-Subscription-Key=)?[A-Za-z0-9_~]{4}\K[A-Za-z0-9]{28}/';
     }
 
     public function getTestableString(): string
