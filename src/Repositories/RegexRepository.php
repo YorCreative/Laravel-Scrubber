@@ -11,9 +11,10 @@ class RegexRepository
     ) {
     }
 
-    public static function checkAndSanitize(string $regex, string $content, int &$hits = 0): string
+    public static function checkAndSanitize(string $regex, string $replace, string $content, int &$hits = 0):
+    string
     {
-        return preg_replace("~$regex~i", config('scrubber.redaction'), $content, -1, $hits);
+        return preg_replace("~$regex~i", $replace, $content, -1, $hits);
     }
 
     public static function check(string $regex, string $content): int

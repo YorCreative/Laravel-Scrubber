@@ -12,6 +12,9 @@ class DummyClass implements RegexCollectionInterface
          * @todo
          * @note return a regex pattern to detect a specific piece of sensitive data.
          */
+
+        // e.g. 'sensitive_data=[a-zA-Z0-9]{5,100}'
+        return '';
     }
 
     public function getTestableString(): string
@@ -20,6 +23,24 @@ class DummyClass implements RegexCollectionInterface
          * @todo
          * @note return a string that can be used to verify the regex pattern provided.
          */
+
+        // e.g. 'sensitive_data=adfa734jwfsdkf234'
+        return '';
+    }
+
+    /**
+     * Optional. Remove this function to use the default replacement pattern.
+     *
+     * @return string
+     */
+    public function getReplacementValue(): string {
+        /**
+         * @todo
+         * @note return a string that replaces the regex pattern provided.
+         */
+
+        // e.g. '**redacted_key**=**redacted_data**'
+        return config('scrubber.redaction');
     }
 
     public function isSecret(): bool
