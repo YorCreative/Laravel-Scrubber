@@ -1,6 +1,6 @@
 <?php
 
-namespace YorCreative\Scrubber\Test\Unit\Services;
+namespace YorCreative\Scrubber\Tests\Unit\Services;
 
 use YorCreative\Scrubber\SecretManager\Providers\Gitlab;
 use YorCreative\Scrubber\SecretManager\Secret;

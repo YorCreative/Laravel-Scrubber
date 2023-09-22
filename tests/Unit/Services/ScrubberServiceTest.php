@@ -1,6 +1,6 @@
 <?php
 
-namespace YorCreative\Scrubber\Test\Unit\Services;
+namespace YorCreative\Scrubber\Tests\Unit\Services;
 
 use GuzzleHttp\Psr7\Response;
 use YorCreative\Scrubber\Repositories\RegexRepository;
