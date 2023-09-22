@@ -3,7 +3,6 @@
 namespace YorCreative\Scrubber\Tests\Unit\Services;
 
 use GuzzleHttp\Psr7\Response;
-use Illuminate\Support\Str;
 use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
 use YorCreative\Scrubber\Repositories\RegexRepository;
 use YorCreative\Scrubber\Services\ScrubberService;
@@ -70,8 +69,8 @@ class ScrubberServiceTest extends TestCase
 
     public function test_it_can_handle_get_replacement_value_on_custom_class()
     {
-        $withReplacement = new class() implements RegexCollectionInterface {
-
+        $withReplacement = new class() implements RegexCollectionInterface
+        {
             public function isSecret(): bool
             {
                 return false;
@@ -93,8 +92,8 @@ class ScrubberServiceTest extends TestCase
             }
         };
 
-        $withoutReplacement = new class() implements RegexCollectionInterface {
-
+        $withoutReplacement = new class() implements RegexCollectionInterface
+        {
             public function isSecret(): bool
             {
                 return false;
@@ -113,7 +112,7 @@ class ScrubberServiceTest extends TestCase
 
         $regexCollection = collect([
             'with_replacement' => $withReplacement,
-            'without_replacement' => $withoutReplacement
+            'without_replacement' => $withoutReplacement,
         ]);
 
         $regexRepository = new RegexRepository($regexCollection);
@@ -122,7 +121,6 @@ class ScrubberServiceTest extends TestCase
         $content = 'something_with';
         ScrubberService::autoSanitize($content);
         $this->assertEquals($withReplacement->getReplacementValue(), $content);
-
 
         $content = 'without_something';
         ScrubberService::autoSanitize($content);
