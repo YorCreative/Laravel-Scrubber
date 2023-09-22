@@ -11,8 +11,7 @@ class RegexRepository
     ) {
     }
 
-    public static function checkAndSanitize(string $regex, string $replace, string $content, int &$hits = 0):
-    string
+    public static function checkAndSanitize(string $regex, string $replace, string $content, int &$hits = 0): string
     {
         return preg_replace("~$regex~i", $replace, $content, -1, $hits);
     }
