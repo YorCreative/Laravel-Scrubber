@@ -54,7 +54,6 @@ class ScrubberService
                 $replace = config('scrubber.redaction');
             }
 
-
             self::patternChecker($pattern, $jsonContent, $replace);
         });
     }

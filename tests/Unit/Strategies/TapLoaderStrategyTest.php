@@ -1,6 +1,6 @@
 <?php
 
-namespace YorCreative\Scrubber\Test\Unit\Strategies;
+namespace YorCreative\Scrubber\Tests\Unit\Strategies;
 
 use YorCreative\Scrubber\Strategies\TapLoader\TapLoaderStrategy;
 use YorCreative\Scrubber\Tests\TestCase;

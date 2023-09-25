@@ -1,6 +1,6 @@
 <?php
 
-namespace YorCreative\Scrubber\Test\Unit\Strategies;
+namespace YorCreative\Scrubber\Tests\Unit\Strategies;
 
 use Carbon\Carbon;
 use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\ContentProcessingStrategy;

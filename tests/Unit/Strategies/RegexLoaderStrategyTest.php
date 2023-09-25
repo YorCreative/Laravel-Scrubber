@@ -1,6 +1,6 @@
 <?php
 
-namespace YorCreative\Scrubber\Test\Unit\Strategies;
+namespace YorCreative\Scrubber\Tests\Unit\Strategies;
 
 use Illuminate\Support\Facades\Config;
 use YorCreative\Scrubber\Repositories\RegexCollection;
