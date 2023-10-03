@@ -253,5 +253,6 @@ composer test
 - [Whizboy-Arnold](https://github.com/Whizboy-Arnold)
 - [majchrosoft](https://github.com/majchrosoft)
 - [Lucaxue](https://github.com/lucaxue)
+- [AlexGodbehere](https://github.com/AlexGodbehere)
 - [All Contributors](../../contributors)
 
