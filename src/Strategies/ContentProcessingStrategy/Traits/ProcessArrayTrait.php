@@ -9,7 +9,7 @@ trait ProcessArrayTrait
     public function processArrayRecursively(array $content): array
     {
         foreach ($content as $key => $value) {
-            if (null !== $value) {
+            if ($value !== null) {
                 if (is_array($value)) {
                     $content[$key] = $this->processArray($value);
                 } elseif (is_object($value) && ! method_exists($value, '__toString')) {
@@ -30,7 +30,7 @@ trait ProcessArrayTrait
     public function processArray(array $content): array
     {
         $jsonContent = ScrubberService::encodeRecord($content);
-        if ('' === $jsonContent) {
+        if ($jsonContent === '') {
             // failed to convert array to JSON, so process array recursively
             return $this->processArrayRecursively($content);
         }

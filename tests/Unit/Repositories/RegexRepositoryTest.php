@@ -21,7 +21,7 @@ class RegexRepositoryTest extends TestCase
 
             $this->assertStringContainsString(
                 config('scrubber.redaction'),
-                app(RegexRepository::class)->checkAndSanitize($regexClass->getPattern(), $regexClass->getTestableString(), $hits)
+                app(RegexRepository::class)->checkAndSanitize($regexClass->getPattern(), config('scrubber.redaction'), $regexClass->getTestableString(), $hits)
             );
 
             $this->assertEquals(1, $hits);
@@ -46,6 +46,7 @@ class RegexRepositoryTest extends TestCase
             config('scrubber.redaction'),
             app(RegexRepository::class)->checkAndSanitize(
                 app(RegexRepository::class)->getRegexCollection()->get('google_api')->getPattern(),
+                config('scrubber.redaction'),
                 $content,
                 $hits
             )

@@ -150,6 +150,8 @@ class.
 
 ### Opting Into Custom Extended Classes
 
+> To create custom scrubbers, see the [Extending the Scrubber](#extending-the-scrubber) section.
+
 The `regex_loader` array takes strings, not objects. To opt in to specific custom extended regex classes, define the
 class name as a string.
 
@@ -167,7 +169,6 @@ class TestRegex implements RegexCollectionInterface
     public function getPattern(): string
     {
         /**
-         * @todo
          * @note return a regex pattern to detect a specific piece of sensitive data.
          */
         return '(?<=basic) [a-zA-Z0-9=:\\+\/-]{5,100}';
@@ -176,10 +177,18 @@ class TestRegex implements RegexCollectionInterface
     public function getTestableString(): string
     {
         /**
-         * @todo
          * @note return a string that can be used to verify the regex pattern provided.
          */
         return 'basic f9Iu+YwMiJEsQu/vBHlbUNZRkN/ihdB1sNTU';
+    }
+    
+    public function getReplacementValue(): string
+    {
+        
+        /**
+         * @note return a string that replaces the regex pattern provided.
+         */
+        return config('scrubber.redaction');
     }
 
     public function isSecret(): bool
@@ -230,7 +239,7 @@ php artisan make:regex-class {name}
 
 This command will create a stubbed out class in `App\Scrubber\RegexCollection`. The Scrubber package will autoload
 everything from the `App\Scrubber\RegexCollection` folder with the wildcard value on the `regex_loader` array in the
-scrubber config file. You will need to provide a `Regex Pattern` and a `Testable String` for the class.
+scrubber config file. You will need to provide a `Regex Pattern` and a `Testable String` for the class and you may also provide a `Replacement Value` if you want to replace the detected value with something other than the default value in the config file.
 
 ## Testing
 
@@ -244,5 +253,6 @@ composer test
 - [Whizboy-Arnold](https://github.com/Whizboy-Arnold)
 - [majchrosoft](https://github.com/majchrosoft)
 - [Lucaxue](https://github.com/lucaxue)
+- [AlexGodbehere](https://github.com/AlexGodbehere)
 - [All Contributors](../../contributors)
 
