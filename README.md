@@ -35,7 +35,7 @@ php artisan vendor:publish --provider="YorCreative\Scrubber\ScrubberServiceProvi
 
 ## Configuration
 
-Adjust the configuration file to suite your application, located in `/config/scubber.php`.
+Adjust the configuration file to suite your application, located in `/config/scrubber.php`.
 
 ```php
 return [
