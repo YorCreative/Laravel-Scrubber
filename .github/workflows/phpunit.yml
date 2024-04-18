@@ -13,11 +13,33 @@ jobs:
         php: [8.1, 8.2, 8.3]
         laravel: [9.*, 10.*, 11.*]
         include:
-          - laravel: 11.*
+          - php: 8.1
+            laravel: 11.*
             testbench: 9.*
-          - laravel: 10.*
+            skip: true
+          - php: 8.2
+            laravel: 11.*
+            testbench: 9.*
+          - php: 8.3
+            laravel: 11.*
+            testbench: 9.*
+          - php: 8.1
+            laravel: 10.*
             testbench: 8.*
-          - laravel: 9.*
+          - php: 8.2
+            laravel: 10.*
+            testbench: 8.*
+          - php: 8.3
+            laravel: 10.*
+            testbench: 8.*
+          - php: 8.1
+            laravel: 9.*
+            testbench: 7.*
+          - php: 8.2
+            laravel: 9.*
+            testbench: 7.*
+          - php: 8.3
+            laravel: 9.*
             testbench: 7.*
 
     name: PHP${{ matrix.php }} - Laravel ${{ matrix.laravel }}
@@ -41,7 +63,12 @@ jobs:
           echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
       - name: Install dependencies
         run: |
+          if [ "${{ matrix.skip }}" == "true" ]; then
+            echo "Skipping PHP ${{ matrix.php }} with Laravel 11."
+            exit 0
+          fi
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --prefer-dist --no-interaction --no-suggest
       - name: Execute tests
+        if: ${{ matrix.skip != 'true' }}
         run: vendor/bin/phpunit
