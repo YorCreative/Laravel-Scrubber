@@ -64,11 +64,16 @@ jobs:
       - name: Install dependencies
         run: |
           if [ "${{ matrix.skip }}" == "true" ]; then
-            echo "Skipping PHP ${{ matrix.php }} with Laravel 11."
+            echo "Skipping Install Dependencies ${{ matrix.php }} with Laravel 11."
             exit 0
           fi
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --prefer-dist --no-interaction --no-suggest
       - name: Execute tests
-        if: ${{ matrix.skip != 'true' }}
-        run: vendor/bin/phpunit
+        run: |
+          if [ "${{ matrix.skip }}" == "true" ]; then
+            echo "Skipping Test Execution for ${{ matrix.php }} with Laravel 11."
+            exit 0
+          fi
+
+          vendor/bin/phpunit --testdox
