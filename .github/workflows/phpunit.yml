@@ -14,9 +14,9 @@ jobs:
         laravel: [9.*, 10.*, 11.*]
         include:
           - laravel: 11.*
-            testbench: 8
+            testbench: 9.*
           - laravel: 10.*
-            testbench: 8
+            testbench: 8.*
           - laravel: 9.*
             testbench: 7.*
 
