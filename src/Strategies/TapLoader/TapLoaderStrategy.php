@@ -11,7 +11,7 @@ class TapLoaderStrategy
 
     public function __construct()
     {
-        $this->availableLoaders = new Collection();
+        $this->availableLoaders = new Collection;
     }
 
     public function setLoader(TapLoaderInterface $loader): void

@@ -55,21 +55,21 @@ class ScrubberServiceProvider extends ServiceProvider
         }
 
         $this->app->singleton(RegexLoaderStrategy::class, function () {
-            $regexLoaderStrategy = new RegexLoaderStrategy();
-            $regexLoaderStrategy->setLoader(new DefaultCore());
-            $regexLoaderStrategy->setLoader(new SpecificCore());
-            $regexLoaderStrategy->setLoader(new WildcardExtendedRegex());
-            $regexLoaderStrategy->setLoader(new SpecificExtendedRegex());
-            $regexLoaderStrategy->setLoader(new SecretLoader());
+            $regexLoaderStrategy = new RegexLoaderStrategy;
+            $regexLoaderStrategy->setLoader(new DefaultCore);
+            $regexLoaderStrategy->setLoader(new SpecificCore);
+            $regexLoaderStrategy->setLoader(new WildcardExtendedRegex);
+            $regexLoaderStrategy->setLoader(new SpecificExtendedRegex);
+            $regexLoaderStrategy->setLoader(new SecretLoader);
 
             return $regexLoaderStrategy;
         });
 
         $this->app->singleton(TapLoaderStrategy::class, function () {
-            $tapLoaderStrategy = new TapLoaderStrategy();
-            $tapLoaderStrategy->setLoader(new WildCardChannel());
-            $tapLoaderStrategy->setLoader(new SpecificChannel());
-            $tapLoaderStrategy->setLoader(new MultipleChannel());
+            $tapLoaderStrategy = new TapLoaderStrategy;
+            $tapLoaderStrategy->setLoader(new WildCardChannel);
+            $tapLoaderStrategy->setLoader(new SpecificChannel);
+            $tapLoaderStrategy->setLoader(new MultipleChannel);
 
             return $tapLoaderStrategy;
         });
@@ -81,11 +81,11 @@ class ScrubberServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(ContentProcessingStrategy::class, function () {
-            $contentProcessingStrategy = new ContentProcessingStrategy();
+            $contentProcessingStrategy = new ContentProcessingStrategy;
 
-            $contentProcessingStrategy->setHandler(new StringContentHandler());
-            $contentProcessingStrategy->setHandler(new ArrayContentHandler());
-            $contentProcessingStrategy->setHandler(new LogRecordContentHandler());
+            $contentProcessingStrategy->setHandler(new StringContentHandler);
+            $contentProcessingStrategy->setHandler(new ArrayContentHandler);
+            $contentProcessingStrategy->setHandler(new LogRecordContentHandler);
 
             return $contentProcessingStrategy;
         });

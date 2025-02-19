@@ -69,7 +69,7 @@ class ScrubberServiceTest extends TestCase
 
     public function test_it_can_handle_get_replacement_value_on_custom_class()
     {
-        $withReplacement = new class() implements RegexCollectionInterface
+        $withReplacement = new class implements RegexCollectionInterface
         {
             public function isSecret(): bool
             {
@@ -92,7 +92,7 @@ class ScrubberServiceTest extends TestCase
             }
         };
 
-        $withoutReplacement = new class() implements RegexCollectionInterface
+        $withoutReplacement = new class implements RegexCollectionInterface
         {
             public function isSecret(): bool
             {

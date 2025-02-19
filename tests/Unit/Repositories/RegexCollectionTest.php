@@ -21,7 +21,7 @@ class RegexCollectionTest extends TestCase
         $class = new ReflectionClass(RegexCollection::class);
         $staticProperties = $class->getStaticProperties();
 
-        $regexCollection = new Collection();
+        $regexCollection = new Collection;
         app(RegexRepository::class)->getRegexCollection()->each(function ($regexClass) use ($regexCollection) {
             $regexCollection->push(class_basename($regexClass));
         });

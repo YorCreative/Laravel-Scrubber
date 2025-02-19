@@ -8,8 +8,7 @@ class RegexRepository
 {
     public function __construct(
         protected Collection $regexCollection
-    ) {
-    }
+    ) {}
 
     public static function checkAndSanitize(string $regex, string $replace, string $content, int &$hits = 0): string
     {
