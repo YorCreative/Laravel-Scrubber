@@ -24,9 +24,12 @@ class ContentProcessingStrategy
     {
         $index = $this->detectHandlerIndex($content);
 
-        return is_null($index)
-            ? throw new RuntimeException('Cannot process content: '.json_encode($content))
-            : $this->getHandlers()->get($index)->processContent($content);
+        $handler = null === $index ? null : $this->getHandlers()->get($index);
+        if (null === $handler) {
+            throw new RuntimeException('Cannot process content: '.json_encode($content));
+        }
+
+        return $handler->processContent($content);
     }
 
     private function detectHandlerIndex(mixed $content): ?int
