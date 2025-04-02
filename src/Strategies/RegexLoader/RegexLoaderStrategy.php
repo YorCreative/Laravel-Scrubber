@@ -10,7 +10,7 @@ class RegexLoaderStrategy
 
     public function __construct()
     {
-        $this->availableLoaders = new Collection();
+        $this->availableLoaders = new Collection;
     }
 
     public function setLoader(LoaderInterface $loader): void
@@ -20,7 +20,7 @@ class RegexLoaderStrategy
 
     public function load(): Collection
     {
-        $regexCollection = new Collection();
+        $regexCollection = new Collection;
 
         $this->availableLoaders->each(function ($loader) use (&$regexCollection) {
             if ($loader->canLoad()) {

@@ -64,7 +64,7 @@ class Gitlab implements SecretProviderInterface
         );
 
         $secrets = self::retrieve($path);
-        $secretCollection = new Collection();
+        $secretCollection = new Collection;
 
         foreach ($secrets as $variable) {
             $secretCollection->push(new Secret($variable['key'], $variable['value']));

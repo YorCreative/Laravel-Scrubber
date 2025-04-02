@@ -16,7 +16,7 @@ class SecretManager
             return $provider::getAllSecrets();
         }
 
-        $secretCollection = new Collection();
+        $secretCollection = new Collection;
 
         foreach ($keys as $key) {
             $secretCollection->push($provider::getSpecificSecret($key));

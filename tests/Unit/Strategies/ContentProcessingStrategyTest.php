@@ -14,7 +14,7 @@ class ContentProcessingStrategyTest extends TestCase
 {
     protected ContentProcessingStrategy $strategy;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
