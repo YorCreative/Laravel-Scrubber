@@ -12,7 +12,7 @@ class ContentProcessingStrategy
 
     public function __construct()
     {
-        $this->handlers = new Collection();
+        $this->handlers = new Collection;
     }
 
     public function setHandler(ProcessHandlerContract $handler): void

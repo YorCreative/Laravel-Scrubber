@@ -20,7 +20,7 @@ class SecretService
 
     public static function getEnabledProviders(): Collection
     {
-        $enabledProviders = new Collection();
+        $enabledProviders = new Collection;
 
         foreach (Config::get('scrubber.secret_manager.providers') as $key => $configuration) {
             ! $configuration['enabled']
@@ -32,7 +32,7 @@ class SecretService
 
     public static function loadSecrets(Collection $providers): Collection
     {
-        $secrets = new Collection();
+        $secrets = new Collection;
 
         $providers->each(function ($provider) use (&$secrets) {
             $secrets = $secrets->merge(SecretManager::getSecrets($provider));

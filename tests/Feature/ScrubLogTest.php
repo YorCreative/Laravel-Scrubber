@@ -10,7 +10,7 @@ class ScrubLogTest extends TestCase
 {
     private array $expectedRecord;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
