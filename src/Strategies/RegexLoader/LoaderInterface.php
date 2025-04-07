@@ -8,5 +8,5 @@ interface LoaderInterface
 {
     public function canLoad(): bool;
 
-    public function load(Collection &$collection): void;
+    public function load(Collection &$regexCollection): void;
 }
