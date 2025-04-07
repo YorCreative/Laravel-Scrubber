@@ -32,7 +32,7 @@ class LogRecordFactoryTest extends TestCase
 
         $buildFromAnonymousLogRecord->setAccessible(true);
 
-        $logRecord = $buildFromAnonymousLogRecord->invokeArgs(new LogRecordFactory(), [
+        $logRecord = $buildFromAnonymousLogRecord->invokeArgs(new LogRecordFactory, [
             Carbon::now()->toDateTimeImmutable(),
             'test_channel',
             200,
