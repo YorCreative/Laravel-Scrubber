@@ -5,6 +5,7 @@ namespace YorCreative\Scrubber\Support;
 use DateTimeImmutable;
 use InvalidArgumentException;
 use LogicException;
+use Monolog\Level;
 use Monolog\Logger;
 use Monolog\LogRecord;
 use RuntimeException;
@@ -27,7 +28,7 @@ class LogRecordFactory
 
     private static function buildFromAnonymousLogRecord(DateTimeImmutable $datetime, string $channel, int $level, string $message, array $context, array $extra): LogRecord
     {
-        return new class($datetime, $channel, $level, $message, $context, $extra) implements LogRecord
+        return new class($datetime, $channel, $level, $message, $context, $extra) extends LogRecord
         {
             private const MODIFIABLE_FIELDS = [
                 'extra' => true,
@@ -35,14 +36,16 @@ class LogRecordFactory
             ];
 
             public function __construct(
-                private DateTimeImmutable $datetime,
-                private string $channel,
-                private int $level,
-                private string $message,
-                private array $context,
-                private array $extra
+                DateTimeImmutable $datetime,
+                string $channel,
+                $level,
+                string $message,
+                array $context,
+                array $extra
             ) {
-                //
+                $level = Level::from($level);
+
+                parent::__construct($datetime, $channel, $level, $message, $context, $extra);
             }
 
             public function offsetSet(mixed $offset, mixed $value): void
@@ -77,7 +80,11 @@ class LogRecordFactory
 
             public function offsetUnset(mixed $offset): void
             {
-                throw new LogicException('Unsupported operation');
+                if (! is_string($offset)) {
+                    $offset = json_encode($offset);
+                }
+
+                throw new LogicException('Unsupported operation '.$offset);
             }
 
             public function &offsetGet(mixed $offset): mixed
@@ -91,9 +98,7 @@ class LogRecordFactory
                 }
 
                 // avoid returning readonly props by ref as this is illegal
-                $copy = $this->{$offset};
-
-                return $copy;
+                return $this->{$offset};
             }
 
             public function toArray(): array
@@ -101,8 +106,8 @@ class LogRecordFactory
                 return [
                     'message' => $this->message,
                     'context' => $this->context,
-                    'level' => $this->level,
-                    'level_name' => Logger::getLevelName($this->level),
+                    'level' => $this->level->value,
+                    'level_name' => Logger::toMonologLevel($this->level)->getName(),
                     'channel' => $this->channel,
                     'datetime' => $this->datetime,
                     'extra' => $this->extra,
