@@ -5,4 +5,6 @@ namespace YorCreative\Scrubber\Clients;
 /**
  * @method get(string $path)
  */
-class GitLabClient extends BaseClient {}
+class GitLabClient extends BaseClient
+{
+}
