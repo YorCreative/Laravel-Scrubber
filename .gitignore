@@ -2,3 +2,4 @@
 /coverage
 /vendor
 .idea
+.phpunit.cache/test-results
