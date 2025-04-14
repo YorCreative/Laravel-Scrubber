@@ -57,6 +57,7 @@ return [
     ],
     'regex_loader' => ['*'] // Opt-in to specific regex classes OR include all with * wildcard.
     'tap_channels' => ['*'] // Opt-in to tap specific log channels OR include all with * wildcard.
+    'regex_collection_path_from_app' => 'Scrubber/RegexCollection', // Override default regex collection path (relative to app/)
 ];
 ```
 

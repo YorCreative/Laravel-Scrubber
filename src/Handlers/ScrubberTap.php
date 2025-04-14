@@ -2,6 +2,7 @@
 
 namespace YorCreative\Scrubber\Handlers;
 
+use Monolog\Handler\NullHandler;
 use YorCreative\Scrubber\Scrubber;
 
 class ScrubberTap
@@ -9,7 +10,7 @@ class ScrubberTap
     public function __invoke($logger)
     {
         foreach ($logger->getHandlers() as $handler) {
-            if (! ($handler instanceof \Monolog\Handler\NullHandler)) {
+            if (! ($handler instanceof NullHandler)) {
                 $handler->pushProcessor(function ($record) {
                     return Scrubber::processMessage($record);
                 });
