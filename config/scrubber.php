@@ -18,5 +18,5 @@ return [
     ],
     'regex_loader' => ['*'],
     'tap_channels' => false,
-    'regex_collection_path_from_app' => 'Scrubber/RegexCollection'
+    'regex_collection_path_from_app' => 'Scrubber/RegexCollection',
 ];
