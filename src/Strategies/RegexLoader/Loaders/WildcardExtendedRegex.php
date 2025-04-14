@@ -14,7 +14,7 @@ class WildcardExtendedRegex implements LoaderInterface
 
     public function __construct()
     {
-        $regexCollectionPath = config::get('scrubber.regex_collection_app_path', 'Scrubber/RegexCollection');
+        $regexCollectionPath = config::get('scrubber.regex_collection_path_from_app', 'Scrubber/RegexCollection');
         $this->path = app_path($regexCollectionPath);
     }
 
