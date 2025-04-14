@@ -38,13 +38,12 @@ class LogRecordFactory
             public function __construct(
                 DateTimeImmutable $datetime,
                 string $channel,
-                $level,
+                int $level,
                 string $message,
                 array $context,
                 array $extra
             ) {
-                $level = Level::from($level);
-
+                $level = Level::from($level); // Convert to Level enum if needed
                 parent::__construct($datetime, $channel, $level, $message, $context, $extra);
             }
 
@@ -114,7 +113,7 @@ class LogRecordFactory
                 ];
             }
 
-            public function with(mixed ...$args): self
+            public function with(mixed ...$args): LogRecord
             {
                 foreach (['message', 'context', 'level', 'channel', 'datetime', 'extra'] as $prop) {
                     $args[$prop] ??= $this->{$prop};
