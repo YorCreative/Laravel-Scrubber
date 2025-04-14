@@ -46,6 +46,12 @@ jobs:
             laravel: 12.*
             testbench: 10.*
 
+        exclude:
+          - laravel: 12.*
+            php: 8.1
+          - laravel: 10.*
+            php: 8.4
+
     name: PHP${{ matrix.php }} - Laravel ${{ matrix.laravel }}${{ matrix.skip && ' (skipped)' || '' }}
 
 
