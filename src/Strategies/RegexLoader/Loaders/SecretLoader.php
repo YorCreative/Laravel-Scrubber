@@ -53,7 +53,7 @@ class SecretLoader implements LoaderInterface
             }
         };
 
-        $class->setPattern($secret->getVariable());
+        $class->setPattern(preg_quote($secret->getVariable(), '~'));
 
         return $class;
     }

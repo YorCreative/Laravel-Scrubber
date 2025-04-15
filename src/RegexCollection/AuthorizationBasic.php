@@ -8,7 +8,7 @@ class AuthorizationBasic implements RegexCollectionInterface
 {
     public function getPattern(): string
     {
-        return '(?<=basic) [a-zA-Z0-9=:_\+\/-]{5,100}';
+        return '(?<=basic)\s[a-zA-Z0-9=:_\+\/-]';
     }
 
     public function getTestableString(): string
