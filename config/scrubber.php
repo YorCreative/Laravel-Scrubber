@@ -12,10 +12,17 @@ return [
         'enabled' => false,
         'providers' => [
             'gitlab' => [
+                /**
+                 * Enable the GitLab secret manager
+                 */
                 'enabled' => false,
                 'project_id' => env('GITLAB_PROJECT_ID'),
                 'token' => env('GITLAB_TOKEN'),
                 'host' => 'https://gitlab.com',
+                /**
+                 * `*` will grab all the secrets, if you want specific variables
+                 * define the keys in an array
+                 */
                 'keys' => ['*'],
             ],
         ],
@@ -58,5 +65,4 @@ return [
      * You can use wildcards (*) to match multiple channels
      */ 
     'tap_channels' => false,
-    'regex_collection_path_from_app' => 'Scrubber/RegexCollection',
 ];
