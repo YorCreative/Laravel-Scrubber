@@ -8,7 +8,7 @@ class AuthorizationBearer implements RegexCollectionInterface
 {
     public function getPattern(): string
     {
-        return '(?<=bearer)\s[a-zA-Z0-9_\-\.=:_\+\/]';
+        return '(?<=bearer\s)[a-zA-Z0-9_\-\.=:_\+\/]*';
     }
 
     public function getTestableString(): string
