@@ -41,7 +41,7 @@ return [
      * for the regex_loader or where you use unqualified class names.
      */
     'custom_regex_namespaces' => [
-       'App\\Scrubber\\RegexCollection',
+        'App\\Scrubber\\RegexCollection',
     ],
 
     /**
@@ -63,6 +63,6 @@ return [
     /**
      * Specify the channels to tap into
      * You can use wildcards (*) to match multiple channels
-     */ 
+     */
     'tap_channels' => false,
 ];
