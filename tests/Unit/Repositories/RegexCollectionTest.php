@@ -10,13 +10,9 @@ use YorCreative\Scrubber\Tests\TestCase;
 
 class RegexCollectionTest extends TestCase
 {
-    /**
-     * @test
-     *
-     * @group RegexRepository
-     * @group Unit
-     */
-    public function it_can_verify_that_every_regex_class_available_is_a_static_property_on_regex_collection()
+    #[Group('RegexRepository')]
+    #[Group('Unit')]
+    public function test_it_can_verify_that_every_regex_class_available_is_a_static_property_on_regex_collection()
     {
         $class = new ReflectionClass(RegexCollection::class);
         $staticProperties = $class->getStaticProperties();

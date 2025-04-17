@@ -2,6 +2,7 @@
 
 namespace YorCreative\Scrubber\Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Group;
 use YorCreative\Scrubber\Repositories\RegexRepository;
 use YorCreative\Scrubber\Scrubber;
 use YorCreative\Scrubber\Tests\TestCase;
@@ -26,12 +27,8 @@ class ScrubLogTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     * @group Feature
-     */
-    public function it_can_detect_a_single_piece_of_sensitive_information_and_scrub_the_log()
+    #[Group('Feature')]
+    public function test_it_can_detect_a_single_piece_of_sensitive_information_and_scrub_the_log()
     {
         $this->expectedRecord = array_merge($this->expectedRecord['context'], [
             'some' => 'context',
@@ -60,12 +57,8 @@ class ScrubLogTest extends TestCase
         $this->assertEquals($this->expectedRecord, $sanitizedRecord);
     }
 
-    /**
-     * @test
-     *
-     * @group Feature
-     */
-    public function it_can_detect_multiple_sensitive_information_and_scrub_the_log()
+    #[Group('Feature')]
+    public function test_it_can_detect_multiple_sensitive_information_and_scrub_the_log()
     {
         $this->expectedRecord = array_merge($this->expectedRecord['context'], [
             'some' => 'context',
@@ -104,12 +97,8 @@ class ScrubLogTest extends TestCase
         $this->assertEquals($this->expectedRecord, $sanitizedRecord);
     }
 
-    /**
-     * @test
-     *
-     * @group Feature
-     */
-    public function it_can_binary_detect_multiple_sensitive_information_and_scrub_the_log()
+    #[Group('Feature')]
+    public function test_it_can_binary_detect_multiple_sensitive_information_and_scrub_the_log()
     {
         $binary = hex2bin('eb13cd61f3e640d1b913eefbb93bd838');
 
@@ -152,12 +141,8 @@ class ScrubLogTest extends TestCase
         $this->assertEquals($this->expectedRecord, $sanitizedRecord);
     }
 
-    /**
-     * @test
-     *
-     * @group Feature
-     */
-    public function it_can_handle_binary_objects()
+    #[Group('Feature')]
+    public function test_it_can_handle_binary_objects()
     {
         $object = new \stdClass;
         $object->a = 1;
@@ -176,12 +161,8 @@ class ScrubLogTest extends TestCase
         $this->assertEquals($this->expectedRecord, $sanitizedRecord);
     }
 
-    /**
-     * @test
-     *
-     * @group Feature
-     */
-    public function it_can_handle_resources()
+    #[Group('Feature')]
+    public function test_it_can_handle_resources()
     {
         $resource = fopen('/dev/null', 'r');
 
