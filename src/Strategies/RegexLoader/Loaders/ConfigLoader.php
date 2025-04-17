@@ -4,19 +4,20 @@ namespace YorCreative\Scrubber\Strategies\RegexLoader\Loaders;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
 use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
 use YorCreative\Scrubber\Strategies\RegexLoader\LoaderInterface;
-use Illuminate\Support\Str;
+
 class ConfigLoader implements LoaderInterface
 {
     public function canLoad(): bool
     {
-        return !empty(Config::get('scrubber.config_loader',[]));
+        return ! empty(Config::get('scrubber.config_loader', []));
     }
 
     public function load(Collection &$regexCollection): void
     {
-        foreach($this->getConfigs() as $configKey => $configValue){
+        foreach ($this->getConfigs() as $configKey => $configValue) {
             $regexCollection = $regexCollection->merge([
                 'config::'.$configKey => self::generateRegexClassForConfig($configValue),
             ]);
@@ -27,16 +28,18 @@ class ConfigLoader implements LoaderInterface
     {
         $configCollection = collect();
         $allConfig = collect(Config::all())->dot();
-        $keyPaterns = Config::get('scrubber.config_loader',[]);
-        foreach($keyPaterns as $keyPattern){
-            if(str_contains($keyPattern, '*')){
-                $configCollection = $configCollection->merge($allConfig->filter(function($value, $key) use ($keyPattern){
+        $keyPaterns = Config::get('scrubber.config_loader', []);
+        foreach ($keyPaterns as $keyPattern) {
+            if (str_contains($keyPattern, '*')) {
+                $configCollection = $configCollection->merge($allConfig->filter(function ($value, $key) use ($keyPattern) {
                     return Str::is($keyPattern, $key);
                 })->filter());
+
                 continue;
             }
             $configCollection = $configCollection->merge(collect([$keyPattern => Config::get($keyPattern)])->dot()->filter());
         }
+
         return $configCollection->unique()->toArray();
     }
 

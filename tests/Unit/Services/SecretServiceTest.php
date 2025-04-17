@@ -9,10 +9,7 @@ use YorCreative\Scrubber\Tests\TestCase;
 
 class SecretServiceTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function it_can_load_secrets_from_gitlab()
+    public function test_it_can_load_secrets_from_gitlab()
     {
         $secrets = SecretManager::getSecrets(Gitlab::class);
 
