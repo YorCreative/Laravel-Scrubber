@@ -3,6 +3,7 @@
 namespace YorCreative\Scrubber\Tests\Unit\Strategies;
 
 use Carbon\Carbon;
+use YorCreative\Scrubber\Repositories\RegexRepository;
 use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\ContentProcessingStrategy;
 use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\Handlers\ArrayContentHandler;
 use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\Handlers\LogRecordContentHandler;

@@ -1,0 +1,36 @@
+<?php
+
+namespace YorCreative\Scrubber\Strategies\RegexLoader\Loaders;
+
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
+
+class SpecificRegex extends NamespaceLoader
+{
+
+    public function canLoad(): bool
+    {
+        return !in_array('*', Config::get('scrubber.regex_loader'));
+    }
+
+    public function load(Collection &$regexCollection): void
+    {
+        $regexesToLoad = $this->getRegexesToLoad();
+        foreach($regexesToLoad as $regexClass){
+
+            if($this->isRegexClass($regexClass)){
+                $this->loadRegex($regexClass, $regexCollection);
+                continue;
+            }
+
+            foreach ($this->getNamespaces() as $namespace) {
+                $fqcn = $namespace.'\\'.$regexClass;
+                if($this->isRegexClass($fqcn)){
+                    $this->loadRegex($fqcn, $regexCollection);
+                    continue;
+                }
+            }
+        }
+    }
+}

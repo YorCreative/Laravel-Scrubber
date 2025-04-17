@@ -40,12 +40,6 @@ class ScrubberServiceTest extends TestCase
      */
     public function it_can_auto_sanitize_a_record()
     {
-        $mockSecretsResponse = $this->getMockFor('get_gitlab_variables');
-
-        $this->createGitlabClientMock([
-            new Response(200, [], $mockSecretsResponse),
-        ]);
-
         $content = json_encode(array_merge($this->record['context'], [
             'some' => 'context',
             'nested' => [
