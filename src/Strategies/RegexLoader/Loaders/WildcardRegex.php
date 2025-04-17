@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Config;
 
 class WildcardRegex extends NamespaceLoader
 {
-
     public function canLoad(): bool
     {
         return in_array('*', Config::get('scrubber.regex_loader'));
@@ -18,8 +17,8 @@ class WildcardRegex extends NamespaceLoader
     {
         foreach ($this->getNamespaces() as $namespace) {
 
-            foreach ($this->getRegexClassesInNamespace($namespace) as $fqcn) {
-                $this->loadRegex($fqcn, $regexCollection);
+            foreach ($this->getRegexClassesInNamespace($namespace) as $fullyQualifiedClassName) {
+                $this->loadRegex($fullyQualifiedClassName, $regexCollection);
             }
         }
     }
@@ -27,8 +26,7 @@ class WildcardRegex extends NamespaceLoader
     protected function getRegexClassesInNamespace(string $namespace): array
     {
         return Collection::make(ClassFinder::getClassesInNamespace($namespace))
-        ->filter(fn($class) => $this->isRegexClass($class))
-        ->toArray();
+            ->filter(fn ($class) => $this->isRegexClass($class))
+            ->toArray();
     }
-
 }
