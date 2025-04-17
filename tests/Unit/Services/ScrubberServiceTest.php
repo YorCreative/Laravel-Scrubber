@@ -9,7 +9,6 @@ use YorCreative\Scrubber\Tests\TestCase;
 
 class ScrubberServiceTest extends TestCase
 {
-
     #[Group('ScrubberService')]
     #[Group('Unit')]
     public function test_it_can_encode_a_record()
