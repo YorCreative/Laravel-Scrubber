@@ -83,6 +83,13 @@ class RegexLoaderStrategyTest extends TestCase
 
     #[Group('Strategy')]
     #[Group('Unit')]
+    public function test_it_can_load_wildcard_extended_regex_with_excluded_regex()
+    {
+        Config::set('scrubber.regex_loader', ['*']);
+        Config::set('scrubber.exclude_regex', [RegexCollection::$HEROKU_API_KEY]);
+        $this->assertCount(26, app(RegexLoaderStrategy::class)->load());
+    }
+
     public function test_it_can_load_config_via_specific_key()
     {
         Config::set('scrubber.config_loader', ['app.my_secret']);
@@ -126,5 +133,29 @@ class RegexLoaderStrategyTest extends TestCase
         $regexCollection = app(RegexLoaderStrategy::class)->load();
         $regex = $regexCollection->get('config::app.my_secret');
         $this->assertEquals('super\~\\\\d\.\*secret', $regex->getPattern());
+    }
+
+    public function test_it_can_load_wildcard_with_excluded_core_namespace_class()
+    {
+        Config::set('scrubber.regex_loader', ['*']);
+        Config::set('scrubber.exclude_regex', ['GoogleApi']);
+        Config::set('scrubber.custom_regex_namespaces', ['YorCreative\\Scrubber\\Tests\\Unit\\Fixtures']);
+        $this->assertCount(26, app(RegexLoaderStrategy::class)->load());
+    }
+
+    public function test_it_can_load_wildcard_with_excluded_fully_qualified_and_unresolvable_classes()
+    {
+        Config::set('scrubber.regex_loader', ['*']);
+        Config::set('scrubber.custom_regex_namespaces', ['YorCreative\\Scrubber\\Tests\\Unit\\Fixtures']);
+        Config::set('scrubber.exclude_regex', [
+            'CustomRegex',
+            'EmailAddress',
+            'YorCreative\Scrubber\RegexCollection\GoogleApi',
+            'NonExistentClass', // Unresolvable class
+            RegexCollection::$HEROKU_API_KEY,
+        ]);
+
+        $regexCollection = app(RegexLoaderStrategy::class)->load();
+        $this->assertCount(23, $regexCollection);
     }
 }
