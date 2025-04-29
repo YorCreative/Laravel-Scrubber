@@ -26,6 +26,9 @@
     </include>
     <exclude>
       <directory suffix=".php">./src/Handlers</directory>
+      <directory suffix=".php">./src/Exceptions</directory>
+      <directory suffix=".php">./src/Commands</directory>
+      <directory suffix=".php">./src/Interfaces</directory>
     </exclude>
   </source>
 </phpunit>
