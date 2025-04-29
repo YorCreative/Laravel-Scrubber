@@ -345,9 +345,13 @@ composer test
 ## Credits
 
 - [Yorda](https://github.com/yordadev)
+- [Magentron](https://github.com/Magentron)
 - [Whizboy-Arnold](https://github.com/Whizboy-Arnold)
 - [majchrosoft](https://github.com/majchrosoft)
 - [Lucaxue](https://github.com/lucaxue)
 - [AlexGodbehere](https://github.com/AlexGodbehere)
+- [JorgeAnzola](https://github.com/JorgeAnzola)
+- [Haddowg](https://github.com/haddowg)
+- [LorenzoSapora](https://github.com/LorenzoSapora)
 - [All Contributors](../../contributors)
 
