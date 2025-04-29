@@ -3,6 +3,7 @@
 namespace YorCreative\Scrubber\Tests\Unit\Strategies;
 
 use Illuminate\Support\Facades\Config;
+use PHPUnit\Framework\Attributes\Group;
 use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
 use YorCreative\Scrubber\RegexCollection\GoogleApi;
 use YorCreative\Scrubber\Repositories\RegexCollection;
@@ -10,6 +11,8 @@ use YorCreative\Scrubber\Strategies\RegexLoader\RegexLoaderStrategy;
 use YorCreative\Scrubber\Tests\TestCase;
 use YorCreative\Scrubber\Tests\Unit\Fixtures\CustomRegex;
 
+#[Group('Strategy')]
+#[Group('Unit')]
 class RegexLoaderStrategyTest extends TestCase
 {
     protected function setUp(): void
@@ -19,34 +22,24 @@ class RegexLoaderStrategyTest extends TestCase
         Config::set('scrubber.regex_loader', []);
     }
 
-    #[Group('Strategy')]
-    #[Group('Unit')]
     public function test_it_can_load_default_core()
     {
         Config::set('scrubber.regex_loader', ['*']);
         $this->assertCount(26, app(RegexLoaderStrategy::class)->load());
     }
 
-    #[Group('Strategy')]
-    #[Group('Unit')]
     public function test_it_can_load_specific_core()
     {
         Config::set('scrubber.regex_loader', [RegexCollection::$GOOGLE_API]);
-
         $this->assertCount(1, app(RegexLoaderStrategy::class)->load());
     }
 
-    #[Group('Strategy')]
-    #[Group('Unit')]
     public function test_it_can_load_specific_core_by_namespace()
     {
         Config::set('scrubber.regex_loader', [GoogleApi::class]);
-
         $this->assertCount(1, app(RegexLoaderStrategy::class)->load());
     }
 
-    #[Group('Strategy')]
-    #[Group('Unit')]
     public function test_it_can_load_specific_extended_regex()
     {
         Config::set('scrubber.regex_loader', ['CustomRegex']);
@@ -54,8 +47,6 @@ class RegexLoaderStrategyTest extends TestCase
         $this->assertCount(1, app(RegexLoaderStrategy::class)->load());
     }
 
-    #[Group('Strategy')]
-    #[Group('Unit')]
     public function test_it_can_load_specific_regex_from_core_and_extended()
     {
         Config::set('scrubber.regex_loader', [RegexCollection::$GOOGLE_API, CustomRegex::class]);
@@ -63,8 +54,6 @@ class RegexLoaderStrategyTest extends TestCase
         $this->assertCount(2, app(RegexLoaderStrategy::class)->load());
     }
 
-    #[Group('Strategy')]
-    #[Group('Unit')]
     public function test_it_can_load_specific_extended_regex_by_namespace()
     {
         Config::set('scrubber.regex_loader', [CustomRegex::class]);
@@ -72,8 +61,6 @@ class RegexLoaderStrategyTest extends TestCase
         $this->assertCount(1, app(RegexLoaderStrategy::class)->load());
     }
 
-    #[Group('Strategy')]
-    #[Group('Unit')]
     public function test_it_can_load_wildcard_extended_regex()
     {
         Config::set('scrubber.regex_loader', ['*']);
@@ -81,8 +68,6 @@ class RegexLoaderStrategyTest extends TestCase
         $this->assertCount(27, app(RegexLoaderStrategy::class)->load());
     }
 
-    #[Group('Strategy')]
-    #[Group('Unit')]
     public function test_it_can_load_wildcard_extended_regex_with_excluded_regex()
     {
         Config::set('scrubber.regex_loader', ['*']);
@@ -102,8 +87,6 @@ class RegexLoaderStrategyTest extends TestCase
         $this->assertEquals('super_secret', $regex->getPattern());
     }
 
-    #[Group('Strategy')]
-    #[Group('Unit')]
     public function test_it_can_load_config_via_key_with_wildcard()
     {
         Config::set('scrubber.config_loader', ['app.secrets.*']);
@@ -117,7 +100,6 @@ class RegexLoaderStrategyTest extends TestCase
         $this->assertEquals('super_third_secret', $regexCollection->get('config::app.secrets.nested.my_secret')->getPattern());
 
         Config::set('scrubber.config_loader', ['*secret']);
-
         $regexCollection = app(RegexLoaderStrategy::class)->load();
         $this->assertCount(3, $regexCollection);
         $this->assertEquals('super_secret', $regexCollection->get('config::app.secrets.my_secret')->getPattern());
@@ -125,8 +107,6 @@ class RegexLoaderStrategyTest extends TestCase
         $this->assertEquals('super_third_secret', $regexCollection->get('config::app.secrets.nested.my_secret')->getPattern());
     }
 
-    #[Group('Strategy')]
-    #[Group('Unit')]
     public function test_it_escapes_config_values_for_regex()
     {
         Config::set('scrubber.config_loader', ['app.my_secret']);

@@ -3,15 +3,16 @@
 namespace YorCreative\Scrubber\Tests\Unit\Repositories;
 
 use Illuminate\Support\Collection;
+use PHPUnit\Framework\Attributes\Group;
 use ReflectionClass;
 use YorCreative\Scrubber\Repositories\RegexCollection;
 use YorCreative\Scrubber\Repositories\RegexRepository;
 use YorCreative\Scrubber\Tests\TestCase;
 
+#[Group('RegexRepository')]
+#[Group('Unit')]
 class RegexCollectionTest extends TestCase
 {
-    #[Group('RegexRepository')]
-    #[Group('Unit')]
     public function test_it_can_verify_that_every_regex_class_available_is_a_static_property_on_regex_collection()
     {
         $class = new ReflectionClass(RegexCollection::class);

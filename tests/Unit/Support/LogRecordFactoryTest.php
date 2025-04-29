@@ -3,9 +3,12 @@
 namespace YorCreative\Scrubber\Tests\Unit\Support;
 
 use Carbon\Carbon;
+use PHPUnit\Framework\Attributes\Group;
 use YorCreative\Scrubber\Support\LogRecordFactory;
 use YorCreative\Scrubber\Tests\TestCase;
 
+#[Group('LogRecord')]
+#[Group('Unit')]
 class LogRecordFactoryTest extends TestCase
 {
     public function test_it_can_to_array_log_record()

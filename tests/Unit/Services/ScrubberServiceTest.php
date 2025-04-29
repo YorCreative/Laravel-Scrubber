@@ -2,6 +2,7 @@
 
 namespace YorCreative\Scrubber\Tests\Unit\Services;
 
+use PHPUnit\Framework\Attributes\Group;
 use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
 use YorCreative\Scrubber\Repositories\RegexRepository;
 use YorCreative\Scrubber\Services\ScrubberService;

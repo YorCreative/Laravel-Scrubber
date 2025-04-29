@@ -3,13 +3,14 @@
 namespace YorCreative\Scrubber\Tests\Unit\Repositories;
 
 use Illuminate\Support\Collection;
+use PHPUnit\Framework\Attributes\Group;
 use YorCreative\Scrubber\Repositories\RegexRepository;
 use YorCreative\Scrubber\Tests\TestCase;
 
+#[Group('RegexRepository')]
+#[Group('Unit')]
 class RegexRepositoryTest extends TestCase
 {
-    #[Group('RegexRepository')]
-    #[Group('Unit')]
     public function test_it_can_verify_that_all_regex_patterns_have_testable_counter_parts()
     {
         app(RegexRepository::class)->getRegexCollection()->each(function ($regexClass) {
@@ -24,8 +25,6 @@ class RegexRepositoryTest extends TestCase
         });
     }
 
-    #[Group('RegexRepository')]
-    #[Group('Unit')]
     public function test_it_can_sanitize_a_string_with_multiple_sensitive_pieces()
     {
         $hits = 0;
@@ -47,15 +46,11 @@ class RegexRepositoryTest extends TestCase
         $this->assertEquals(2, $hits);
     }
 
-    #[Group('RegexRepository')]
-    #[Group('Unit')]
     public function test_it_can_receive_a_collection()
     {
         $this->assertInstanceOf(Collection::class, app(RegexRepository::class)->getRegexCollection());
     }
 
-    #[Group('RegexRepository')]
-    #[Group('Unit')]
     public function test_it_can_check_hits()
     {
         $content = app(RegexRepository::class)->getRegexCollection()->get('google_api')->getTestableString()
