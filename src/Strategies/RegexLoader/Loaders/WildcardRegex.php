@@ -50,7 +50,7 @@ class WildcardRegex extends NamespaceLoader
                 return $regex === $class;
             });
 
-            if (!empty($regexPatterns)) {
+            if (! empty($regexPatterns)) {
                 return "YorCreative\\Scrubber\\RegexCollection\\$class";
             }
 
