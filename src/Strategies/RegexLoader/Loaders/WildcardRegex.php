@@ -46,13 +46,12 @@ class WildcardRegex extends NamespaceLoader
         $regexCollectionArray = $reflection->getStaticProperties();
 
         return array_map(function ($class) use ($regexCollectionArray) {
-
-            $regexPattern = array_find($regexCollectionArray, function ($regex) use ($class) {
+            $regexPatterns = array_filter($regexCollectionArray, function ($regex) use ($class) {
                 return $regex === $class;
             });
 
-            if ($regexPattern) {
-                return "YorCreative\\Scrubber\\RegexCollection\\$regexPattern";
+            if (!empty($regexPatterns)) {
+                return "YorCreative\\Scrubber\\RegexCollection\\$class";
             }
 
             // If the class is unqualified, attempt to resolve within custom namespaces
