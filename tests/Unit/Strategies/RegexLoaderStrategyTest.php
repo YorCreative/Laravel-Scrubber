@@ -87,6 +87,7 @@ class RegexLoaderStrategyTest extends TestCase
     {
         Config::set('scrubber.regex_loader', ['*']);
         Config::set('scrubber.exclude_regex', [RegexCollection::$HEROKU_API_KEY]);
+        Config::set('scrubber.custom_regex_namespaces', ['YorCreative\\Scrubber\\Tests\\Unit\\Fixtures']);
         $this->assertCount(26, app(RegexLoaderStrategy::class)->load());
     }
 
