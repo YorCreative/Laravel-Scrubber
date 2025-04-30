@@ -2,13 +2,14 @@
 
 namespace YorCreative\Scrubber\Tests\Unit\Strategies;
 
+use PHPUnit\Framework\Attributes\Group;
 use YorCreative\Scrubber\Strategies\TapLoader\TapLoaderStrategy;
 use YorCreative\Scrubber\Tests\TestCase;
 
+#[Group('Strategy')]
+#[Group('Unit')]
 class TapLoaderStrategyTest extends TestCase
 {
-    #[Group('Strategy')]
-    #[Group('Unit')]
     public function test_it_can_load_wildcard_channels_and_tap()
     {
         $config = app()->make('config');
@@ -22,8 +23,6 @@ class TapLoaderStrategyTest extends TestCase
         }
     }
 
-    #[Group('Strategy')]
-    #[Group('Unit')]
     public function test_it_can_load_specific_channel_and_tap()
     {
         $config = app()->make('config');
@@ -36,8 +35,6 @@ class TapLoaderStrategyTest extends TestCase
         $this->assertArrayNotHasKey('tap', $config->get('logging.channels.papertrail'));
     }
 
-    #[Group('Strategy')]
-    #[Group('Unit')]
     public function test_it_can_load_multiple_channels_and_tap()
     {
         $config = app()->make('config');

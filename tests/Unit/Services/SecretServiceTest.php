@@ -2,11 +2,14 @@
 
 namespace YorCreative\Scrubber\Tests\Unit\Services;
 
+use PHPUnit\Framework\Attributes\Group;
 use YorCreative\Scrubber\SecretManager\Providers\Gitlab;
 use YorCreative\Scrubber\SecretManager\Secret;
 use YorCreative\Scrubber\SecretManager\SecretManager;
 use YorCreative\Scrubber\Tests\TestCase;
 
+#[Group('SecretService')]
+#[Group('Unit')]
 class SecretServiceTest extends TestCase
 {
     public function test_it_can_load_secrets_from_gitlab()

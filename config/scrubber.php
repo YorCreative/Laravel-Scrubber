@@ -37,6 +37,26 @@ return [
     'regex_loader' => ['*'],
 
     /**
+     * Specify regex patterns to exclude from loading when using the regex loader
+     * This allows fine-grained control over which regex patterns are loaded, especially useful when using wildcard (*) in regex_loader
+     *
+     * You can exclude patterns using any of these formats:
+     * - Fully qualified class name (e.g., 'YorCreative\Scrubber\RegexCollection\GoogleApi')
+     * - Base class name (e.g., 'GoogleApi', 'EmailAddress')
+     * - Pattern constant from RegexCollection (e.g., RegexCollection::$GOOGLE_API)
+     * - Custom namespace class (e.g., 'App\Scrubber\RegexCollection\HerokuApiKey')
+     *
+     * Example:
+     * [
+     *     'GoogleApi',
+     *     'YorCreative\Scrubber\RegexCollection\EmailAddress',
+     *     RegexCollection::$HEROKU_API_KEY,
+     *     'App\Scrubber\RegexCollection\HerokuApiKey'
+     * ]
+     */
+    'exclude_regex' => [],
+
+    /**
      * Specify namespaces from which regexes will be loaded when using the wildcard (*)
      * for the regex_loader or where you use unqualified class names.
      */

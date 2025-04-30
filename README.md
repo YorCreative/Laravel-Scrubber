@@ -73,6 +73,27 @@ return [
      * which will then search the `custom_regex_namespaces` and the default core regexes for a match.
      */
     'regex_loader' => ['*'],
+    
+    /**
+     * Specify regex patterns to exclude from loading when using the regex loader
+     * This allows fine-grained control over which regex patterns are loaded, especially useful when using wildcard (*) in regex_loader
+     * 
+     * You can exclude patterns using any of these formats:
+     * - Fully qualified class name (e.g., 'YorCreative\Scrubber\RegexCollection\GoogleApi')
+     * - Base class name (e.g., 'GoogleApi', 'EmailAddress')
+     * - Pattern constant from RegexCollection (e.g., RegexCollection::$GOOGLE_API)
+     * - Custom namespace class (e.g., 'App\Scrubber\RegexCollection\HerokuApiKey')
+     * 
+     * Example:
+     * [
+     *     'GoogleApi',
+     *     'YorCreative\Scrubber\RegexCollection\EmailAddress',
+     *     RegexCollection::$HEROKU_API_KEY,
+     *     'App\Scrubber\RegexCollection\HerokuApiKey'
+     * ]
+     */
+    'exclude_regex' => [],
+
 
     /**
      * Specify namespaces from which regexes will be loaded when using the wildcard (*)
@@ -257,6 +278,34 @@ The `regex_loader` array should be defined as such:
         'TestRegex'
     ],
 ```
+### RegexCollection & Defining Opt-out
+
+When using wildcard loading (`'regex_loader' => ['*']`), you can exclude specific regex patterns using the `exclude_regex` configuration. This allows you to load all patterns except those explicitly excluded.
+
+```php
+'exclude_regex' => [
+    // Exclude by base class name
+    'GoogleApi',
+    
+    // Exclude by fully qualified class name
+    'YorCreative\Scrubber\RegexCollection\EmailAddress',
+    
+    // Exclude using RegexCollection constant
+    RegexCollection::$HEROKU_API_KEY,
+    
+    // Exclude from custom namespace
+    'App\Scrubber\RegexCollection\HerokuApiKey'
+],
+```
+
+The exclude_regex configuration supports multiple formats for excluding patterns:
+- Base class names (e.g., 'GoogleApi')
+- Fully qualified class names
+- RegexCollection constants
+- Custom namespace classes
+
+This is particularly useful when you want to use most patterns but need to exclude a few specific ones from your scrubbing process.
+
 
 ## About the Scrubber
 
@@ -296,9 +345,13 @@ composer test
 ## Credits
 
 - [Yorda](https://github.com/yordadev)
+- [Magentron](https://github.com/Magentron)
 - [Whizboy-Arnold](https://github.com/Whizboy-Arnold)
 - [majchrosoft](https://github.com/majchrosoft)
 - [Lucaxue](https://github.com/lucaxue)
 - [AlexGodbehere](https://github.com/AlexGodbehere)
+- [JorgeAnzola](https://github.com/JorgeAnzola)
+- [Haddowg](https://github.com/haddowg)
+- [LorenzoSapora](https://github.com/LorenzoSapora)
 - [All Contributors](../../contributors)
 

@@ -3,6 +3,7 @@
 namespace YorCreative\Scrubber\Tests\Unit\Strategies;
 
 use Carbon\Carbon;
+use PHPUnit\Framework\Attributes\Group;
 use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\ContentProcessingStrategy;
 use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\Handlers\ArrayContentHandler;
 use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\Handlers\LogRecordContentHandler;
@@ -10,6 +11,8 @@ use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\Handlers\StringCon
 use YorCreative\Scrubber\Support\LogRecordFactory;
 use YorCreative\Scrubber\Tests\TestCase;
 
+#[Group('Strategy')]
+#[Group('Unit')]
 class ContentProcessingStrategyTest extends TestCase
 {
     protected ContentProcessingStrategy $strategy;

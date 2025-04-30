@@ -8,9 +8,11 @@ use YorCreative\Scrubber\Repositories\RegexRepository;
 use YorCreative\Scrubber\Scrubber;
 use YorCreative\Scrubber\Tests\TestCase;
 
+#[Group('RegexRepository')]
+#[Group('LogRecord')]
+#[Group('Feature')]
 class ScrubMessageTest extends TestCase
 {
-    #[Group('Feature')]
     public function test_it_can_detect_a_single_piece_of_sensitive_data_and_sanitize_it()
     {
         $message = 'Something something, here is the slack token {slack_token}';
@@ -28,7 +30,6 @@ class ScrubMessageTest extends TestCase
         $this->assertEquals($expected, $sanitizedMessage);
     }
 
-    #[Group('Feature')]
     public function test_it_can_detect_a_multiple_pieces_of_sensitive_data_and_sanitize_them()
     {
         $message = 'here is the slack token {slack_token} and the google api token {google_api}';
