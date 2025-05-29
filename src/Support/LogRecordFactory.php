@@ -137,6 +137,7 @@ class LogRecordFactory
                     // @codeCoverageIgnore
                     $args['level'] = Level::from($args['level']);
                 }
+
                 return new self(
                     $args['datetime'],
                     $args['channel'],
