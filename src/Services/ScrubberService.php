@@ -13,10 +13,13 @@ class ScrubberService
     public static function encodeRecord($record): string
     {
         if (is_array($record)) {
-            return json_encode($record);
-        } else {
-            return $record;
+            $json = json_encode($record);
+
+            return $json === false ? '' : $json;
         }
+
+        // Ensure non-array inputs are strings
+        return (string) $record;
     }
 
     public static function decodeRecord($scrubbedContent): mixed

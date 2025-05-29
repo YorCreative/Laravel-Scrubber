@@ -3,3 +3,4 @@
 /vendor
 .idea
 .phpunit.cache/test-results
+.DS_Store
