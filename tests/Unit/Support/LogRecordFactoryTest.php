@@ -7,15 +7,14 @@ use InvalidArgumentException;
 use Monolog\Level;
 use Monolog\Logger;
 use Monolog\LogRecord;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use YorCreative\Scrubber\Support\LogRecordFactory;
 
+#[Group('Unit')]
 class LogRecordFactoryTest extends TestCase
 {
-    /**
-     * Test that buildRecord returns a LogRecord instance when LogRecord class exists.
-     */
     public function test_build_record_with_existing_log_record_class()
     {
         $datetime = new DateTimeImmutable;
@@ -91,10 +90,6 @@ class LogRecordFactoryTest extends TestCase
         LogRecordFactory::$useAnonymous = false;
     }
 
-    /**
-     * Test that buildRecord throws RuntimeException when LogRecord is neither a class nor an interface.
-     * Note: This test is skipped if LogRecord class exists in the environment.
-     */
     public function test_build_record_throws_exception_when_log_record_not_found()
     {
         if (class_exists(LogRecord::class)) {

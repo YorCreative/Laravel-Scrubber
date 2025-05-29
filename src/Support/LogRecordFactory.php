@@ -97,6 +97,7 @@ class LogRecordFactory
                 if (! is_string($offset)) {
                     $offset = json_encode($offset);
                 }
+
                 throw new LogicException('Unsupported operation '.$offset);
             }
 
@@ -108,6 +109,7 @@ class LogRecordFactory
                 if ($offset === 'level_name') {
                     $offset = 'levelName';
                 }
+
                 if (isset(self::MODIFIABLE_FIELDS[$offset])) {
                     return $this->{$offset};
                 }
@@ -121,7 +123,7 @@ class LogRecordFactory
                     'message' => $this->message,
                     'context' => $this->context,
                     'level' => $this->level->value,
-                    'level_name' => $this->level->getName(), // Updated to direct call
+                    'level_name' => $this->level->getName(),
                     'channel' => $this->channel,
                     'datetime' => $this->datetime,
                     'extra' => $this->extra,
@@ -133,10 +135,12 @@ class LogRecordFactory
                 foreach (['datetime', 'channel', 'level', 'message', 'context', 'extra'] as $prop) {
                     $args[$prop] ??= $this->$prop;
                 }
+
                 if (is_int($args['level'])) {
                     // @codeCoverageIgnore
                     $args['level'] = Level::from($args['level']);
                 }
+
                 return new self(
                     $args['datetime'],
                     $args['channel'],
