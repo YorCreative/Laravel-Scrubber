@@ -11,14 +11,16 @@ trait ProcessArrayTrait
         foreach ($content as $key => $value) {
             if ($value !== null) {
                 if (is_array($value)) {
-                    $content[$key] = $this->processArray($value);
+                    $content[$key] = $this->processArrayRecursively($value);
                 } elseif (is_object($value) && ! method_exists($value, '__toString')) {
-                    $content[$key] = $this->processArray((array) $value);
+                    $content[$key] = $this->processArrayRecursively((array) $value);
                 } else {
                     $value = (string) $value;
-
-                    ScrubberService::autoSanitize($value);
-
+                    try {
+                        ScrubberService::autoSanitize($value);
+                    } catch (\Exception $e) {
+                        // Skip sanitization for this value to prevent breaking the array
+                    }
                     $content[$key] = $value;
                 }
             }
@@ -35,8 +37,22 @@ trait ProcessArrayTrait
             return $this->processArrayRecursively($content);
         }
 
-        ScrubberService::autoSanitize($jsonContent);
+        try {
+            ScrubberService::autoSanitize($jsonContent);
 
-        return ScrubberService::decodeRecord($jsonContent);
+        } catch (\Exception $e) {
+            return $this->processArrayRecursively($content);
+        }
+
+        if (! is_string($jsonContent)) {
+            return $this->processArrayRecursively($content);
+        }
+
+        $decoded = ScrubberService::decodeRecord($jsonContent);
+        if ($decoded === null) {
+            return $this->processArrayRecursively($content);
+        }
+
+        return $decoded;
     }
 }

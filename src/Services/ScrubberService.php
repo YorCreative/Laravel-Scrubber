@@ -49,22 +49,25 @@ class ScrubberService
                 ? Secret::decrypt($regexClass->getPattern())
                 : $regexClass->getPattern();
 
-            if (method_exists($regexClass, 'getReplacementValue')) {
-                // Check if getReplacementValue() exists on the regex class and if it does, use it.
-                $replace = $regexClass->getReplacementValue();
-            } else {
-                // Otherwise, use the default replacement pattern.
-                $replace = config('scrubber.redaction');
-            }
+            $replace = method_exists($regexClass, 'getReplacementValue')
+                ? $regexClass->getReplacementValue()
+                : config('scrubber.redaction');
 
-            self::patternChecker($pattern, $jsonContent, $replace);
+            try {
+                self::patternChecker($pattern, $jsonContent, $replace);
+            } catch (\Exception $e) {
+                // Skip this regex $pattern to prevent breaking the autoSanitizer loop.
+            }
         });
     }
 
     protected static function patternChecker(string $regexPattern, string &$jsonContent, string $replace): void
     {
         $hits = 0;
-        $jsonContent = RegexRepository::checkAndSanitize($regexPattern, $replace, $jsonContent, $hits);
+        $result = RegexRepository::checkAndSanitize($regexPattern, $replace, $jsonContent, $hits);
+        if (! is_null($result)) {
+            $jsonContent = $result;
+        }
 
         /**
          * @todo
