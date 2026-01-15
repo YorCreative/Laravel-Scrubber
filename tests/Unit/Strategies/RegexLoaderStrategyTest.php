@@ -25,7 +25,7 @@ class RegexLoaderStrategyTest extends TestCase
     public function test_it_can_load_default_core()
     {
         Config::set('scrubber.regex_loader', ['*']);
-        $this->assertCount(26, app(RegexLoaderStrategy::class)->load());
+        $this->assertCount(31, app(RegexLoaderStrategy::class)->load());
     }
 
     public function test_it_can_load_specific_core()
@@ -65,7 +65,7 @@ class RegexLoaderStrategyTest extends TestCase
     {
         Config::set('scrubber.regex_loader', ['*']);
         Config::set('scrubber.custom_regex_namespaces', ['YorCreative\\Scrubber\\Tests\\Unit\\Fixtures']);
-        $this->assertCount(27, app(RegexLoaderStrategy::class)->load());
+        $this->assertCount(32, app(RegexLoaderStrategy::class)->load());
     }
 
     public function test_it_can_load_wildcard_extended_regex_with_excluded_regex()
@@ -73,7 +73,7 @@ class RegexLoaderStrategyTest extends TestCase
         Config::set('scrubber.regex_loader', ['*']);
         Config::set('scrubber.exclude_regex', [RegexCollection::$HEROKU_API_KEY]);
         Config::set('scrubber.custom_regex_namespaces', ['YorCreative\\Scrubber\\Tests\\Unit\\Fixtures']);
-        $this->assertCount(26, app(RegexLoaderStrategy::class)->load());
+        $this->assertCount(31, app(RegexLoaderStrategy::class)->load());
     }
 
     public function test_it_can_load_config_via_specific_key()
@@ -121,7 +121,7 @@ class RegexLoaderStrategyTest extends TestCase
         Config::set('scrubber.regex_loader', ['*']);
         Config::set('scrubber.exclude_regex', ['GoogleApi']);
         Config::set('scrubber.custom_regex_namespaces', ['YorCreative\\Scrubber\\Tests\\Unit\\Fixtures']);
-        $this->assertCount(26, app(RegexLoaderStrategy::class)->load());
+        $this->assertCount(31, app(RegexLoaderStrategy::class)->load());
     }
 
     public function test_it_can_load_wildcard_with_excluded_fully_qualified_and_unresolvable_classes()
@@ -137,6 +137,6 @@ class RegexLoaderStrategyTest extends TestCase
         ]);
 
         $regexCollection = app(RegexLoaderStrategy::class)->load();
-        $this->assertCount(23, $regexCollection);
+        $this->assertCount(28, $regexCollection);
     }
 }

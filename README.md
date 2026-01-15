@@ -19,6 +19,11 @@
 A Laravel package to scrub sensitive information that breaks operational security policies from being leaked on
 accident ~~_or not_~~ by developers.
 
+## Requirements
+
+- PHP 8.1, 8.2, 8.3, 8.4, or 8.5
+- Laravel 10.x, 11.x, or 12.x
+
 ## Installation
 
 install the package via composer:
@@ -171,6 +176,27 @@ Scrubber::processMessage('<insert jwt token here>');
 // **redacted**
 ```
 
+### Detection Statistics API
+
+Track what patterns are matching and how often:
+
+```php
+// Get scrubbing statistics for the current request
+$stats = Scrubber::getStats();
+// ['total_scrubs' => 5, 'patterns_matched' => ['JsonWebToken' => 2, 'EmailAddress' => 3]]
+
+// Test a string without modifying stats - useful for debugging
+$result = Scrubber::test('Contact: john@example.com, SSN: 123-45-6789');
+// [
+//     'matched' => true,
+//     'patterns' => ['EmailAddress' => 1, 'SocialSecurityNumber' => 1],
+//     'scrubbed' => 'Contact: **redacted**, SSN: ***-**-****'
+// ]
+
+// Reset statistics between requests
+Scrubber::resetStats();
+```
+
 ## Log Channel Opt-in
 
 This package provides you the ability to define through the configuration file what channels you want to scrub
@@ -213,6 +239,28 @@ class.
         RegexCollection::$CREDIT_CARD_VISA,
         RegexCollection::$JSON_WEB_TOKEN
     ],
+```
+
+> **Note**: The package includes 31 built-in patterns. See all available patterns in [RegexCollection.php](https://github.com/YorCreative/Laravel-Scrubber/blob/main/src/Repositories/RegexCollection.php).
+
+### PII Detection with Partial Masking
+
+The following patterns use contextual replacement values for improved readability instead of the generic `**redacted**`:
+
+| Pattern | Detects | Masked Output |
+|---------|---------|---------------|
+| `RegexCollection::$SOCIAL_SECURITY_NUMBER` | US Social Security Numbers | `***-**-****` |
+| `RegexCollection::$PHONE_NUMBER` | Phone numbers (US/International) | `(***) ***-****` |
+| `RegexCollection::$IP_ADDRESS_V4` | IPv4 addresses | `***.***.***.***` |
+| `RegexCollection::$IP_ADDRESS_V6` | IPv6 addresses | `****:****:****:...` |
+| `RegexCollection::$IBAN` | International Bank Account Numbers | `********************` |
+
+```php
+Scrubber::processMessage('SSN: 123-45-6789, Phone: (555) 123-4567');
+// "SSN: ***-**-****, Phone: (***) ***-****"
+
+Scrubber::processMessage('Server IP: 192.168.1.1');
+// "Server IP: ***.***.***.***"
 ```
 
 ### Opting Into Custom Extended Classes

@@ -23,7 +23,7 @@ use YorCreative\Scrubber\Strategies\TapLoader\TapLoaderStrategy;
 
 class ScrubberServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(dirname(__DIR__, 1).'/config/scrubber.php', 'scrubber');
 
@@ -36,7 +36,7 @@ class ScrubberServiceProvider extends ServiceProvider
         ]);
     }
 
-    public function boot()
+    public function boot(): void
     {
         if (Config::get('scrubber.secret_manager.enabled')
             && Config::get('scrubber.secret_manager.providers.gitlab.enabled')
