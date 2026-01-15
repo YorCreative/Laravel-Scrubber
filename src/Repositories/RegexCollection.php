@@ -55,4 +55,14 @@ class RegexCollection
     public static string $TWILIO_APP_SID = 'TwilioAppSid';
 
     public static string $EMAIL_ADDRESS = 'EmailAddress';
+
+    public static string $SOCIAL_SECURITY_NUMBER = 'SocialSecurityNumber';
+
+    public static string $PHONE_NUMBER = 'PhoneNumber';
+
+    public static string $IP_ADDRESS_V4 = 'IpAddressV4';
+
+    public static string $IP_ADDRESS_V6 = 'IpAddressV6';
+
+    public static string $IBAN = 'Iban';
 }
