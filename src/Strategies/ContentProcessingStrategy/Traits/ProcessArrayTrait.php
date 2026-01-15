@@ -9,19 +9,26 @@ trait ProcessArrayTrait
     public function processArrayRecursively(array $content): array
     {
         foreach ($content as $key => $value) {
-            if ($value !== null) {
-                if (is_array($value)) {
-                    $content[$key] = $this->processArrayRecursively($value);
-                } elseif (is_object($value) && ! method_exists($value, '__toString')) {
-                    $content[$key] = $this->processArrayRecursively((array) $value);
-                } else {
-                    $value = (string) $value;
-                    try {
-                        ScrubberService::autoSanitize($value);
-                    } catch (\Exception $e) {
-                        // Skip sanitization for this value to prevent breaking the array
+            if ($value === null) {
+                continue;
+            }
+
+            if (is_array($value)) {
+                $content[$key] = $this->processArrayRecursively($value);
+            } elseif (is_object($value) && ! method_exists($value, '__toString')) {
+                $content[$key] = $this->processArrayRecursively((array) $value);
+            } else {
+                $stringValue = (string) $value;
+                try {
+                    ScrubberService::autoSanitize($stringValue);
+                    $content[$key] = $stringValue;
+                } catch (\Exception $e) {
+                    if (config('app.debug')) {
+                        logger()->debug('Scrubber: failed to sanitize value', [
+                            'key' => $key,
+                            'error' => $e->getMessage(),
+                        ]);
                     }
-                    $content[$key] = $value;
                 }
             }
         }
@@ -32,24 +39,28 @@ trait ProcessArrayTrait
     public function processArray(array $content): array
     {
         $jsonContent = ScrubberService::encodeRecord($content);
+
+        // Failed to convert array to JSON, process recursively
         if ($jsonContent === '') {
-            // failed to convert array to JSON, so process array recursively
             return $this->processArrayRecursively($content);
         }
 
         try {
             ScrubberService::autoSanitize($jsonContent);
-
         } catch (\Exception $e) {
-            return $this->processArrayRecursively($content);
-        }
+            if (config('app.debug')) {
+                logger()->debug('Scrubber: array sanitization failed, falling back to recursive', [
+                    'error' => $e->getMessage(),
+                ]);
+            }
 
-        if (! is_string($jsonContent)) {
             return $this->processArrayRecursively($content);
         }
 
         $decoded = ScrubberService::decodeRecord($jsonContent);
-        if ($decoded === null) {
+
+        // If decoding failed, fall back to recursive processing
+        if (! is_array($decoded)) {
             return $this->processArrayRecursively($content);
         }
 
