@@ -3,6 +3,7 @@
 namespace YorCreative\Scrubber\Strategies\RegexLoader\Loaders;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
 use YorCreative\Scrubber\SecretManager\Secret;
 use YorCreative\Scrubber\Services\SecretService;
@@ -17,13 +18,17 @@ class SecretLoader implements LoaderInterface
 
     public function load(Collection &$regexCollection): void
     {
-        $providers = SecretService::getEnabledProviders();
-        $secrets = SecretService::loadSecrets($providers);
-        $secrets->each(function ($secret) use (&$regexCollection) {
-            $regexCollection = $regexCollection->merge([
-                $secret->getKey() => self::generateRegexClassForSecret($secret), ]
-            );
-        });
+        try {
+            $providers = SecretService::getEnabledProviders();
+            $secrets = SecretService::loadSecrets($providers);
+            $secrets->each(function ($secret) use (&$regexCollection) {
+                $regexCollection = $regexCollection->merge([
+                    $secret->getKey() => self::generateRegexClassForSecret($secret), ]
+                );
+            });
+        } catch (\Throwable $e) {
+            Log::warning('Scrubber: Failed to load secrets for scrubbing: '.$e->getMessage());
+        }
     }
 
     protected static function generateRegexClassForSecret(Secret $secret): RegexCollectionInterface

@@ -25,6 +25,61 @@ return [
                  */
                 'keys' => ['*'],
             ],
+            'aws' => [
+                /**
+                 * Enable the AWS Secrets Manager provider
+                 * Requires: composer require aws/aws-sdk-php
+                 */
+                'enabled' => false,
+                'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+                'version' => 'latest',
+                /**
+                 * AWS credentials (optional - falls back to default credential chain)
+                 * The SDK will automatically use:
+                 * - Environment variables (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+                 * - IAM instance profile (EC2)
+                 * - ECS task role
+                 * - Web identity token (EKS)
+                 */
+                'credentials' => [
+                    'key' => env('AWS_ACCESS_KEY_ID'),
+                    'secret' => env('AWS_SECRET_ACCESS_KEY'),
+                ],
+                /**
+                 * `*` will grab all secrets, or specify an array of secret names/ARNs
+                 */
+                'keys' => ['*'],
+            ],
+            'vault' => [
+                /**
+                 * Enable the HashiCorp Vault provider
+                 * Uses REST API directly - no additional dependencies required
+                 */
+                'enabled' => false,
+                'host' => env('VAULT_ADDR', 'http://127.0.0.1:8200'),
+                'token' => env('VAULT_TOKEN'),
+                /**
+                 * Vault namespace (Enterprise feature, optional)
+                 */
+                'namespace' => env('VAULT_NAMESPACE'),
+                /**
+                 * KV secrets engine mount path
+                 */
+                'engine' => env('VAULT_ENGINE', 'secret'),
+                /**
+                 * Base path within the engine to read secrets from
+                 */
+                'path' => env('VAULT_PATH', ''),
+                /**
+                 * KV engine version (1 or 2)
+                 */
+                'version' => env('VAULT_KV_VERSION', 2),
+                /**
+                 * `*` will recursively grab all secrets at the path,
+                 * or specify an array of specific secret paths
+                 */
+                'keys' => ['*'],
+            ],
         ],
     ],
 
