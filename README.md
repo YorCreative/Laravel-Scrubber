@@ -54,20 +54,12 @@ return [
         'cipher' => 'AES-256-CBC',
         'enabled' => false,
         'providers' => [
-            'gitlab' => [
-                /**
-                 * Enable the GitLab secret manager
-                 */
-                'enabled' => false,
-                'project_id' => env('GITLAB_PROJECT_ID'),
-                'token' => env('GITLAB_TOKEN'),
-                'host' => 'https://gitlab.com',
-                /**
-                 * `*` will grab all the secrets, if you want specific variables
-                 * define the keys in an array
-                 */
-                'keys' => ['*'],
-            ],
+            // See "Secret Manager Providers" section for full configuration options
+            'gitlab' => ['enabled' => false, /* ... */],
+            'aws' => ['enabled' => false, /* ... */],
+            'vault' => ['enabled' => false, /* ... */],
+            'azure' => ['enabled' => false, /* ... */],
+            'google' => ['enabled' => false, /* ... */],
         ],
     ],
 
@@ -366,11 +358,130 @@ For enhanced application security, all secrets pulled, from any provider, are en
 detection. You can see this in
 action [here](https://github.com/YorCreative/Laravel-Scrubber/blob/main/src/Services/ScrubberService.php#L45).
 
-### Gitlab Integration
+### Secret Manager Providers
 
-To utilize the Gitlab Integration, you will need to enable the `secret_manager` and the `gitlab` provider in the
-Configuration file. If you are looking for information on how to add secrets in Gitlab. There is an article
-on [adding project variables](https://docs.gitlab.com/ee/ci/variables/#add-a-cicd-variable-to-a-project).
+Laravel Scrubber supports pulling secrets from multiple external secret management services. This allows you to detect and sanitize secrets without needing exact regex patterns - if a value matches a secret from your vault, it gets scrubbed.
+
+To enable secret managers, set `secret_manager.enabled` to `true` in your config and enable one or more providers.
+
+#### GitLab CI/CD Variables
+
+Pull secrets from GitLab project variables.
+
+```php
+'gitlab' => [
+    'enabled' => true,
+    'project_id' => env('GITLAB_PROJECT_ID'),
+    'token' => env('GITLAB_TOKEN'),
+    'host' => 'https://gitlab.com', // Or your self-hosted GitLab URL
+    'keys' => ['*'], // Or specific variable names: ['DB_PASSWORD', 'API_KEY']
+],
+```
+
+See GitLab's documentation on [adding project variables](https://docs.gitlab.com/ee/ci/variables/#add-a-cicd-variable-to-a-project).
+
+#### AWS Secrets Manager
+
+Pull secrets from AWS Secrets Manager. Requires the AWS SDK.
+
+```bash
+composer require aws/aws-sdk-php
+```
+
+```php
+'aws' => [
+    'enabled' => true,
+    'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+    'version' => 'latest',
+    'credentials' => [
+        'key' => env('AWS_ACCESS_KEY_ID'),
+        'secret' => env('AWS_SECRET_ACCESS_KEY'),
+    ],
+    'keys' => ['*'], // Or specific secret names/ARNs
+],
+```
+
+The AWS SDK automatically uses the default credential chain (environment variables, IAM roles, ECS task roles, etc.) when credentials are not explicitly provided.
+
+#### HashiCorp Vault
+
+Pull secrets from HashiCorp Vault using REST API. No additional dependencies required.
+
+```php
+'vault' => [
+    'enabled' => true,
+    'host' => env('VAULT_ADDR', 'http://127.0.0.1:8200'),
+    'token' => env('VAULT_TOKEN'),
+    'namespace' => env('VAULT_NAMESPACE'), // Enterprise feature (optional)
+    'engine' => env('VAULT_ENGINE', 'secret'), // KV engine mount path
+    'path' => env('VAULT_PATH', ''), // Base path within the engine
+    'version' => env('VAULT_KV_VERSION', 2), // KV engine version (1 or 2)
+    'keys' => ['*'], // Or specific secret paths
+],
+```
+
+#### Azure Key Vault
+
+Pull secrets from Azure Key Vault using REST API. No additional dependencies required.
+
+```php
+'azure' => [
+    'enabled' => true,
+    'vault_url' => env('AZURE_VAULT_URL'), // https://my-vault.vault.azure.net
+    // Authentication options (in order of precedence):
+    // Option 1: Direct access token
+    'access_token' => env('AZURE_VAULT_ACCESS_TOKEN'),
+    // Option 2: Client credentials (service principal)
+    'tenant_id' => env('AZURE_TENANT_ID'),
+    'client_id' => env('AZURE_CLIENT_ID'),
+    'client_secret' => env('AZURE_CLIENT_SECRET'),
+    'keys' => ['*'], // Or specific secret names
+],
+```
+
+**Authentication methods** (in order of precedence):
+1. **Direct access token** - For testing or short-lived tokens
+2. **Managed Identity** - Auto-detected when running in Azure (App Service, Functions, VMs)
+3. **Client credentials** - Service principal with tenant_id, client_id, client_secret
+
+#### Google Cloud Secret Manager
+
+Pull secrets from Google Cloud Secret Manager using REST API. No additional dependencies required.
+
+```php
+'google' => [
+    'enabled' => true,
+    'project_id' => env('GOOGLE_CLOUD_PROJECT'),
+    'access_token' => env('GOOGLE_SECRET_MANAGER_TOKEN'), // Optional
+    'keys' => ['*'], // Or specific secret names
+],
+```
+
+**Authentication methods** (in order of precedence):
+1. **Direct access token** - For testing or when running outside GCP
+2. **Application Default Credentials** - Auto-detected when running in GCP (Compute Engine, Cloud Run, GKE, Cloud Functions)
+
+When running on GCP, leave `access_token` empty to use ADC automatically.
+
+#### JSON Secret Values
+
+All providers support JSON-formatted secret values. Nested values are automatically flattened:
+
+```json
+// Secret named "database-config" with value:
+{
+  "host": "db.example.com",
+  "credentials": {
+    "username": "admin",
+    "password": "secret123"
+  }
+}
+```
+
+This creates three scrubber patterns:
+- `database-config.host` → `db.example.com`
+- `database-config.credentials.username` → `admin`
+- `database-config.credentials.password` → `secret123`
 
 ## Extending the Scrubber
 

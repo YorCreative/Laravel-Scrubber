@@ -80,6 +80,55 @@ return [
                  */
                 'keys' => ['*'],
             ],
+            'azure' => [
+                /**
+                 * Enable the Azure Key Vault provider
+                 * Uses REST API directly - no additional dependencies required
+                 *
+                 * Authentication (in order of precedence):
+                 * 1. Direct access_token
+                 * 2. Managed Identity (auto-detected in Azure environments)
+                 * 3. Client credentials (tenant_id, client_id, client_secret)
+                 */
+                'enabled' => false,
+                'vault_url' => env('AZURE_VAULT_URL'), // https://my-vault.vault.azure.net
+                /**
+                 * Option 1: Direct access token (for testing or short-lived tokens)
+                 */
+                'access_token' => env('AZURE_VAULT_ACCESS_TOKEN'),
+                /**
+                 * Option 2: Client credentials for service principal authentication
+                 */
+                'tenant_id' => env('AZURE_TENANT_ID'),
+                'client_id' => env('AZURE_CLIENT_ID'),
+                'client_secret' => env('AZURE_CLIENT_SECRET'),
+                /**
+                 * `*` will grab all secrets, or specify an array of secret names
+                 */
+                'keys' => ['*'],
+            ],
+            'google' => [
+                /**
+                 * Enable the Google Cloud Secret Manager provider
+                 * Uses REST API directly - no additional dependencies required
+                 *
+                 * Authentication (in order of precedence):
+                 * 1. Direct access_token
+                 * 2. Application Default Credentials (auto-detected in GCP environments)
+                 */
+                'enabled' => false,
+                'project_id' => env('GOOGLE_CLOUD_PROJECT'),
+                /**
+                 * Direct access token (for testing or when running outside GCP)
+                 * When running on GCE, Cloud Run, GKE, or Cloud Functions,
+                 * leave this empty to use Application Default Credentials
+                 */
+                'access_token' => env('GOOGLE_SECRET_MANAGER_TOKEN'),
+                /**
+                 * `*` will grab all secrets, or specify an array of secret names
+                 */
+                'keys' => ['*'],
+            ],
         ],
     ],
 

@@ -6,7 +6,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use YorCreative\Scrubber\SecretManager\Providers\AwsSecretsManager;
+use YorCreative\Scrubber\SecretManager\Providers\AzureKeyVault;
 use YorCreative\Scrubber\SecretManager\Providers\Gitlab;
+use YorCreative\Scrubber\SecretManager\Providers\GoogleSecretManager;
 use YorCreative\Scrubber\SecretManager\Providers\Vault;
 use YorCreative\Scrubber\SecretManager\SecretManager;
 
@@ -16,6 +18,8 @@ class SecretService
         'gitlab' => Gitlab::class,
         'aws' => AwsSecretsManager::class,
         'vault' => Vault::class,
+        'azure' => AzureKeyVault::class,
+        'google' => GoogleSecretManager::class,
     ];
 
     public static function isEnabled(): bool
