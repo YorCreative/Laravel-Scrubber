@@ -6,7 +6,9 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use YorCreative\Scrubber\Clients\AwsSecretsManagerClient;
+use YorCreative\Scrubber\Clients\AzureKeyVaultClient;
 use YorCreative\Scrubber\Clients\GitLabClient;
+use YorCreative\Scrubber\Clients\GoogleSecretManagerClient;
 use YorCreative\Scrubber\Clients\VaultClient;
 use YorCreative\Scrubber\Repositories\RegexRepository;
 use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\ContentProcessingStrategy;
@@ -63,6 +65,18 @@ class ScrubberServiceProvider extends ServiceProvider
             if (Config::get('scrubber.secret_manager.providers.vault.enabled')) {
                 $this->app->singleton(VaultClient::class, function () {
                     return new VaultClient;
+                });
+            }
+
+            if (Config::get('scrubber.secret_manager.providers.azure.enabled')) {
+                $this->app->singleton(AzureKeyVaultClient::class, function () {
+                    return new AzureKeyVaultClient;
+                });
+            }
+
+            if (Config::get('scrubber.secret_manager.providers.google.enabled')) {
+                $this->app->singleton(GoogleSecretManagerClient::class, function () {
+                    return new GoogleSecretManagerClient;
                 });
             }
         }

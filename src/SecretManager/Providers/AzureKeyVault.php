@@ -38,6 +38,8 @@ class AzureKeyVault implements SecretProviderInterface
         $keys = Config::get('scrubber.secret_manager.providers.azure.keys', ['*']);
         $secretCollection = new Collection;
 
+        $continueOnFailure = Config::get('scrubber.secret_manager.continue_on_failure', true);
+
         if (in_array('*', $keys)) {
             $secrets = $client->listSecrets();
 
@@ -46,7 +48,9 @@ class AzureKeyVault implements SecretProviderInterface
                     $secretData = $client->getSecretValue($secretMetadata['name']);
                     self::addSecretsFromValue($secretCollection, $secretData['name'], $secretData['value']);
                 } catch (Exception $e) {
-                    // Skip secrets that fail to retrieve (may be disabled or access denied)
+                    if (! $continueOnFailure) {
+                        throw new SecretProviderException('Failed to retrieve Azure secret: '.$e->getMessage(), 0, $e);
+                    }
                 }
             }
         } else {
@@ -55,7 +59,9 @@ class AzureKeyVault implements SecretProviderInterface
                     $secretData = $client->getSecretValue($key);
                     self::addSecretsFromValue($secretCollection, $secretData['name'], $secretData['value']);
                 } catch (Exception $e) {
-                    // Skip secrets that fail to retrieve
+                    if (! $continueOnFailure) {
+                        throw new SecretProviderException('Failed to retrieve Azure secret: '.$e->getMessage(), 0, $e);
+                    }
                 }
             }
         }

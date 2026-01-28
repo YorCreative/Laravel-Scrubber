@@ -4,6 +4,7 @@ namespace YorCreative\Scrubber\Clients;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use YorCreative\Scrubber\Exceptions\SecretProviderException;
 
 abstract class BaseClient
 {
@@ -18,10 +19,17 @@ abstract class BaseClient
      * @return mixed
      *
      * @throws GuzzleException
+     * @throws SecretProviderException
      */
     public function get(string $path)
     {
-        return json_decode($this->getClient()->get($path)->getBody()->getContents(), true);
+        $data = json_decode($this->getClient()->get($path)->getBody()->getContents(), true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new SecretProviderException('Invalid JSON response: '.json_last_error_msg());
+        }
+
+        return $data;
     }
 
     protected function getClient()

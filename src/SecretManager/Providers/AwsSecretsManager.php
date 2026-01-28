@@ -36,17 +36,31 @@ class AwsSecretsManager implements SecretProviderInterface
         $keys = Config::get('scrubber.secret_manager.providers.aws.keys', ['*']);
         $secretCollection = new Collection;
 
+        $continueOnFailure = Config::get('scrubber.secret_manager.continue_on_failure', true);
+
         if (in_array('*', $keys)) {
             $secrets = $client->listSecrets();
 
             foreach ($secrets as $secretMetadata) {
-                $secretData = $client->getSecretValue($secretMetadata['Name'] ?? $secretMetadata['ARN']);
-                self::addSecretsFromValue($secretCollection, $secretData['name'], $secretData['value']);
+                try {
+                    $secretData = $client->getSecretValue($secretMetadata['Name'] ?? $secretMetadata['ARN']);
+                    self::addSecretsFromValue($secretCollection, $secretData['name'], $secretData['value']);
+                } catch (Exception $e) {
+                    if (! $continueOnFailure) {
+                        throw new SecretProviderException('Failed to retrieve AWS secret: '.$e->getMessage(), 0, $e);
+                    }
+                }
             }
         } else {
             foreach ($keys as $key) {
-                $secretData = $client->getSecretValue($key);
-                self::addSecretsFromValue($secretCollection, $secretData['name'], $secretData['value']);
+                try {
+                    $secretData = $client->getSecretValue($key);
+                    self::addSecretsFromValue($secretCollection, $secretData['name'], $secretData['value']);
+                } catch (Exception $e) {
+                    if (! $continueOnFailure) {
+                        throw new SecretProviderException('Failed to retrieve AWS secret: '.$e->getMessage(), 0, $e);
+                    }
+                }
             }
         }
 

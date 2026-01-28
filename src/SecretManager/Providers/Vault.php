@@ -51,15 +51,19 @@ class Vault implements SecretProviderInterface
         $keys = Config::get('scrubber.secret_manager.providers.vault.keys', ['*']);
         $secretCollection = new Collection;
 
+        $continueOnFailure = Config::get('scrubber.secret_manager.continue_on_failure', true);
+
         if (in_array('*', $keys)) {
-            self::fetchSecretsRecursively($client, '', $secretCollection, 0);
+            self::fetchSecretsRecursively($client, '', $secretCollection, 0, $continueOnFailure);
         } else {
             foreach ($keys as $key) {
                 try {
                     $secretData = $client->getSecret($key);
                     self::addSecretsFromData($secretCollection, $key, $secretData);
                 } catch (Exception $e) {
-                    // Skip secrets that fail to retrieve
+                    if (! $continueOnFailure) {
+                        throw new SecretProviderException('Failed to retrieve Vault secret: '.$e->getMessage(), 0, $e);
+                    }
                 }
             }
         }
@@ -81,7 +85,7 @@ class Vault implements SecretProviderInterface
         }
     }
 
-    protected static function fetchSecretsRecursively(VaultClient $client, string $path, Collection $collection, int $depth): void
+    protected static function fetchSecretsRecursively(VaultClient $client, string $path, Collection $collection, int $depth, bool $continueOnFailure = true): void
     {
         if ($depth >= self::MAX_RECURSION_DEPTH) {
             return;
@@ -95,13 +99,15 @@ class Vault implements SecretProviderInterface
                 $fullPath = $path === '' ? $cleanKey : $path.'/'.$cleanKey;
 
                 if (str_ends_with($key, '/')) {
-                    self::fetchSecretsRecursively($client, $fullPath, $collection, $depth + 1);
+                    self::fetchSecretsRecursively($client, $fullPath, $collection, $depth + 1, $continueOnFailure);
                 } else {
                     try {
                         $secretData = $client->getSecret($fullPath);
                         self::addSecretsFromData($collection, $fullPath, $secretData);
                     } catch (Exception $e) {
-                        // Skip individual secrets that fail to retrieve
+                        if (! $continueOnFailure) {
+                            throw new SecretProviderException('Failed to retrieve Vault secret: '.$e->getMessage(), 0, $e);
+                        }
                     }
                 }
             }
@@ -112,8 +118,12 @@ class Vault implements SecretProviderInterface
                     $secretData = $client->getSecret($path);
                     self::addSecretsFromData($collection, $path, $secretData);
                 } catch (Exception $innerException) {
-                    // Skip if both operations fail
+                    if (! $continueOnFailure) {
+                        throw new SecretProviderException('Failed to retrieve Vault secret: '.$innerException->getMessage(), 0, $innerException);
+                    }
                 }
+            } elseif (! $continueOnFailure) {
+                throw new SecretProviderException('Failed to list Vault secrets: '.$e->getMessage(), 0, $e);
             }
         }
     }

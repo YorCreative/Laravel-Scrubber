@@ -10,6 +10,11 @@ return [
         'key' => env('APP_KEY'),
         'cipher' => 'AES-256-CBC',
         'enabled' => false,
+        /**
+         * When true, continues loading other secrets if one fails to retrieve.
+         * When false, throws an exception on the first failure.
+         */
+        'continue_on_failure' => true,
         'providers' => [
             'gitlab' => [
                 /**

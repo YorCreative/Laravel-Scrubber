@@ -135,6 +135,11 @@ class GoogleSecretManagerClient
      */
     protected function isRunningOnGcp(): bool
     {
+        // Skip metadata check in testing environments
+        if (app()->runningUnitTests()) {
+            return false;
+        }
+
         try {
             $client = new Client(['timeout' => 1]);
             $response = $client->get('http://metadata.google.internal/computeMetadata/v1/', [

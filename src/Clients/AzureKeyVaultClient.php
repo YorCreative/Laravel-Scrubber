@@ -163,6 +163,11 @@ class AzureKeyVaultClient
      */
     protected function isRunningOnAzureVm(): bool
     {
+        // Skip IMDS check in testing environments
+        if (app()->runningUnitTests()) {
+            return false;
+        }
+
         try {
             $client = new Client(['timeout' => 1]);
             $client->get('http://169.254.169.254/metadata/instance?api-version=2021-02-01', [

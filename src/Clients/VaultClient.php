@@ -26,7 +26,7 @@ class VaultClient
 
     protected int $kvVersion;
 
-    public function __construct()
+    public function __construct(?Client $httpClient = null)
     {
         $this->host = Config::get('scrubber.secret_manager.providers.vault.host', 'http://127.0.0.1:8200');
         $this->token = Config::get('scrubber.secret_manager.providers.vault.token', '');
@@ -43,7 +43,7 @@ class VaultClient
             $headers['X-Vault-Namespace'] = $this->namespace;
         }
 
-        $this->httpClient = new Client([
+        $this->httpClient = $httpClient ?? new Client([
             'base_uri' => rtrim($this->host, '/'),
             'headers' => $headers,
         ]);
@@ -61,6 +61,10 @@ class VaultClient
 
             $response = $this->httpClient->request('LIST', $apiPath);
             $data = json_decode($response->getBody()->getContents(), true);
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new SecretProviderException('Invalid JSON response from Vault: '.json_last_error_msg());
+            }
 
             return $data['data']['keys'] ?? [];
         } catch (GuzzleException $e) {
@@ -80,6 +84,10 @@ class VaultClient
 
             $response = $this->httpClient->get($apiPath);
             $data = json_decode($response->getBody()->getContents(), true);
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new SecretProviderException('Invalid JSON response from Vault: '.json_last_error_msg());
+            }
 
             if ($this->kvVersion === 2) {
                 return $data['data']['data'] ?? [];
