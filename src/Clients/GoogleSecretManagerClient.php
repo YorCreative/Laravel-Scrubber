@@ -60,6 +60,9 @@ class GoogleSecretManagerClient
                     'query' => $query,
                 ]);
                 $data = json_decode($response->getBody()->getContents(), true);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    throw new SecretProviderException('Invalid JSON response from Google Cloud: '.json_last_error_msg());
+                }
 
                 foreach ($data['secrets'] ?? [] as $secret) {
                     $secrets[] = [
@@ -89,6 +92,9 @@ class GoogleSecretManagerClient
                 "/projects/{$this->projectId}/secrets/{$name}/versions/{$version}:access"
             );
             $data = json_decode($response->getBody()->getContents(), true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new SecretProviderException('Invalid JSON response from Google Cloud: '.json_last_error_msg());
+            }
 
             // GCP returns base64-encoded payload
             $value = '';
@@ -169,6 +175,9 @@ class GoogleSecretManagerClient
             );
 
             $data = json_decode($response->getBody()->getContents(), true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new SecretProviderException('Invalid JSON response from GCP metadata server: '.json_last_error_msg());
+            }
             if (! isset($data['access_token'])) {
                 throw new SecretProviderException('Invalid response from GCP metadata server: missing access_token');
             }

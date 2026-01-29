@@ -54,6 +54,9 @@ class AzureKeyVaultClient
             do {
                 $response = $this->httpClient->get($url);
                 $data = json_decode($response->getBody()->getContents(), true);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    throw new SecretProviderException('Invalid JSON response from Azure Key Vault: '.json_last_error_msg());
+                }
 
                 foreach ($data['value'] ?? [] as $secret) {
                     $secrets[] = [
@@ -87,6 +90,9 @@ class AzureKeyVaultClient
             $path = $version ? "/secrets/{$name}/{$version}" : "/secrets/{$name}";
             $response = $this->httpClient->get($path.'?api-version='.self::API_VERSION);
             $data = json_decode($response->getBody()->getContents(), true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new SecretProviderException('Invalid JSON response from Azure Key Vault: '.json_last_error_msg());
+            }
 
             // Extract secret name from ID URL: https://vault.azure.net/secrets/{name}/{version}
             $secretName = $name;
@@ -203,6 +209,9 @@ class AzureKeyVaultClient
                 ]);
 
                 $data = json_decode($response->getBody()->getContents(), true);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    throw new SecretProviderException('Invalid JSON response from Azure Managed Identity endpoint: '.json_last_error_msg());
+                }
                 if (! isset($data['access_token'])) {
                     throw new SecretProviderException('Invalid response from Azure Managed Identity endpoint: missing access_token');
                 }
@@ -221,6 +230,9 @@ class AzureKeyVaultClient
             ]);
 
             $data = json_decode($response->getBody()->getContents(), true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new SecretProviderException('Invalid JSON response from Azure IMDS endpoint: '.json_last_error_msg());
+            }
             if (! isset($data['access_token'])) {
                 throw new SecretProviderException('Invalid response from Azure IMDS endpoint: missing access_token');
             }
@@ -250,6 +262,9 @@ class AzureKeyVaultClient
             ]);
 
             $data = json_decode($response->getBody()->getContents(), true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new SecretProviderException('Invalid JSON response from Azure OAuth endpoint: '.json_last_error_msg());
+            }
             if (! isset($data['access_token'])) {
                 throw new SecretProviderException('Invalid response from Azure OAuth endpoint: missing access_token');
             }
