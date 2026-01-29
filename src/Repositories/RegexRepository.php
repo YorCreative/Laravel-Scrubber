@@ -10,12 +10,12 @@ class RegexRepository
         protected Collection $regexCollection
     ) {}
 
-    public static function checkAndSanitize(string $regex, string $replace, string $content, int &$hits = 0): string
+    public static function checkAndSanitize(string $regex, string $replace, string $content, int &$hits = 0): ?string
     {
         return preg_replace("~$regex~Si", $replace, $content, -1, $hits);
     }
 
-    public static function check(string $regex, string $content): int
+    public static function check(string $regex, string $content): int|false
     {
         return preg_match_all("~$regex~Si", $content);
     }

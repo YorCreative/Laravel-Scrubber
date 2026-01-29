@@ -28,6 +28,9 @@
         "orchestra/testbench": "^7.0|^8.0|^9.0|^10.0",
         "phpunit/phpunit": "^9.0|^10.0|^11.5.3"
     },
+    "suggest": {
+        "aws/aws-sdk-php": "Required for AWS Secrets Manager provider (^3.0)"
+    },
     "autoload": {
         "psr-4": {
             "YorCreative\\Scrubber\\": "src/"
