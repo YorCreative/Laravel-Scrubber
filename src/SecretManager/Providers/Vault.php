@@ -128,8 +128,12 @@ class Vault implements SecretProviderInterface
         }
     }
 
-    protected static function addSecretsFromData(Collection $collection, string $path, array $data): void
+    protected static function addSecretsFromData(Collection $collection, string $path, array $data, int $depth = 0): void
     {
+        if ($depth >= self::MAX_RECURSION_DEPTH) {
+            return;
+        }
+
         foreach ($data as $key => $value) {
             $secretPath = $path.'.'.$key;
 
@@ -139,7 +143,7 @@ class Vault implements SecretProviderInterface
                 // Include numeric values as strings
                 $collection->push(new Secret($secretPath, (string) $value));
             } elseif (is_array($value)) {
-                self::addSecretsFromData($collection, $secretPath, $value);
+                self::addSecretsFromData($collection, $secretPath, $value, $depth + 1);
             }
             // Skip booleans and null values
         }

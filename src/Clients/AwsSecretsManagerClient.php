@@ -73,7 +73,12 @@ class AwsSecretsManagerClient
             $secretValue = $result->get('SecretString');
             if ($secretValue === null) {
                 $binaryData = $result->get('SecretBinary');
-                $secretValue = $binaryData !== null ? base64_decode($binaryData) : '';
+                if ($binaryData !== null) {
+                    $decoded = base64_decode($binaryData);
+                    $secretValue = $decoded !== false ? $decoded : '';
+                } else {
+                    $secretValue = '';
+                }
             }
 
             return [
