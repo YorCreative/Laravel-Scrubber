@@ -8,7 +8,7 @@
         "framework",
         "scrubber",
         "log scrub",
-        "senstive information scrubber",
+        "sensitive information scrubber",
         "secret scrubber",
         "scrub logs",
         "laravel log scrubber",
