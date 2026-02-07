@@ -8,7 +8,7 @@ use YorCreative\Scrubber\Services\SecretService;
 
 class SecretManager
 {
-    public static function getSecrets($provider): Collection
+    public static function getSecrets(string $provider): Collection
     {
         $providerKey = self::getProviderKey($provider);
 
