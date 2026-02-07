@@ -26,7 +26,7 @@ class ContentProcessingStrategy
 
         $handler = $index === null ? null : $this->getHandlers()->get($index);
         if ($handler === null) {
-            throw new RuntimeException('Cannot process content: '.json_encode($content));
+            throw new RuntimeException('Cannot process content of type: '.gettype($content));
         }
 
         return $handler->processContent($content);
