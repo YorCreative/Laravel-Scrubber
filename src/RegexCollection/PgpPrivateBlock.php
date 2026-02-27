@@ -36,4 +36,9 @@ Pnn+We1aTBhaGa86AQ==
     {
         return false;
     }
+
+    public function getReplacementValue(): ?string
+    {
+        return null;
+    }
 }

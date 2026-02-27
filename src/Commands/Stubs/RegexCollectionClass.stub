@@ -29,18 +29,17 @@ class DummyClass implements RegexCollectionInterface
     }
 
     /**
-     * Optional. Remove this function to use the default replacement pattern.
-     *
-     * @return string
+     * Optional. Return a custom replacement string, or null to use the default redaction.
      */
-    public function getReplacementValue(): string {
+    public function getReplacementValue(): ?string
+    {
         /**
          * @todo
-         * @note return a string that replaces the regex pattern provided.
+         * @note return a string that replaces the regex pattern provided, or null for default.
          */
 
         // e.g. '**redacted_key**=**redacted_data**'
-        return config('scrubber.redaction');
+        return null;
     }
 
     public function isSecret(): bool

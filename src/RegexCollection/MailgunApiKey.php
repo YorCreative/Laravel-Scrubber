@@ -20,4 +20,9 @@ class MailgunApiKey implements RegexCollectionInterface
     {
         return false;
     }
+
+    public function getReplacementValue(): ?string
+    {
+        return null;
+    }
 }

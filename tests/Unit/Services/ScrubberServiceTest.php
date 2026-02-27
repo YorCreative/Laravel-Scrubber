@@ -68,7 +68,7 @@ class ScrubberServiceTest extends TestCase
                 return 'something_with';
             }
 
-            public function getReplacementValue(): string
+            public function getReplacementValue(): ?string
             {
                 return 'not_something';
             }
@@ -89,6 +89,11 @@ class ScrubberServiceTest extends TestCase
             public function getTestableString(): string
             {
                 return 'without_something';
+            }
+
+            public function getReplacementValue(): ?string
+            {
+                return null;
             }
         };
 

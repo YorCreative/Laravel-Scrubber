@@ -20,4 +20,9 @@ class CustomRegex implements RegexCollectionInterface
     {
         return 'custom_regex';
     }
+
+    public function getReplacementValue(): ?string
+    {
+        return null;
+    }
 }

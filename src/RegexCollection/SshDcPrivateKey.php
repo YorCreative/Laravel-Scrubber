@@ -24,4 +24,9 @@ t8VDFKeR2i+ZxE+xh/wTBaJ/zvtSqZiNnQ==
     {
         return false;
     }
+
+    public function getReplacementValue(): ?string
+    {
+        return null;
+    }
 }

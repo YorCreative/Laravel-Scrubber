@@ -28,4 +28,9 @@ Gc1ZLn0ewTtLDYYpTM/QqFYI7XxKDaEEFwIVAJI+/0a+OZzLkhusqYQatAuGgAvH
     {
         return false;
     }
+
+    public function getReplacementValue(): ?string
+    {
+        return null;
+    }
 }

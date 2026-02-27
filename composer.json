@@ -16,8 +16,8 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": "^8.1|^8.2|^8.3|^8.4|^8.5",
-        "illuminate/contracts": "^9.0|^10.0|^11.0|^12.0",
+        "php": "^8.2|^8.3|^8.4|^8.5",
+        "illuminate/contracts": "^10.0|^11.0|^12.0",
         "monolog/monolog": "^2.0|^3",
         "guzzlehttp/guzzle": "^7.5",
         "haydenpierce/class-finder": "~0.5.3"
@@ -25,8 +25,8 @@
     "require-dev": {
         "ext-pdo_sqlite": "*",
         "laravel/pint": "^1.0",
-        "orchestra/testbench": "^7.0|^8.0|^9.0|^10.0",
-        "phpunit/phpunit": "^9.0|^10.0|^11.5.3"
+        "orchestra/testbench": "^8.0|^9.0|^10.0",
+        "phpunit/phpunit": "^10.0|^11.5.3|^12.0"
     },
     "suggest": {
         "aws/aws-sdk-php": "Required for AWS Secrets Manager provider (^3.0)"

@@ -23,7 +23,7 @@ class Iban implements RegexCollectionInterface
         return false;
     }
 
-    public function getReplacementValue(): string
+    public function getReplacementValue(): ?string
     {
         return '********************';
     }

@@ -20,4 +20,9 @@ class HerokuApiKey implements RegexCollectionInterface
     {
         return false;
     }
+
+    public function getReplacementValue(): ?string
+    {
+        return null;
+    }
 }

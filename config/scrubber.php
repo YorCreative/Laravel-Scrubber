@@ -194,4 +194,8 @@ return [
      * You can use wildcards (*) to match multiple channels
      */
     'tap_channels' => false,
+
+    'events' => [
+        'enabled' => false,
+    ],
 ];

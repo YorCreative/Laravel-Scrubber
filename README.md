@@ -21,7 +21,7 @@ accident ~~_or not_~~ by developers.
 
 ## Requirements
 
-- PHP 8.1, 8.2, 8.3, 8.4, or 8.5
+- PHP 8.2, 8.3, 8.4, or 8.5
 - Laravel 10.x, 11.x, or 12.x
 
 ## Installation
@@ -187,6 +187,39 @@ $result = Scrubber::test('Contact: john@example.com, SSN: 123-45-6789');
 
 // Reset statistics between requests
 Scrubber::resetStats();
+```
+
+### Events
+
+The scrubber can dispatch a `SensitiveDataDetected` event each time a pattern matches during scrubbing. This is
+useful for alerting, metrics, or audit logging.
+
+Enable events in your config:
+
+```php
+'events' => [
+    'enabled' => true,
+],
+```
+
+The event carries three public properties:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `patternName` | `string` | The class basename of the matched pattern (e.g. `JsonWebToken`) |
+| `hitCount` | `int` | Number of matches found for that pattern in the content |
+| `context` | `string` | Either `log` (triggered via log tap) or `manual` (triggered via `Scrubber::processMessage()`) |
+
+Register a listener in your `EventServiceProvider` or with the `Event` facade:
+
+```php
+use YorCreative\Scrubber\Events\SensitiveDataDetected;
+
+Event::listen(SensitiveDataDetected::class, function (SensitiveDataDetected $event) {
+    // $event->patternName  — e.g. 'JsonWebToken'
+    // $event->hitCount     — e.g. 2
+    // $event->context      — 'log' or 'manual'
+});
 ```
 
 ## Log Channel Opt-in
@@ -488,12 +521,35 @@ This creates three scrubber patterns:
 Creating new Scrubber Detection Classes
 
 ```bash
-php artisan make:regex-class {name} 
+php artisan make:regex-class {name}
 ```
 
 This command will create a stubbed out class in `App\Scrubber\RegexCollection`. The Scrubber package will autoload
 everything from the `App\Scrubber\RegexCollection` folder with the wildcard value on the `regex_loader` array in the
 scrubber config file. You will need to provide a `Regex Pattern` and a `Testable String` for the class and you may also provide a `Replacement Value` if you want to replace the detected value with something other than the default value in the config file.
+
+### Validating Regex Patterns
+
+After creating or modifying regex classes, you can verify that every loaded pattern correctly matches its own testable string:
+
+```bash
+php artisan scrubber:validate
+```
+
+The command tests each pattern against the string returned by `getTestableString()` and prints a results table:
+
+```
++---------------------------+--------+---------+
+| Pattern                   | Status | Message |
++---------------------------+--------+---------+
+| JsonWebToken              | PASS   |         |
+| EmailAddress              | PASS   |         |
+| SocialSecurityNumber      | PASS   |         |
++---------------------------+--------+---------+
+Results: 3 passed, 0 failed, 3 total.
+```
+
+The command exits with a non-zero status when any pattern fails, making it suitable for CI pipelines.
 
 ## Testing
 
