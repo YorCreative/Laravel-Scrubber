@@ -22,7 +22,7 @@ class IpAddressV6 implements RegexCollectionInterface
         return false;
     }
 
-    public function getReplacementValue(): string
+    public function getReplacementValue(): ?string
     {
         return '****:****:****:****:****:****:****:****';
     }

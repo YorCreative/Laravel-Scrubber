@@ -20,4 +20,9 @@ class TroyCreditCard implements RegexCollectionInterface
     {
         return false;
     }
+
+    public function getReplacementValue(): ?string
+    {
+        return null;
+    }
 }

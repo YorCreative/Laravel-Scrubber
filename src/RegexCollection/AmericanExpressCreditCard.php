@@ -20,4 +20,9 @@ class AmericanExpressCreditCard implements RegexCollectionInterface
     {
         return false;
     }
+
+    public function getReplacementValue(): ?string
+    {
+        return null;
+    }
 }

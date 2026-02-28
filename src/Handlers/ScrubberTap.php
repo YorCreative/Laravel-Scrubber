@@ -4,6 +4,7 @@ namespace YorCreative\Scrubber\Handlers;
 
 use Monolog\Handler\NullHandler;
 use YorCreative\Scrubber\Scrubber;
+use YorCreative\Scrubber\Services\ScrubberService;
 
 class ScrubberTap
 {
@@ -12,7 +13,12 @@ class ScrubberTap
         foreach ($logger->getHandlers() as $handler) {
             if (! ($handler instanceof NullHandler)) {
                 $handler->pushProcessor(function ($record) {
-                    return Scrubber::processMessage($record);
+                    ScrubberService::setContext('log');
+                    try {
+                        return Scrubber::processMessage($record);
+                    } finally {
+                        ScrubberService::setContext('manual');
+                    }
                 });
             }
         }

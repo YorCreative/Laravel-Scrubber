@@ -31,9 +31,10 @@ class ScrubberServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(dirname(__DIR__, 1).'/config/scrubber.php', 'scrubber');
 
-        $this->commands(
-            'YorCreative\\Scrubber\\Commands\\MakeRegexClass'
-        );
+        $this->commands([
+            \YorCreative\Scrubber\Commands\MakeRegexClass::class,
+            \YorCreative\Scrubber\Commands\ValidateRegex::class,
+        ]);
 
         $this->publishes([
             dirname(__DIR__, 1).'/config' => base_path('config'),

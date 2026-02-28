@@ -4,6 +4,7 @@ namespace YorCreative\Scrubber\Services;
 
 use Carbon\Carbon;
 use Monolog\LogRecord;
+use YorCreative\Scrubber\Events\SensitiveDataDetected;
 use YorCreative\Scrubber\Repositories\RegexRepository;
 use YorCreative\Scrubber\SecretManager\Secret;
 
@@ -18,6 +19,13 @@ class ScrubberService
         'total_scrubs' => 0,
         'patterns_matched' => [],
     ];
+
+    protected static string $context = 'manual';
+
+    public static function setContext(string $context): void
+    {
+        self::$context = $context;
+    }
 
     public static function encodeRecord(mixed $record): string
     {
@@ -61,9 +69,7 @@ class ScrubberService
                 ? Secret::decrypt($regexClass->getPattern())
                 : $regexClass->getPattern();
 
-            $replace = method_exists($regexClass, 'getReplacementValue')
-                ? $regexClass->getReplacementValue()
-                : $defaultRedaction;
+            $replace = (method_exists($regexClass, 'getReplacementValue') ? $regexClass->getReplacementValue() : null) ?? $defaultRedaction;
 
             $patternName = class_basename($regexClass);
 
@@ -95,6 +101,10 @@ class ScrubberService
                 self::$stats['patterns_matched'][$patternName] = 0;
             }
             self::$stats['patterns_matched'][$patternName] += $hits;
+
+            if (config('scrubber.events.enabled', false)) {
+                SensitiveDataDetected::dispatch($patternName, $hits, self::$context);
+            }
         }
     }
 
@@ -115,9 +125,7 @@ class ScrubberService
                 ? Secret::decrypt($regexClass->getPattern())
                 : $regexClass->getPattern();
 
-            $replace = method_exists($regexClass, 'getReplacementValue')
-                ? $regexClass->getReplacementValue()
-                : $defaultRedaction;
+            $replace = (method_exists($regexClass, 'getReplacementValue') ? $regexClass->getReplacementValue() : null) ?? $defaultRedaction;
 
             $patternName = class_basename($regexClass);
 
@@ -158,6 +166,14 @@ class ScrubberService
             'total_scrubs' => 0,
             'patterns_matched' => [],
         ];
+    }
+
+    /**
+     * Reset scrubbing context to default.
+     */
+    public static function resetContext(): void
+    {
+        self::$context = 'manual';
     }
 
     public static function getRegexRepository(): RegexRepository

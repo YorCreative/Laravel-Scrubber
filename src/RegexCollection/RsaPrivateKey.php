@@ -34,4 +34,9 @@ L1Qku7cvCJnwKguBAkA9oUUEMC2CaFrKskFRWQPjkzy82oOWdYP8pwDsHLy+33tk
     {
         return false;
     }
+
+    public function getReplacementValue(): ?string
+    {
+        return null;
+    }
 }

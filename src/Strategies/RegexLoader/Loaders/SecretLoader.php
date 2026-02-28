@@ -52,6 +52,11 @@ class SecretLoader implements LoaderInterface
                 return $this->pattern;
             }
 
+            public function getReplacementValue(): ?string
+            {
+                return null;
+            }
+
             public function setPattern(string $encryptedSecret)
             {
                 $this->pattern = $encryptedSecret;
