@@ -64,4 +64,15 @@ class RegexRepositoryTest extends TestCase
 
         $this->assertEquals(2, $hits);
     }
+
+    public function test_it_handles_patterns_with_tilde_delimiter_safely()
+    {
+        $hits = 0;
+        $content = 'token ~abc~ should be scrubbed';
+
+        $sanitized = app(RegexRepository::class)->checkAndSanitize('~abc~', config('scrubber.redaction'), $content, $hits);
+
+        $this->assertEquals(1, $hits);
+        $this->assertStringContainsString(config('scrubber.redaction'), $sanitized);
+    }
 }
