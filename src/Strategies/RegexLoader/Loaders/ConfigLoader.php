@@ -40,7 +40,29 @@ class ConfigLoader implements LoaderInterface
             $configCollection = $configCollection->merge(collect([$keyPattern => Config::get($keyPattern)])->dot()->filter());
         }
 
-        return $configCollection->unique()->toArray();
+        $minLength = Config::get('scrubber.config_loader_min_length', 4);
+        $exclusions = Config::get('scrubber.config_loader_exclusions', []);
+
+        return $configCollection
+            ->filter(function ($value, $key) use ($minLength, $exclusions) {
+                if (! is_string($value)) {
+                    return false;
+                }
+
+                if (strlen($value) < $minLength) {
+                    return false;
+                }
+
+                foreach ($exclusions as $exclusionPattern) {
+                    if (Str::is($exclusionPattern, $key)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            })
+            ->unique()
+            ->toArray();
     }
 
     protected static function generateRegexClassForConfig(string $config): RegexCollectionInterface
