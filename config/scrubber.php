@@ -190,6 +190,22 @@ return [
     ],
 
     /**
+     * Minimum character length for config values to be treated as scrubbable.
+     * Values shorter than this will be ignored to prevent overly aggressive
+     * scrubbing (e.g., Livewire's release_token defaults to 'a').
+     */
+    'config_loader_min_length' => 4,
+
+    /**
+     * Config key patterns to exclude from scrubbing.
+     * Supports wildcards (*) via Str::is().
+     *
+     *  - 'livewire.release_token'
+     *  - 'livewire.*'
+     */
+    'config_loader_exclusions' => [],
+
+    /**
      * Specify the channels to tap into
      * You can use wildcards (*) to match multiple channels
      */

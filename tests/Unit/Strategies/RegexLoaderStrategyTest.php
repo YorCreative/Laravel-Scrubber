@@ -124,6 +124,79 @@ class RegexLoaderStrategyTest extends TestCase
         $this->assertCount(31, app(RegexLoaderStrategy::class)->load());
     }
 
+    public function test_it_excludes_short_config_values_by_default()
+    {
+        Config::set('scrubber.config_loader', ['*token']);
+        Config::set('livewire.release_token', 'a');
+        Config::set('app.api_token', 'a-real-secret-token');
+        $regexCollection = app(RegexLoaderStrategy::class)->load();
+        $this->assertCount(1, $regexCollection);
+        $this->assertNull($regexCollection->get('config::livewire.release_token'));
+        $this->assertNotNull($regexCollection->get('config::app.api_token'));
+    }
+
+    public function test_it_respects_custom_config_loader_min_length()
+    {
+        Config::set('scrubber.config_loader', ['*token']);
+        Config::set('scrubber.config_loader_min_length', 8);
+        Config::set('app.short_token', 'abcd');
+        Config::set('app.long_token', 'abcdefgh');
+        $regexCollection = app(RegexLoaderStrategy::class)->load();
+        $this->assertCount(1, $regexCollection);
+        $this->assertNull($regexCollection->get('config::app.short_token'));
+        $this->assertNotNull($regexCollection->get('config::app.long_token'));
+    }
+
+    public function test_it_can_disable_min_length_filter()
+    {
+        Config::set('scrubber.config_loader', ['*token']);
+        Config::set('scrubber.config_loader_min_length', 0);
+        Config::set('app.tiny_token', 'a');
+        $regexCollection = app(RegexLoaderStrategy::class)->load();
+        $this->assertCount(1, $regexCollection);
+        $this->assertNotNull($regexCollection->get('config::app.tiny_token'));
+    }
+
+    public function test_it_excludes_config_keys_matching_exclusion_patterns()
+    {
+        Config::set('scrubber.config_loader', ['*token']);
+        Config::set('scrubber.config_loader_exclusions', ['livewire.release_token']);
+        Config::set('livewire.release_token', 'some-valid-length-token');
+        Config::set('app.api_token', 'another-valid-token');
+        $regexCollection = app(RegexLoaderStrategy::class)->load();
+        $this->assertCount(1, $regexCollection);
+        $this->assertNull($regexCollection->get('config::livewire.release_token'));
+        $this->assertNotNull($regexCollection->get('config::app.api_token'));
+    }
+
+    public function test_it_supports_wildcard_exclusion_patterns()
+    {
+        Config::set('scrubber.config_loader', ['livewire.*', 'app.api_token']);
+        Config::set('scrubber.config_loader_exclusions', ['livewire.*']);
+        Config::set('livewire.release_token', 'some-token-value');
+        Config::set('livewire.app_key', 'some-key-value');
+        Config::set('app.api_token', 'real-secret');
+        $regexCollection = app(RegexLoaderStrategy::class)->load();
+        $this->assertCount(1, $regexCollection);
+        $this->assertNull($regexCollection->get('config::livewire.release_token'));
+        $this->assertNull($regexCollection->get('config::livewire.app_key'));
+        $this->assertNotNull($regexCollection->get('config::app.api_token'));
+    }
+
+    public function test_it_excludes_non_string_config_values()
+    {
+        Config::set('scrubber.config_loader', ['app.bool_token', 'app.int_token', 'app.real_token']);
+        Config::set('scrubber.config_loader_min_length', 0);
+        Config::set('app.bool_token', true);
+        Config::set('app.int_token', 12345);
+        Config::set('app.real_token', 'valid-secret');
+        $regexCollection = app(RegexLoaderStrategy::class)->load();
+        $this->assertCount(1, $regexCollection);
+        $this->assertNull($regexCollection->get('config::app.bool_token'));
+        $this->assertNull($regexCollection->get('config::app.int_token'));
+        $this->assertNotNull($regexCollection->get('config::app.real_token'));
+    }
+
     public function test_it_can_load_wildcard_with_excluded_fully_qualified_and_unresolvable_classes()
     {
         Config::set('scrubber.regex_loader', ['*']);
