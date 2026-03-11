@@ -117,6 +117,19 @@ return [
     ],
 
     /**
+     * Minimum character length for config values to be treated as scrubbable.
+     * Values shorter than this will be ignored to prevent overly aggressive
+     * scrubbing (e.g., Livewire's release_token defaults to 'a').
+     */
+    'config_loader_min_length' => 4,
+
+    /**
+     * Config key patterns to exclude from scrubbing.
+     * Supports wildcards (*) via Str::is().
+     */
+    'config_loader_exclusions' => [],
+
+    /**
      * Specify the channels to tap into
      * You can use wildcards (*) to match multiple channels
      */ 
@@ -379,6 +392,37 @@ The exclude_regex configuration supports multiple formats for excluding patterns
 
 This is particularly useful when you want to use most patterns but need to exclude a few specific ones from your scrubbing process.
 
+## Config Loader Filtering
+
+The `config_loader` scrubs config values matching key patterns (e.g., `*password`, `*token`). Two additional options give you control over which values get scrubbed.
+
+### Minimum Length
+
+By default, config values shorter than 4 characters are ignored. This prevents overly aggressive scrubbing when packages use short default values (e.g., Livewire's `release_token` defaults to `'a'`, which would cause every letter "a" in your logs to be redacted).
+
+```php
+// Default: ignore values shorter than 4 characters
+'config_loader_min_length' => 4,
+
+// Set to 0 to disable the minimum length filter
+'config_loader_min_length' => 0,
+```
+
+Non-string config values (booleans, integers, etc.) are always excluded regardless of this setting.
+
+### Key Exclusions
+
+Certain config keys may match broad loader patterns but should not be treated as sensitive values. The `config_loader_exclusions` option allows you to bypass scrubbing for specific keys or key prefixes using wildcard patterns:
+
+```php
+'config_loader_exclusions' => [
+    // Exclude a specific key
+    'livewire.release_token',
+
+    // Exclude all keys under a namespace
+    'livewire.*',
+],
+```
 
 ## About the Scrubber
 
