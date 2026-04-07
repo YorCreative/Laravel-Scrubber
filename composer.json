@@ -14,9 +14,10 @@
         "laravel log scrubber",
         "scrub sensitive information"
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
     "require": {
-        "php": "^8.2|^8.3|^8.4|^8.5",
+        "php": "^8.2",
         "illuminate/contracts": "^10.0|^11.0|^12.0",
         "monolog/monolog": "^2.0|^3",
         "guzzlehttp/guzzle": "^7.5",

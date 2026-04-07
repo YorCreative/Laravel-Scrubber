@@ -18,7 +18,7 @@ class SpecificChannel implements TapLoaderInterface
         }
 
         return ! in_array('*', Config::get('scrubber.tap_channels'))
-            && count(Config::get('scrubber.tap_channels')) < 2;
+            && count(Config::get('scrubber.tap_channels')) == 1;
     }
 
     public function load(Repository $config): void

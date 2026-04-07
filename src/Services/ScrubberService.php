@@ -41,15 +41,22 @@ class ScrubberService
 
     public static function decodeRecord(mixed $scrubbedContent): mixed
     {
+        if ($scrubbedContent instanceof LogRecord) {
+            return $scrubbedContent;
+        }
+
         if (! is_array($scrubbedContent)) {
             $scrubbedContent = json_decode($scrubbedContent, true);
+        }
+
+        if (! is_array($scrubbedContent)) {
+            return $scrubbedContent;
         }
 
         // set datetime back to  DateTimeInterface for papertrail specifically.
         if (isset($scrubbedContent['datetime'])) {
             $datetime = match (true) {
                 is_array($scrubbedContent['datetime']) => $scrubbedContent['datetime']['date'],
-                $scrubbedContent instanceof LogRecord => Carbon::instance($scrubbedContent['datetime']),
                 default => Carbon::parse($scrubbedContent['datetime'])
             };
 

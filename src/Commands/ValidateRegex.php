@@ -36,7 +36,7 @@ class ValidateRegex extends Command
             $className = class_basename($regexClass);
 
             try {
-                $result = preg_match("~{$pattern}~Si", $testable);
+                $result = preg_match('~'.str_replace('~', '\\~', $pattern).'~Si', $testable);
                 if ($result === 1) {
                     $rows[] = [$className, 'PASS', ''];
                     $passed++;

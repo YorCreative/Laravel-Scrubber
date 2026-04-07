@@ -2,10 +2,13 @@
 
 namespace YorCreative\Scrubber\Tests\Unit\Services;
 
+use Carbon\Carbon;
+use Monolog\LogRecord;
 use PHPUnit\Framework\Attributes\Group;
 use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
 use YorCreative\Scrubber\Repositories\RegexRepository;
 use YorCreative\Scrubber\Services\ScrubberService;
+use YorCreative\Scrubber\Support\LogRecordFactory;
 use YorCreative\Scrubber\Tests\TestCase;
 
 class ScrubberServiceTest extends TestCase
@@ -119,5 +122,75 @@ class ScrubberServiceTest extends TestCase
             $withReplacement->getReplacementValue(),
             $defaultReplacementValue
         );
+    }
+
+    #[Group('ScrubberService')]
+    #[Group('Unit')]
+    public function test_decode_record_returns_null_for_invalid_json()
+    {
+        $result = ScrubberService::decodeRecord('not valid json {{{');
+
+        $this->assertNull($result);
+    }
+
+    #[Group('ScrubberService')]
+    #[Group('Unit')]
+    public function test_decode_record_handles_datetime_array_format()
+    {
+        $input = json_encode([
+            'message' => 'test',
+            'datetime' => ['date' => '2024-01-15 10:30:00'],
+        ]);
+
+        $result = ScrubberService::decodeRecord($input);
+
+        $this->assertIsArray($result);
+        $this->assertEquals('2024-01-15 10:30:00', $result['datetime']);
+    }
+
+    #[Group('ScrubberService')]
+    #[Group('Unit')]
+    public function test_decode_record_handles_datetime_string_format()
+    {
+        $input = json_encode([
+            'message' => 'test',
+            'datetime' => '2024-01-15T10:30:00+00:00',
+        ]);
+
+        $result = ScrubberService::decodeRecord($input);
+
+        $this->assertIsArray($result);
+        $this->assertInstanceOf(Carbon::class, $result['datetime']);
+    }
+
+    #[Group('ScrubberService')]
+    #[Group('Unit')]
+    public function test_decode_record_without_datetime_key()
+    {
+        $input = json_encode(['message' => 'no datetime here']);
+
+        $result = ScrubberService::decodeRecord($input);
+
+        $this->assertIsArray($result);
+        $this->assertArrayNotHasKey('datetime', $result);
+    }
+
+    #[Group('ScrubberService')]
+    #[Group('Unit')]
+    public function test_decode_record_returns_log_record_unchanged()
+    {
+        $logRecord = LogRecordFactory::buildRecord(
+            new \DateTimeImmutable,
+            'test',
+            200,
+            'test message',
+            [],
+            []
+        );
+
+        $result = ScrubberService::decodeRecord($logRecord);
+
+        $this->assertInstanceOf(LogRecord::class, $result);
+        $this->assertSame($logRecord, $result);
     }
 }
