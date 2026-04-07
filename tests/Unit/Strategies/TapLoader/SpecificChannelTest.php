@@ -5,6 +5,7 @@ namespace YorCreative\Scrubber\Tests\Unit\Strategies\TapLoader;
 use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\Group;
 use YorCreative\Scrubber\Strategies\TapLoader\Loaders\SpecificChannel;
+use YorCreative\Scrubber\Strategies\TapLoader\TapLoaderStrategy;
 use YorCreative\Scrubber\Tests\TestCase;
 
 #[Group('TapLoader')]
@@ -52,7 +53,7 @@ class SpecificChannelTest extends TestCase
         $config = app()->make('config');
         $config->set('scrubber.tap_channels', []);
 
-        app(\YorCreative\Scrubber\Strategies\TapLoader\TapLoaderStrategy::class)->load($config);
+        app(TapLoaderStrategy::class)->load($config);
 
         foreach ($config->get('logging.channels') as $channel) {
             $this->assertArrayNotHasKey('tap', $channel);

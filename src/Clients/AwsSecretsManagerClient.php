@@ -2,6 +2,8 @@
 
 namespace YorCreative\Scrubber\Clients;
 
+use Aws\Exception\AwsException;
+use Aws\SecretsManager\SecretsManagerClient;
 use Illuminate\Support\Facades\Config;
 use YorCreative\Scrubber\Exceptions\MissingDependencyException;
 use YorCreative\Scrubber\Exceptions\SecretProviderException;
@@ -12,7 +14,7 @@ class AwsSecretsManagerClient
 
     public function __construct()
     {
-        if (! class_exists(\Aws\SecretsManager\SecretsManagerClient::class)) {
+        if (! class_exists(SecretsManagerClient::class)) {
             throw MissingDependencyException::forPackage('aws/aws-sdk-php', 'AWS Secrets Manager');
         }
 
@@ -29,7 +31,7 @@ class AwsSecretsManagerClient
             ];
         }
 
-        $this->client = new \Aws\SecretsManager\SecretsManagerClient($config);
+        $this->client = new SecretsManagerClient($config);
     }
 
     /**
@@ -53,7 +55,7 @@ class AwsSecretsManagerClient
             } while ($nextToken);
 
             return $secrets;
-        } catch (\Aws\Exception\AwsException $e) {
+        } catch (AwsException $e) {
             throw new SecretProviderException('Failed to list AWS secrets: '.$e->getMessage(), 0, $e);
         } catch (\Exception $e) {
             throw new SecretProviderException('Failed to list AWS secrets: '.$e->getMessage(), 0, $e);
@@ -85,7 +87,7 @@ class AwsSecretsManagerClient
                 'name' => $result->get('Name'),
                 'value' => $secretValue,
             ];
-        } catch (\Aws\Exception\AwsException $e) {
+        } catch (AwsException $e) {
             throw new SecretProviderException('Failed to get AWS secret: '.$e->getMessage(), 0, $e);
         } catch (\Exception $e) {
             throw new SecretProviderException('Failed to get AWS secret: '.$e->getMessage(), 0, $e);

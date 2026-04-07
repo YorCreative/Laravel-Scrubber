@@ -10,6 +10,8 @@ use YorCreative\Scrubber\Clients\AzureKeyVaultClient;
 use YorCreative\Scrubber\Clients\GitLabClient;
 use YorCreative\Scrubber\Clients\GoogleSecretManagerClient;
 use YorCreative\Scrubber\Clients\VaultClient;
+use YorCreative\Scrubber\Commands\MakeRegexClass;
+use YorCreative\Scrubber\Commands\ValidateRegex;
 use YorCreative\Scrubber\Repositories\RegexRepository;
 use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\ContentProcessingStrategy;
 use YorCreative\Scrubber\Strategies\ContentProcessingStrategy\Handlers\ArrayContentHandler;
@@ -32,8 +34,8 @@ class ScrubberServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(dirname(__DIR__, 1).'/config/scrubber.php', 'scrubber');
 
         $this->commands([
-            \YorCreative\Scrubber\Commands\MakeRegexClass::class,
-            \YorCreative\Scrubber\Commands\ValidateRegex::class,
+            MakeRegexClass::class,
+            ValidateRegex::class,
         ]);
 
         $this->publishes([
