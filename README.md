@@ -22,7 +22,7 @@ accident ~~_or not_~~ by developers.
 ## Requirements
 
 - PHP 8.2, 8.3, 8.4, or 8.5
-- Laravel 10.x, 11.x, or 12.x
+- Laravel 10.x, 11.x, 12.x, or 13.x
 
 ## Installation
 
