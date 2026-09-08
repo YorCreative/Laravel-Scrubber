@@ -5,6 +5,7 @@ namespace YorCreative\Scrubber\Strategies\RegexLoader\Loaders;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
+use ReflectionClass;
 use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
 use YorCreative\Scrubber\Strategies\RegexLoader\LoaderInterface;
 
@@ -20,7 +21,13 @@ abstract class NamespaceLoader implements LoaderInterface
 
     protected function isRegexClass(string $fullyQualifiedClassName): bool
     {
-        return class_exists($fullyQualifiedClassName) && is_a($fullyQualifiedClassName, RegexCollectionInterface::class, true);
+        if (! class_exists($fullyQualifiedClassName) || ! is_a($fullyQualifiedClassName, RegexCollectionInterface::class, true)) {
+            return false;
+        }
+
+        // An abstract base class in a custom regex namespace satisfies both checks
+        // above but cannot be constructed, so loadRegex() would fatal on it.
+        return (new ReflectionClass($fullyQualifiedClassName))->isInstantiable();
     }
 
     protected function getRegexesToLoad(): array

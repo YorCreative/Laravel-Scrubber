@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7f27edc53353e89d41145aa2446efd3d",
+    "content-hash": "27465c97bb7c4be48b45ad09edf64f76",
     "packages": [
         {
             "name": "brick/math",
@@ -1061,52 +1061,6 @@
                 }
             ],
             "time": "2026-08-24T17:13:02+00:00"
-        },
-        {
-            "name": "haydenpierce/class-finder",
-            "version": "0.5.4",
-            "source": {
-                "type": "git",
-                "url": "https://gitlab.com/hpierce1102/ClassFinder.git",
-                "reference": "a4bd343078ce48c118742152fdd62315a7ac6263"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/hpierce1102%2FClassFinder/repository/archive.zip?sha=a4bd343078ce48c118742152fdd62315a7ac6263",
-                "reference": "a4bd343078ce48c118742152fdd62315a7ac6263",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "php": ">=5.3"
-            },
-            "require-dev": {
-                "mikey179/vfsstream": "^1.6",
-                "phpunit/phpunit": "~9.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "HaydenPierce\\ClassFinder\\": "src/",
-                    "HaydenPierce\\ClassFinder\\UnitTest\\": "test/unit"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Hayden Pierce",
-                    "email": "hayden@haydenpierce.com"
-                }
-            ],
-            "description": "A library that can provide of a list of classes in a given namespace",
-            "support": {
-                "issues": "https://gitlab.com/hpierce1102/ClassFinder/-/issues",
-                "source": "https://gitlab.com/hpierce1102/ClassFinder/-/tree/0.5.4"
-            },
-            "time": "2026-05-30T22:14:30+00:00"
         },
         {
             "name": "laravel/framework",
