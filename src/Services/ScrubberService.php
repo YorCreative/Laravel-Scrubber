@@ -5,6 +5,7 @@ namespace YorCreative\Scrubber\Services;
 use Carbon\Carbon;
 use Monolog\LogRecord;
 use YorCreative\Scrubber\Events\SensitiveDataDetected;
+use YorCreative\Scrubber\Interfaces\RegexCollectionInterface;
 use YorCreative\Scrubber\Repositories\RegexRepository;
 use YorCreative\Scrubber\SecretManager\Secret;
 
@@ -66,15 +67,29 @@ class ScrubberService
         return $scrubbedContent;
     }
 
+    /**
+     * Resolve the regex pattern for a regex collection entry.
+     *
+     * Secrets are held as ciphertext and decrypted here. The resulting plaintext is
+     * quoted so a secret containing regex metacharacters is matched literally rather
+     * than being interpreted as a pattern. No delimiter is passed to preg_quote()
+     * because RegexRepository escapes the tilde delimiter itself; passing it here
+     * would double-escape and corrupt the pattern.
+     */
+    public static function resolvePattern(RegexCollectionInterface $regexClass): string
+    {
+        return $regexClass->isSecret()
+            ? preg_quote(Secret::decrypt($regexClass->getPattern()))
+            : $regexClass->getPattern();
+    }
+
     public static function autoSanitize(string &$jsonContent): void
     {
         $regexRepository = app(RegexRepository::class);
         $defaultRedaction = config('scrubber.redaction');
 
         foreach ($regexRepository->getRegexCollection() as $regexClass) {
-            $pattern = $regexClass->isSecret()
-                ? Secret::decrypt($regexClass->getPattern())
-                : $regexClass->getPattern();
+            $pattern = self::resolvePattern($regexClass);
 
             $replace = (method_exists($regexClass, 'getReplacementValue') ? $regexClass->getReplacementValue() : null) ?? $defaultRedaction;
 
@@ -128,9 +143,7 @@ class ScrubberService
         $scrubbed = $content;
 
         foreach ($regexRepository->getRegexCollection() as $regexClass) {
-            $pattern = $regexClass->isSecret()
-                ? Secret::decrypt($regexClass->getPattern())
-                : $regexClass->getPattern();
+            $pattern = self::resolvePattern($regexClass);
 
             $replace = (method_exists($regexClass, 'getReplacementValue') ? $regexClass->getReplacementValue() : null) ?? $defaultRedaction;
 

@@ -113,7 +113,10 @@ class RegexLoaderStrategyTest extends TestCase
         Config::set('app.my_secret', 'super~\d.*secret');
         $regexCollection = app(RegexLoaderStrategy::class)->load();
         $regex = $regexCollection->get('config::app.my_secret');
-        $this->assertEquals('super\~\\\\d\.\*secret', $regex->getPattern());
+        // The tilde is deliberately left unescaped here: RegexRepository escapes the
+        // tilde delimiter when it builds the pattern. Escaping it at both layers
+        // yields \\~, which does not compile.
+        $this->assertEquals('super~\\\\d\.\*secret', $regex->getPattern());
     }
 
     public function test_it_can_load_wildcard_with_excluded_core_namespace_class()
