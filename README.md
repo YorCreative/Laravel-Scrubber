@@ -279,7 +279,20 @@ class.
     ],
 ```
 
-> **Note**: The package includes 31 built-in patterns. See all available patterns in [RegexCollection.php](https://github.com/YorCreative/Laravel-Scrubber/blob/main/src/Repositories/RegexCollection.php).
+> **Note**: The package includes 35 built-in patterns. See all available patterns in [RegexCollection.php](https://github.com/YorCreative/Laravel-Scrubber/blob/main/src/Repositories/RegexCollection.php).
+
+#### AI & payment provider credentials
+
+| Pattern | Detects |
+|---------|---------|
+| `RegexCollection::$OPENAI_API_KEY` | OpenAI keys — `sk-proj-`, `sk-svcacct-`, `sk-admin-` and legacy `sk-` |
+| `RegexCollection::$ANTHROPIC_API_KEY` | Anthropic keys — `sk-ant-api03-`, `sk-ant-admin01-` |
+| `RegexCollection::$STRIPE_SECRET_KEY` | Stripe secret (`sk_live_`/`sk_test_`), restricted (`rk_live_`/`rk_test_`) and webhook signing (`whsec_`) keys |
+| `RegexCollection::$GITHUB_PERSONAL_ACCESS_TOKEN` | GitHub tokens — `ghp_`, `gho_`, `ghu_`, `ghs_`, `ghr_` and fine-grained `github_pat_` |
+
+> OpenAI and Stripe both use an `sk` prefix. They are told apart by the delimiter that
+> follows it — OpenAI uses a hyphen (`sk-`), Stripe an underscore (`sk_`) — so a key
+> from one provider is never matched by the other's pattern.
 
 ### PII Detection with Partial Masking
 
