@@ -25,7 +25,7 @@ class RegexLoaderStrategyTest extends TestCase
     public function test_it_can_load_default_core()
     {
         Config::set('scrubber.regex_loader', ['*']);
-        $this->assertCount(31, app(RegexLoaderStrategy::class)->load());
+        $this->assertCount(35, app(RegexLoaderStrategy::class)->load());
     }
 
     public function test_it_can_load_specific_core()
@@ -65,7 +65,7 @@ class RegexLoaderStrategyTest extends TestCase
     {
         Config::set('scrubber.regex_loader', ['*']);
         Config::set('scrubber.custom_regex_namespaces', ['YorCreative\\Scrubber\\Tests\\Unit\\Fixtures']);
-        $this->assertCount(32, app(RegexLoaderStrategy::class)->load());
+        $this->assertCount(36, app(RegexLoaderStrategy::class)->load());
     }
 
     public function test_it_can_load_wildcard_extended_regex_with_excluded_regex()
@@ -73,7 +73,7 @@ class RegexLoaderStrategyTest extends TestCase
         Config::set('scrubber.regex_loader', ['*']);
         Config::set('scrubber.exclude_regex', [RegexCollection::$HEROKU_API_KEY]);
         Config::set('scrubber.custom_regex_namespaces', ['YorCreative\\Scrubber\\Tests\\Unit\\Fixtures']);
-        $this->assertCount(31, app(RegexLoaderStrategy::class)->load());
+        $this->assertCount(35, app(RegexLoaderStrategy::class)->load());
     }
 
     public function test_it_can_load_config_via_specific_key()
@@ -113,7 +113,10 @@ class RegexLoaderStrategyTest extends TestCase
         Config::set('app.my_secret', 'super~\d.*secret');
         $regexCollection = app(RegexLoaderStrategy::class)->load();
         $regex = $regexCollection->get('config::app.my_secret');
-        $this->assertEquals('super\~\\\\d\.\*secret', $regex->getPattern());
+        // The tilde is deliberately left unescaped here: RegexRepository escapes the
+        // tilde delimiter when it builds the pattern. Escaping it at both layers
+        // yields \\~, which does not compile.
+        $this->assertEquals('super~\\\\d\.\*secret', $regex->getPattern());
     }
 
     public function test_it_can_load_wildcard_with_excluded_core_namespace_class()
@@ -121,7 +124,7 @@ class RegexLoaderStrategyTest extends TestCase
         Config::set('scrubber.regex_loader', ['*']);
         Config::set('scrubber.exclude_regex', ['GoogleApi']);
         Config::set('scrubber.custom_regex_namespaces', ['YorCreative\\Scrubber\\Tests\\Unit\\Fixtures']);
-        $this->assertCount(31, app(RegexLoaderStrategy::class)->load());
+        $this->assertCount(35, app(RegexLoaderStrategy::class)->load());
     }
 
     public function test_it_excludes_short_config_values_by_default()
@@ -210,6 +213,6 @@ class RegexLoaderStrategyTest extends TestCase
         ]);
 
         $regexCollection = app(RegexLoaderStrategy::class)->load();
-        $this->assertCount(28, $regexCollection);
+        $this->assertCount(32, $regexCollection);
     }
 }

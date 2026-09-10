@@ -49,7 +49,7 @@ class SecretLoader implements LoaderInterface
 
             public function getTestableString(): string
             {
-                return $this->pattern;
+                return Secret::decrypt($this->pattern);
             }
 
             public function getReplacementValue(): ?string
@@ -63,7 +63,7 @@ class SecretLoader implements LoaderInterface
             }
         };
 
-        $class->setPattern(preg_quote($secret->getVariable(), '~'));
+        $class->setPattern($secret->getVariable());
 
         return $class;
     }

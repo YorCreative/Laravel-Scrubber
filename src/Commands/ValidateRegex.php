@@ -4,7 +4,7 @@ namespace YorCreative\Scrubber\Commands;
 
 use Illuminate\Console\Command;
 use YorCreative\Scrubber\Repositories\RegexRepository;
-use YorCreative\Scrubber\SecretManager\Secret;
+use YorCreative\Scrubber\Services\ScrubberService;
 
 class ValidateRegex extends Command
 {
@@ -28,9 +28,7 @@ class ValidateRegex extends Command
         $rows = [];
 
         foreach ($collection as $regexClass) {
-            $pattern = $regexClass->isSecret()
-                ? Secret::decrypt($regexClass->getPattern())
-                : $regexClass->getPattern();
+            $pattern = ScrubberService::resolvePattern($regexClass);
 
             $testable = $regexClass->getTestableString();
             $className = class_basename($regexClass);

@@ -65,4 +65,12 @@ class RegexCollection
     public static string $IP_ADDRESS_V6 = 'IpAddressV6';
 
     public static string $IBAN = 'Iban';
+
+    public static string $OPENAI_API_KEY = 'OpenAiApiKey';
+
+    public static string $ANTHROPIC_API_KEY = 'AnthropicApiKey';
+
+    public static string $STRIPE_SECRET_KEY = 'StripeSecretKey';
+
+    public static string $GITHUB_PERSONAL_ACCESS_TOKEN = 'GithubPersonalAccessToken';
 }

@@ -2,11 +2,11 @@
 
 namespace YorCreative\Scrubber\Strategies\RegexLoader\Loaders;
 
-use HaydenPierce\ClassFinder\ClassFinder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use ReflectionClass;
 use YorCreative\Scrubber\Repositories\RegexCollection;
+use YorCreative\Scrubber\Support\NamespaceClassFinder;
 
 class WildcardRegex extends NamespaceLoader
 {
@@ -35,7 +35,7 @@ class WildcardRegex extends NamespaceLoader
     protected function getRegexClassesInNamespace(string $namespace, array $excludedClasses): array
     {
         return array_filter(
-            ClassFinder::getClassesInNamespace($namespace),
+            NamespaceClassFinder::getClassesInNamespace($namespace),
             fn (string $class): bool => $this->isRegexClass($class) && ! in_array($class, $excludedClasses, true)
         );
     }

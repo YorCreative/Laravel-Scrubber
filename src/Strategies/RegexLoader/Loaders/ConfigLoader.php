@@ -71,6 +71,8 @@ class ConfigLoader implements LoaderInterface
         {
             public string $pattern;
 
+            public string $testable = '';
+
             public function isSecret(): bool
             {
                 return false;
@@ -81,9 +83,19 @@ class ConfigLoader implements LoaderInterface
                 return $this->pattern;
             }
 
+            /**
+             * The raw config value, not the quoted pattern. scrubber:validate matches
+             * the pattern against this, so returning the quoted form would report every
+             * value containing a regex metacharacter as failing.
+             */
             public function getTestableString(): string
             {
-                return $this->pattern;
+                return $this->testable;
+            }
+
+            public function setTestableString(string $testable): void
+            {
+                $this->testable = $testable;
             }
 
             public function getReplacementValue(): ?string
@@ -97,7 +109,11 @@ class ConfigLoader implements LoaderInterface
             }
         };
 
-        $class->setPattern(preg_quote($config, '~'));
+        // No delimiter is passed to preg_quote(): RegexRepository escapes the tilde
+        // delimiter itself, so quoting it here too would double-escape and leave the
+        // pattern uncompilable, silently skipping the value.
+        $class->setPattern(preg_quote($config));
+        $class->setTestableString($config);
 
         return $class;
     }
